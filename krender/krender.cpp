@@ -59,6 +59,8 @@ void KRender::addPack(QString path, bool load_now)
 void KRender::onRenderedTile(QPixmap, int x, int y, int z)
 {
   wait();
+  if (curr_tile.x != x || curr_tile.y != y || curr_tile.z != z)
+    return;
   if (!pending_tiles.isEmpty())
   {
     requestTile(pending_tiles.first());
@@ -72,8 +74,8 @@ void KRender::requestTile(Tile t)
   int world_width_pix = 256 * tile_count;
   mip                 = 1;
   mip                 = 2 * M_PI * kmath::earth_r / world_width_pix;
-  center_m            = {(t.x - tile_count / 2 + 0.5) * 256 * mip,
-                         (t.y - tile_count / 2 + 0.5) * 256 * mip};
+  top_left_m          = {(t.x - tile_count / 2) * 256 * mip,
+                         (t.y - tile_count / 2) * 256 * mip};
   curr_tile           = t;
   render();
 }
@@ -95,19 +97,14 @@ double KRender::getMip() const
   return mip;
 }
 
-void KRender::setCenterM(QPointF v)
+void KRender::setTopLeftM(QPointF v)
 {
-  center_m = v;
+  top_left_m = v;
 }
 
-QPointF KRender::getCenterM() const
+QPointF KRender::getTopLeftM() const
 {
-  return center_m;
-}
-
-QPointF KRender::getRenderCenterM() const
-{
-  return render_center_m;
+  return top_left_m;
 }
 
 void KRender::setPixmapSize(QSize v)
@@ -159,8 +156,7 @@ QRectF KRender::getDrawRectM() const
 {
   QSizeF size_m      = {pixmap_size.width() * mip,
                         pixmap_size.height() * mip};
-  QRectF draw_rect_m = {center_m.x() - size_m.width() / 2,
-                        center_m.y() - size_m.height() / 2,
+  QRectF draw_rect_m = {top_left_m.x(), top_left_m.y(),
                         size_m.width(), size_m.height()};
   return draw_rect_m;
 }
@@ -933,8 +929,8 @@ RenderEntry::~RenderEntry()
 
 void KRender::run()
 {
-  render_center_m = center_m;
-  render_mip      = mip;
+  render_top_left_m = top_left_m;
+  render_mip        = mip;
 
   for (int i = 0; i < KRenderPack::render_count; i++)
   {
@@ -942,11 +938,9 @@ void KRender::run()
     draw_text_array[i].clear();
     name_holder_array[i].clear();
   }
-  size_m            = {pixmap_size.width() * render_mip,
-                       pixmap_size.height() * render_mip};
-  render_top_left_m = {render_center_m.x() - size_m.width() / 2,
-                       render_center_m.y() - size_m.height() / 2};
-  render_frame_m    = {render_top_left_m, size_m};
+  size_m         = {pixmap_size.width() * render_mip,
+                    pixmap_size.height() * render_mip};
+  render_frame_m = {render_top_left_m, size_m};
 
   started(render_frame_m);
 
@@ -1112,7 +1106,7 @@ void KRender::pan(QPoint shift_pix)
 {
   enableLoading(true);
   QPointF shift_m = shift_pix * mip;
-  setCenterM(center_m + shift_m);
+  setTopLeftM(top_left_m + shift_m);
 }
 
 void KRender::zoom(double coef)

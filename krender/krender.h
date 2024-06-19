@@ -64,7 +64,7 @@ private:
   int    max_loaded_maps_count        = 0;
   double max_object_size_with_name_mm = 20.0;
 
-  QPointF       render_center_m;
+  QPointF       render_top_left_m;
   double        mip        = 1;
   double        render_mip = 1;
   QPixmap       main_pixmap;
@@ -74,7 +74,7 @@ private:
   bool          loading_enabled        = true;
   bool          getting_pixmap_enabled = false;
 
-  QPointF               center_m;
+  QPointF               top_left_m;
   QSize                 pixmap_size   = {100, 100};
   double                pixel_size_mm = 0.1;
   KRenderPackCollection packs;
@@ -85,7 +85,6 @@ private:
   QVector<NameHolder>    name_holder_array[KRenderPack::render_count];
   QVector<QRect>         text_rect_array;
   QSizeF                 size_m;
-  QPointF                render_top_left_m;
   QRectF                 render_frame_m;
   QElapsedTimer          yield_timer;
 
@@ -151,9 +150,8 @@ public:
 
   void           setMip(double);
   double         getMip() const;
-  void           setCenterM(QPointF);
-  QPointF        getCenterM() const;
-  QPointF        getRenderCenterM() const;
+  void           setTopLeftM(QPointF);
+  QPointF        getTopLeftM() const;
   void           setPixmapSize(QSize);
   void           setUpdateIntervalMs(int ms);
   double         getRenderWindowSizeCoef() const;
