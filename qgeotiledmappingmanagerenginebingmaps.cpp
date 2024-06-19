@@ -18,25 +18,17 @@ QT_BEGIN_NAMESPACE
 
 QGeoTiledMappingManagerEngineBingmaps::
     QGeoTiledMappingManagerEngineBingmaps(
-        const QVariantMap&          parameters,
-        QGeoServiceProvider::Error* error, QString* errorString):
+        const QVariantMap& parameters, QGeoServiceProvider::Error*,
+        QString*):
     QGeoTiledMappingManagerEngine()
 {
-  Q_UNUSED(error);
-  Q_UNUSED(errorString);
-
   QGeoCameraCapabilities capabilities;
 
   capabilities.setMinimumZoomLevel(0.0);
-  capabilities.setMaximumZoomLevel(21.0);
+  capabilities.setMaximumZoomLevel(24.0);
 
   setCameraCapabilities(capabilities);
-
-  int tile =
-      parameters.value(QStringLiteral("Bingmaps.maps.tilesize"), 256)
-          .toInt();
-
-  setTileSize(QSize(tile, tile));
+  setTileSize(QSize(256, 256));
 
   QList<QGeoMapType> types;
 #if QT_VERSION < QT_VERSION_CHECK(5, 9, 0)
@@ -73,7 +65,7 @@ QGeoTiledMappingManagerEngineBingmaps::
   setSupportedMapTypes(types);
 
   QGeoTileFetcherBingmaps* fetcher =
-      new QGeoTileFetcherBingmaps(parameters, this, tileSize());
+      new QGeoTileFetcherBingmaps(parameters, this);
   setTileFetcher(fetcher);
 
   if (parameters.contains(QStringLiteral("bingmaps.cachefolder")))

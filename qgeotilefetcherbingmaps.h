@@ -20,8 +20,7 @@ class QGeoTileFetcherBingmaps: public QGeoTileFetcher
 public:
   QGeoTileFetcherBingmaps(
       const QVariantMap&,
-      QGeoTiledMappingManagerEngineBingmaps* engine,
-      const QSize&                           tileSize);
+      QGeoTiledMappingManagerEngineBingmaps* engine);
 
   QGeoTiledMapReply* getTileImage(const QGeoTileSpec& spec);
 
@@ -29,15 +28,7 @@ private:
   Q_DISABLE_COPY(QGeoTileFetcherBingmaps)
 
   QPointer<QGeoTiledMappingManagerEngineBingmaps> m_engineBingmaps;
-  QSize                                           m_tileSize;
-
-  int        _timeout;
-  QByteArray _userAgent;
-  QString    _language;
-
-  // Bing version strings
-  QString  _versionBingMaps;
-  KRender* render = nullptr;
+  KRender*                                        render = nullptr;
 };
 
 QT_END_NAMESPACE

@@ -38,7 +38,7 @@ KRender::KRender(Settings v)
   setBackgroundColor(v.background_color);
   setPixelSizeMM(v.pixel_size_mm);
   setMaxLoadedMapsCount(v.max_loaded_maps_count);
-  setPixmapSize(v.window_size);
+  setPixmapSize(v.pixmap_size);
   qRegisterMetaType<KRender::Tile>();
   connect(this, &KRender::renderedTile, this,
           &KRender::onRenderedTile);
@@ -68,12 +68,12 @@ void KRender::onRenderedTile(QPixmap, int x, int y, int z)
 
 void KRender::requestTile(Tile t)
 {
-  int tile_num        = pow(2, t.z);
-  int world_width_pix = 256 * tile_num;
+  int tile_count      = pow(2, t.z);
+  int world_width_pix = 256 * tile_count;
   mip                 = 1;
   mip                 = 2 * M_PI * kmath::earth_r / world_width_pix;
-  center_m            = {(t.x - tile_num / 2 + 0.5) * 256 * mip,
-                         (t.y - tile_num / 2 + 0.5) * 256 * mip};
+  center_m            = {(t.x - tile_count / 2 + 0.5) * 256 * mip,
+                         (t.y - tile_count / 2 + 0.5) * 256 * mip};
   curr_tile           = t;
   render();
 }
@@ -1040,9 +1040,6 @@ void KRender::run()
 
   qDeleteAll(render_list);
 
-  QElapsedTimer t;
-  t.start();
-
   if (!paintLineNames(&p0))
   {
     emit rendered(0);
@@ -1058,6 +1055,8 @@ void KRender::run()
     emit rendered(0);
     return;
   }
+
+  qDebug() << "render elapsed" << yield_timer.elapsed();
 
   main_pixmap = render_pixmap.copy();
   paintUserObjects(&p0);

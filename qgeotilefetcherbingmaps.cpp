@@ -15,10 +15,10 @@
 #include <map>
 
 QGeoTileFetcherBingmaps::QGeoTileFetcherBingmaps(
-    const QVariantMap&, QGeoTiledMappingManagerEngineBingmaps* engine,
-    const QSize& tileSize):
+    const QVariantMap&,
+    QGeoTiledMappingManagerEngineBingmaps* engine):
     QGeoTileFetcher(engine),
-    m_engineBingmaps(engine), m_tileSize(tileSize)
+    m_engineBingmaps(engine)
 {
 }
 
@@ -27,7 +27,7 @@ QGeoTileFetcherBingmaps::getTileImage(const QGeoTileSpec& spec)
 {
   KRender::Settings s;
   s.pixel_size_mm = 0.1;
-  s.window_size   = m_tileSize;
+  s.pixmap_size   = {256 * 8, 256 * 8};
   if (!render)
   {
     render = new KRender(s);

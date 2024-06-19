@@ -15,7 +15,7 @@ public:
   struct Settings
   {
     double pixel_size_mm = 0.1;
-    QSize  window_size;
+    QSize  pixmap_size;
     QColor background_color      = QColor(150, 210, 240);
     double max_loaded_maps_count = 3;
   };
