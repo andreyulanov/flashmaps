@@ -29,6 +29,7 @@ QGeoTiledMappingManagerEngineBingmaps::
 
   setCameraCapabilities(capabilities);
   setTileSize(QSize(256, 256));
+  setCacheHint(QAbstractGeoTileCache::MemoryCache);
 
   QList<QGeoMapType> types;
 #if QT_VERSION < QT_VERSION_CHECK(5, 9, 0)
