@@ -14,8 +14,8 @@ class KRender: public QThread
 public:
   struct Settings
   {
-    double pixel_size_mm = 0.1;
-    QSize  pixmap_size;
+    double pixel_size_mm         = 0.1;
+    int    tile_multiplier       = 8;
     QColor background_color      = QColor(150, 210, 240);
     double max_loaded_maps_count = 3;
   };
@@ -63,6 +63,7 @@ private:
   int    update_interval_ms           = 0;
   int    max_loaded_maps_count        = 0;
   double max_object_size_with_name_mm = 20.0;
+  int    tile_multiplier              = 8;
 
   QPointF       render_top_left_m;
   double        mip        = 1;

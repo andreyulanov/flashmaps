@@ -35,11 +35,11 @@ QPointF KRender::pix2meters(QPointF pix) const
 
 KRender::KRender(Settings v)
 {
-  setBackgroundColor(v.background_color);
-  setPixelSizeMM(v.pixel_size_mm);
-  setMaxLoadedMapsCount(v.max_loaded_maps_count);
-  setPixmapSize(v.pixmap_size);
-  qRegisterMetaType<KRender::Tile>();
+  ocean_color           = v.background_color;
+  pixel_size_mm         = v.pixel_size_mm;
+  max_loaded_maps_count = v.max_loaded_maps_count;
+  tile_multiplier       = v.tile_multiplier;
+  setPixmapSize({256, 256});
   connect(this, &KRender::renderedTile, this,
           &KRender::onRenderedTile);
 }
