@@ -11,6 +11,9 @@ class KRender: public QThread
 {
   friend class KRenderThread;
 
+  static constexpr int tile_side           = 256;
+  static constexpr int big_tile_multiplier = 8;
+
 public:
   struct Settings
   {
@@ -60,23 +63,16 @@ private:
   double render_window_size_coef      = 0;
   QColor ocean_color                  = QColor(150, 210, 240);
   QColor land_color                   = QColor(250, 246, 230);
-  int    update_interval_ms           = 0;
   int    max_loaded_maps_count        = 0;
   double max_object_size_with_name_mm = 20.0;
-  int    tile_multiplier              = 8;
 
-  QPointF       render_top_left_m;
-  double        mip        = 1;
-  double        render_mip = 1;
-  QPixmap       main_pixmap;
-  QPixmap       render_pixmap;
-  QElapsedTimer time_since_last_repaint;
-  bool          rendering_enabled      = false;
-  bool          loading_enabled        = true;
-  bool          getting_pixmap_enabled = false;
+  QPointF render_top_left_m;
+  double  mip        = 1;
+  double  render_mip = 1;
+  QPixmap render_pixmap;
 
   QPointF               top_left_m;
-  QSize                 pixmap_size   = {100, 100};
+  QSize                 pixmap_size;
   double                pixel_size_mm = 0.1;
   KRenderPackCollection packs;
   QFont                 font;
@@ -87,10 +83,9 @@ private:
   QVector<QRect>         text_rect_array;
   QSizeF                 size_m;
   QRectF                 render_frame_m;
-  QElapsedTimer          yield_timer;
 
-  Tile          curr_tile;
-  QVector<Tile> pending_tiles;
+  static void paintOutlinedText(QPainter* p, const QString& text,
+                                const QColor& tcolor);
 
   void run();
   void start() = delete;
@@ -101,14 +96,12 @@ private:
               int render_idx);
 
   bool checkMipRange(const KPack* pack, const KObject* obj);
-  bool canContinue();
-  void checkYieldResult();
 
-  bool paintObject(QPainter* p, const KRenderPack* map,
+  void paintObject(QPainter* p, const KRenderPack* map,
                    const KObject& obj, int render_idx, int line_iter);
-  bool paintPointNames(QPainter* p);
-  bool paintLineNames(QPainter* p);
-  bool paintPolygonNames(QPainter* p);
+  void paintPointNames(QPainter* p);
+  void paintLineNames(QPainter* p);
+  void paintPolygonNames(QPainter* p);
 
   bool isCluttering(const QRect&);
   void paintOutlinedText(QPainter* p, const DrawTextEntry& dte);
@@ -116,6 +109,8 @@ private:
                         DrawTextEntry           new_dte);
 
   QPolygon poly2pix(const KGeoPolygon& polygon);
+  void     paintPointName(QPainter* p, const QString& text,
+                          const QColor& tcolor);
   void     paintPointObject(QPainter* p, const KRenderPack& pack,
                             const KObject& obj, int render_idx);
   void     paintPolygonObject(QPainter* p, const KRenderPack& pack,
@@ -129,44 +124,18 @@ private:
   void     checkLoad();
   void     checkUnload();
   void     onLoaded();
+  void     render();
 
 signals:
-  void started(QRectF);
   void paintUserObjects(QPainter* p);
-  void rendered(int ms_elapsed);
-  void renderedTile(QPixmap, int x, int y, int z);
 
 public:
   KRender(Settings);
   virtual ~KRender();
   void addPack(QString path, bool load_now);
 
-  void         requestTile(Tile);
-  void         onRenderedTile(QPixmap, int x, int y, int z);
-  const KPack* getPack(int idx) const;
-
-  void setBackgroundColor(QColor);
-  void setPixelSizeMM(double);
-  void setMaxLoadedMapsCount(int);
-
-  void           setMip(double);
-  double         getMip() const;
-  void           setTopLeftM(QPointF);
-  QPointF        getTopLeftM() const;
-  void           setPixmapSize(QSize);
-  void           setUpdateIntervalMs(int ms);
-  double         getRenderWindowSizeCoef() const;
-  void           setRenderWindowSizeCoef(double);
-  void           paintPointName(QPainter* p, const QString& text,
-                                const QColor& tcolor);
-  static void    paintOutlinedText(QPainter* p, const QString& text,
-                                   const QColor& tcolor);
-  const QPixmap* getPixmap() const;
-  const KPack*   getWorldPack() const;
-  void           render();
-  void           renderUserObjects();
-  void           stopAndWait();
-  void           enableLoading(bool);
+  void       requestTile(Tile);
+  QByteArray getTile(Tile);
 
   QPoint deg2pix(KGeoCoor) const;
 
@@ -175,10 +144,6 @@ public:
 
   QPoint   deg2scr(const KGeoCoor& deg) const;
   KGeoCoor scr2deg(QPoint pix) const;
-
-  void pan(QPoint);
-  void zoom(double);
 };
-Q_DECLARE_METATYPE(KRender::Tile)
 
 #endif  // KRENDER_H

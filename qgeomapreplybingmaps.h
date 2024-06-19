@@ -12,13 +12,12 @@ class QGeoMapReplyBingmaps: public QGeoTiledMapReply
 {
   Q_OBJECT
 
-  KRender*      m_render;
-  KRender::Tile curr_tile;
+  KRender* m_render;
 
 public:
   QGeoMapReplyBingmaps(KRender* render, const QGeoTileSpec& spec,
                        QObject* parent = 0);
-  void renderedTile(QPixmap, int x, int y, int z);
+  void findTiles();
 };
 
 QT_END_NAMESPACE

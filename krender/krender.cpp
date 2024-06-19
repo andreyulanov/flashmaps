@@ -38,46 +38,45 @@ KRender::KRender(Settings v)
   ocean_color           = v.background_color;
   pixel_size_mm         = v.pixel_size_mm;
   max_loaded_maps_count = v.max_loaded_maps_count;
-  tile_multiplier       = v.tile_multiplier;
-  setPixmapSize({256, 256});
-  connect(this, &KRender::renderedTile, this,
-          &KRender::onRenderedTile);
+  int big_tile_side     = tile_side * big_tile_multiplier;
+  pixmap_size           = {big_tile_side, big_tile_side};
 }
 
 KRender::~KRender()
 {
   QThreadPool().globalInstance()->waitForDone();
-  stopAndWait();
+  wait();
 }
 
 void KRender::addPack(QString path, bool load_now)
 {
-  stopAndWait();
-  insertPack(packs.count(), path, load_now);
-}
-
-void KRender::onRenderedTile(QPixmap, int x, int y, int z)
-{
+  QThreadPool().globalInstance()->waitForDone();
   wait();
-  if (curr_tile.x != x || curr_tile.y != y || curr_tile.z != z)
-    return;
-  if (!pending_tiles.isEmpty())
-  {
-    requestTile(pending_tiles.first());
-    pending_tiles.removeFirst();
-  }
+  insertPack(packs.count(), path, load_now);
 }
 
 void KRender::requestTile(Tile t)
 {
+  if (t.z <= 3)
+    return;
   int tile_count      = pow(2, t.z);
-  int world_width_pix = 256 * tile_count;
-  mip                 = 1;
+  int world_width_pix = tile_side * tile_count;
   mip                 = 2 * M_PI * kmath::earth_r / world_width_pix;
-  top_left_m          = {(t.x - tile_count / 2) * 256 * mip,
-                         (t.y - tile_count / 2) * 256 * mip};
-  curr_tile           = t;
+
+  int bx = int(t.x / big_tile_multiplier) * big_tile_multiplier;
+  int by = int(t.y / big_tile_multiplier) * big_tile_multiplier;
+
+  top_left_m = {(bx - tile_count / 2) * tile_side * mip,
+                (by - tile_count / 2) * tile_side * mip};
   render();
+}
+
+QByteArray KRender::getTile(Tile t)
+{
+  wait();
+  QThreadPool::globalInstance()->waitForDone();
+  int bx = int(t.x / big_tile_multiplier) * big_tile_multiplier;
+  int by = int(t.y / big_tile_multiplier) * big_tile_multiplier;
 }
 
 void KRender::insertPack(int idx, QString path, bool load_now)
@@ -85,71 +84,6 @@ void KRender::insertPack(int idx, QString path, bool load_now)
   auto map = new KRenderPack(path);
   map->loadMain(load_now, pixel_size_mm);
   packs.insert(idx, map);
-}
-
-void KRender::setMip(double v)
-{
-  mip = v;
-}
-
-double KRender::getMip() const
-{
-  return mip;
-}
-
-void KRender::setTopLeftM(QPointF v)
-{
-  top_left_m = v;
-}
-
-QPointF KRender::getTopLeftM() const
-{
-  return top_left_m;
-}
-
-void KRender::setPixmapSize(QSize v)
-{
-  pixmap_size = v;
-}
-
-void KRender::setPixelSizeMM(double v)
-{
-  pixel_size_mm = v;
-}
-
-void KRender::setUpdateIntervalMs(int v)
-{
-  update_interval_ms = v;
-}
-
-void KRender::setBackgroundColor(QColor v)
-{
-  ocean_color = v;
-}
-
-double KRender::getRenderWindowSizeCoef() const
-{
-  return render_window_size_coef;
-}
-
-void KRender::setRenderWindowSizeCoef(double v)
-{
-  render_window_size_coef = v;
-}
-
-void KRender::setMaxLoadedMapsCount(int v)
-{
-  max_loaded_maps_count = v;
-}
-
-const QPixmap* KRender::getPixmap() const
-{
-  return getting_pixmap_enabled ? &render_pixmap : nullptr;
-}
-
-const KPack* KRender::getWorldPack() const
-{
-  return packs.first();
 }
 
 QRectF KRender::getDrawRectM() const
@@ -674,7 +608,7 @@ bool KRender::checkMipRange(const KPack* pack, const KObject* obj)
          (cl->max_mip == 0 || render_mip <= cl->max_mip);
 }
 
-bool KRender::paintObject(QPainter* p, const KRenderPack* map,
+void KRender::paintObject(QPainter* p, const KRenderPack* map,
                           const KObject& obj, int render_idx,
                           int line_iter)
 {
@@ -693,27 +627,9 @@ bool KRender::paintObject(QPainter* p, const KRenderPack* map,
   default:
     break;
   }
-  return canContinue();
 }
 
-bool KRender::canContinue()
-{
-  if (!rendering_enabled)
-    emit rendered(0);
-  return rendering_enabled;
-}
-
-void KRender::checkYieldResult()
-{
-  if (auto el = yield_timer.elapsed(); el > update_interval_ms)
-  {
-    getting_pixmap_enabled = true;
-    emit rendered(el);
-    yield_timer.restart();
-  }
-}
-
-bool KRender::paintPointNames(QPainter* p)
+void KRender::paintPointNames(QPainter* p)
 {
   for (int render_idx = 0; render_idx < KRenderPack::render_count;
        render_idx++)
@@ -745,13 +661,10 @@ bool KRender::paintPointNames(QPainter* p)
       else
         p->drawEllipse(pos, int(1.0 / pixel_size_mm),
                        int(1.0 / pixel_size_mm));
-      if (!canContinue())
-        return false;
     }
-  return true;
 }
 
-bool KRender::paintLineNames(QPainter* p)
+void KRender::paintLineNames(QPainter* p)
 {
   text_rect_array.clear();
   auto f = p->font();
@@ -785,13 +698,10 @@ bool KRender::paintLineNames(QPainter* p)
       text_rect_array.append(mapped_rect);
       paintOutlinedText(p, nh.obj->name, nh.tcolor);
       p->restore();
-      if (!canContinue())
-        return false;
     }
-  return true;
 }
 
-bool KRender::paintPolygonNames(QPainter* p)
+void KRender::paintPolygonNames(QPainter* p)
 {
   for (int render_idx = 0; render_idx < KRenderPack::render_count;
        render_idx++)
@@ -824,10 +734,7 @@ bool KRender::paintPolygonNames(QPainter* p)
       }
 
       text_rect_array.append(dte.rect);
-      if (!canContinue())
-        return false;
     }
-  return true;
 }
 
 void KRender::render(QPainter* p, QVector<KRenderPack*> render_packs,
@@ -887,11 +794,7 @@ void KRender::renderPack(QPainter* p, const KRenderPack* pack,
       if (!checkMipRange(pack, obj))
         continue;
 
-      if (!paintObject(p, pack, *obj, render_idx, line_iter))
-      {
-        emit rendered(0);
-        return;
-      }
+      paintObject(p, pack, *obj, render_idx, line_iter);
     }
   }
 }
@@ -942,14 +845,7 @@ void KRender::run()
                     pixmap_size.height() * render_mip};
   render_frame_m = {render_top_left_m, size_m};
 
-  started(render_frame_m);
-
-  if (loading_enabled)
-    checkLoad();
-
-  yield_timer.start();
-
-  getting_pixmap_enabled = false;
+  checkLoad();
 
   QElapsedTimer total_render_time;
   total_render_time.start();
@@ -1034,82 +930,18 @@ void KRender::run()
 
   qDeleteAll(render_list);
 
-  if (!paintLineNames(&p0))
-  {
-    emit rendered(0);
-    return;
-  }
-  if (!paintPolygonNames(&p0))
-  {
-    emit rendered(0);
-    return;
-  }
-  if (!paintPointNames(&p0))
-  {
-    emit rendered(0);
-    return;
-  }
+  paintLineNames(&p0);
+  paintPolygonNames(&p0);
+  paintPointNames(&p0);
 
-  qDebug() << "render elapsed" << yield_timer.elapsed();
-
-  main_pixmap = render_pixmap.copy();
-  paintUserObjects(&p0);
-
-  getting_pixmap_enabled = true;
-  emit rendered(0);
-  if (loading_enabled)
-    checkLoad();
-  renderedTile(render_pixmap, curr_tile.x, curr_tile.y, curr_tile.z);
-}
-
-void KRender::renderUserObjects()
-{
-  if (isRunning())
-    return;
-  if (!getting_pixmap_enabled)
-    return;
-  if (time_since_last_repaint.isValid() &&
-      time_since_last_repaint.elapsed() < 10)
-    return;
-  render_pixmap = main_pixmap.copy();
-  QPainter p(&render_pixmap);
-  paintUserObjects(&p);
-  rendered(0);
-  time_since_last_repaint.start();
+  save to bmp;
 }
 
 void KRender::render()
 {
   if (isRunning())
-  {
-    pending_tiles.append(curr_tile);
     return;
-  }
-  rendering_enabled = true;
   if (QThreadPool::globalInstance()->activeThreadCount() == 0)
     checkUnload();
   QThread::start();
-}
-
-void KRender::stopAndWait()
-{
-  rendering_enabled = false;
-  wait();
-}
-
-void KRender::enableLoading(bool v)
-{
-  loading_enabled = v;
-}
-
-void KRender::pan(QPoint shift_pix)
-{
-  enableLoading(true);
-  QPointF shift_m = shift_pix * mip;
-  setTopLeftM(top_left_m + shift_m);
-}
-
-void KRender::zoom(double coef)
-{
-  mip *= coef;
 }
