@@ -36,8 +36,6 @@ QGeoTiledMappingManagerEngineBingmaps::
       parameters.value(QStringLiteral("Bingmaps.maps.tilesize"), 256)
           .toInt();
 
-  qDebug() << Q_FUNC_INFO << "tile" << tile;
-
   setTileSize(QSize(tile, tile));
 
   QList<QGeoMapType> types;

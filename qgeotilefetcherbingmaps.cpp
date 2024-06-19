@@ -25,9 +25,6 @@ QGeoTileFetcherBingmaps::QGeoTileFetcherBingmaps(
 QGeoTiledMapReply*
 QGeoTileFetcherBingmaps::getTileImage(const QGeoTileSpec& spec)
 {
-  qDebug() << Q_FUNC_INFO << "m_tileSize" << m_tileSize;
-  qDebug() << Q_FUNC_INFO << "spec" << spec;
-
   KRender::Settings s;
   s.pixel_size_mm = 0.1;
   s.window_size   = m_tileSize;

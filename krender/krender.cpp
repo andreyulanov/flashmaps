@@ -46,7 +46,6 @@ KRender::KRender(Settings v)
 
 KRender::~KRender()
 {
-  qDebug() << Q_FUNC_INFO;
   QThreadPool().globalInstance()->waitForDone();
   stopAndWait();
 }
@@ -69,7 +68,6 @@ void KRender::onRenderedTile(QPixmap, int x, int y, int z)
 
 void KRender::requestTile(Tile t)
 {
-  qDebug() << Q_FUNC_INFO;
   int tile_num        = pow(2, t.z);
   int world_width_pix = 256 * tile_num;
   mip                 = 1;
@@ -77,12 +75,6 @@ void KRender::requestTile(Tile t)
   center_m            = {(t.x - tile_num / 2 + 0.5) * 256 * mip,
                          (t.y - tile_num / 2 + 0.5) * 256 * mip};
   curr_tile           = t;
-
-  qDebug() << "tile.x" << t.x;
-  qDebug() << "tile.y" << t.y;
-  qDebug() << "zoom" << t.z;
-  qDebug() << "mip" << mip;
-
   render();
 }
 
@@ -1067,9 +1059,6 @@ void KRender::run()
     return;
   }
 
-  qDebug() << "mip" << render_mip << ",total render time elapsed"
-           << total_render_time.elapsed();
-
   main_pixmap = render_pixmap.copy();
   paintUserObjects(&p0);
 
@@ -1100,7 +1089,6 @@ void KRender::render()
 {
   if (isRunning())
   {
-    qDebug() << "added tile to pending list-------------";
     pending_tiles.append(curr_tile);
     return;
   }

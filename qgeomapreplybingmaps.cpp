@@ -23,9 +23,10 @@ void QGeoMapReplyBingmaps::renderedTile(QPixmap pm, int x, int y,
                                         int z)
 {
   if (curr_tile.x != x || curr_tile.y != y || curr_tile.z != z)
+  {
+    setFinished(false);
     return;
-
-  qDebug() << Q_FUNC_INFO;
+  }
 
   QByteArray ba;
   QBuffer    buffer(&ba);
