@@ -6,6 +6,8 @@ PLUGIN_TYPE = geoservices
 PLUGIN_CLASS_NAME = QGeoServiceProviderFactoryBingMaps
 load(qt_plugin)
 
+QMAKE_CXXFLAGS += -Og
+
 HEADERS += \
     krender/kbase.h \
     krender/kclass.h \
