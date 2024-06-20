@@ -17,10 +17,12 @@ class KRender: public QThread
 public:
   struct Settings
   {
-    double pixel_size_mm         = 0.1;
-    int    tile_multiplier       = 8;
-    QColor background_color      = QColor(150, 210, 240);
-    double max_loaded_maps_count = 3;
+    double  pixel_size_mm   = 0.1;
+    int     tile_multiplier = 8;
+    QColor  ocean_color     = QColor(150, 210, 240);
+    QColor  land_color      = QColor(250, 246, 230);
+    QString cache_dir;
+    double  max_loaded_maps_count = 3;
   };
   struct Tile
   {
@@ -60,10 +62,6 @@ private:
 
   Q_OBJECT
 
-  double render_window_size_coef      = 0;
-  QColor ocean_color                  = QColor(150, 210, 240);
-  QColor land_color                   = QColor(250, 246, 230);
-  int    max_loaded_maps_count        = 0;
   double max_object_size_with_name_mm = 20.0;
 
   QPointF render_top_left_m;
@@ -71,9 +69,9 @@ private:
   double  render_mip = 1;
   QPixmap render_pixmap;
 
+  Settings              s;
   QPointF               top_left_m;
   QSize                 pixmap_size;
-  double                pixel_size_mm = 0.1;
   KRenderPackCollection packs;
   QFont                 font;
 
@@ -123,11 +121,9 @@ private:
                           const QRectF&      draw_rect);
   void     checkLoad();
   void     checkUnload();
-  void     onLoaded();
   void     render();
-
-signals:
-  void paintUserObjects(QPainter* p);
+  QPoint   meters2pix(QPointF m) const;
+  QPointF  pix2meters(QPointF pix) const;
 
 public:
   KRender(Settings);
@@ -138,9 +134,6 @@ public:
   QByteArray getTile(Tile);
 
   QPoint deg2pix(KGeoCoor) const;
-
-  QPoint  meters2pix(QPointF m) const;
-  QPointF pix2meters(QPointF pix) const;
 
   QPoint   deg2scr(const KGeoCoor& deg) const;
   KGeoCoor scr2deg(QPoint pix) const;

@@ -35,11 +35,9 @@ QPointF KRender::pix2meters(QPointF pix) const
 
 KRender::KRender(Settings v)
 {
-  ocean_color           = v.background_color;
-  pixel_size_mm         = v.pixel_size_mm;
-  max_loaded_maps_count = v.max_loaded_maps_count;
-  int big_tile_side     = tile_side * big_tile_multiplier;
-  pixmap_size           = {big_tile_side, big_tile_side};
+  s                 = v;
+  int big_tile_side = tile_side * big_tile_multiplier;
+  pixmap_size       = {big_tile_side, big_tile_side};
 }
 
 KRender::~KRender()
@@ -77,12 +75,13 @@ QByteArray KRender::getTile(Tile t)
   QThreadPool::globalInstance()->waitForDone();
   int bx = int(t.x / big_tile_multiplier) * big_tile_multiplier;
   int by = int(t.y / big_tile_multiplier) * big_tile_multiplier;
+  return QByteArray();
 }
 
 void KRender::insertPack(int idx, QString path, bool load_now)
 {
   auto map = new KRenderPack(path);
-  map->loadMain(load_now, pixel_size_mm);
+  map->loadMain(load_now, s.pixel_size_mm);
   packs.insert(idx, map);
 }
 
@@ -107,7 +106,7 @@ void KRender::checkUnload()
     if (pack->main.status == KTile::Loaded)
     {
       if (!needToLoadPack(pack, draw_rect_m))
-        if (loaded_count > max_loaded_maps_count)
+        if (loaded_count > s.max_loaded_maps_count)
           pack->clear();
       loaded_count++;
     }
@@ -151,7 +150,7 @@ void KRender::checkLoad()
       continue;
 
     if (pack->main.status == KTile::Null)
-      pack->loadMain(true, pixel_size_mm);
+      pack->loadMain(true, s.pixel_size_mm);
     if (pack->main.status == KTile::Loaded)
     {
       if (needToLoadPack(pack, draw_rect_m))
@@ -183,7 +182,7 @@ void KRender::paintPointName(QPainter* p, const QString& text,
                              const QColor& tcolor)
 {
   QRect rect;
-  int   w = 20.0 / pixel_size_mm;
+  int   w = 20.0 / s.pixel_size_mm;
   rect.setSize({w, w});
 
   p->setPen(Qt::white);
@@ -367,7 +366,7 @@ void KRender::paintPolygonObject(QPainter* p, const KRenderPack& pack,
          obj_span_pix < std::min(pixmap_size.width(),
                                  pixmap_size.height() / 2) &&
          obj_span_pix >
-             max_object_size_with_name_mm / pixel_size_mm) ||
+             max_object_size_with_name_mm / s.pixel_size_mm) ||
         !cl->image.isNull())
     {
 
@@ -397,7 +396,7 @@ void KRender::paintPolygonObject(QPainter* p, const KRenderPack& pack,
       p->drawPolygon(pl);
     else
     {
-      p->setBrush(land_color);
+      p->setBrush(s.land_color);
       p->drawPolygon(pl);
     }
   }
@@ -659,8 +658,8 @@ void KRender::paintPointNames(QPainter* p)
         p->drawImage(pos2, item.cl->image);
       }
       else
-        p->drawEllipse(pos, int(1.0 / pixel_size_mm),
-                       int(1.0 / pixel_size_mm));
+        p->drawEllipse(pos, int(1.0 / s.pixel_size_mm),
+                       int(1.0 / s.pixel_size_mm));
     }
 }
 
@@ -668,7 +667,7 @@ void KRender::paintLineNames(QPainter* p)
 {
   text_rect_array.clear();
   auto f = p->font();
-  auto w = round(1.5 / pixel_size_mm);
+  auto w = round(1.5 / s.pixel_size_mm);
   f.setPixelSize(w);
   p->setFont(f);
 
@@ -853,14 +852,14 @@ void KRender::run()
   if (render_pixmap.size() != pixmap_size)
     render_pixmap = QPixmap(pixmap_size);
 
-  render_pixmap.fill(ocean_color);
+  render_pixmap.fill(s.ocean_color);
   QPainter p0(&render_pixmap);
   QFont    f = p0.font();
 
   double font_size =
-      std::min((int)std::round(1.5 / pixel_size_mm / mip), 1);
-  font_size =
-      std::clamp(font_size, 1.5 / pixel_size_mm, 3.0 / pixel_size_mm);
+      std::min((int)std::round(1.5 / s.pixel_size_mm / mip), 1);
+  font_size = std::clamp(font_size, 1.5 / s.pixel_size_mm,
+                         3.0 / s.pixel_size_mm);
   f.setPixelSize(font_size);
   f.setBold(true);
   p0.setFont(f);
@@ -933,8 +932,6 @@ void KRender::run()
   paintLineNames(&p0);
   paintPolygonNames(&p0);
   paintPointNames(&p0);
-
-  save to bmp;
 }
 
 void KRender::render()
