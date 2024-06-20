@@ -17,12 +17,14 @@ class KRender: public QThread
 public:
   struct Settings
   {
-    double  pixel_size_mm   = 0.1;
-    int     tile_multiplier = 8;
-    QColor  ocean_color     = QColor(150, 210, 240);
-    QColor  land_color      = QColor(250, 246, 230);
-    QString cache_dir;
+    double  pixel_size_mm         = 0.1;
+    int     tile_multiplier       = 8;
+    QColor  ocean_color           = QColor(150, 210, 240);
+    QColor  land_color            = QColor(250, 246, 230);
     double  max_loaded_maps_count = 3;
+    QString cache_dir;
+    QString map_dir;
+    QString world_map_name = "world.kpack";
   };
   struct Tile
   {
@@ -68,6 +70,7 @@ private:
   double  mip        = 1;
   double  render_mip = 1;
   QPixmap render_pixmap;
+  Tile    big_tile;
 
   Settings              s;
   QPointF               top_left_m;
@@ -124,19 +127,15 @@ private:
   void     render();
   QPoint   meters2pix(QPointF m) const;
   QPointF  pix2meters(QPointF pix) const;
+  QPoint   deg2pix(KGeoCoor) const;
+  Tile     getBigTile(Tile);
+  QString  getTileName(Tile);
 
 public:
   KRender(Settings);
   virtual ~KRender();
-  void addPack(QString path, bool load_now);
-
   void       requestTile(Tile);
-  QByteArray getTile(Tile);
-
-  QPoint deg2pix(KGeoCoor) const;
-
-  QPoint   deg2scr(const KGeoCoor& deg) const;
-  KGeoCoor scr2deg(QPoint pix) const;
+  QByteArray pickTile(Tile);
 };
 
 #endif  // KRENDER_H

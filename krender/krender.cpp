@@ -8,16 +8,6 @@
 
 using namespace kmath;
 
-QPoint KRender::deg2scr(const KGeoCoor& deg) const
-{
-  return meters2pix(deg.toMeters());
-}
-
-KGeoCoor KRender::scr2deg(QPoint pix) const
-{
-  return KGeoCoor::fromMeters(pix2meters(pix));
-}
-
 QPoint KRender::meters2pix(QPointF coor_m) const
 {
   auto rectm = getDrawRectM();
@@ -35,9 +25,26 @@ QPointF KRender::pix2meters(QPointF pix) const
 
 KRender::KRender(Settings v)
 {
-  s                 = v;
+  s = v;
+  QDir(s.cache_dir).removeRecursively();
+  QDir().mkdir(s.cache_dir);
   int big_tile_side = tile_side * big_tile_multiplier;
   pixmap_size       = {big_tile_side, big_tile_side};
+  QDir dir(s.map_dir);
+  dir.setNameFilters({"*.kpack"});
+  auto fi_list = dir.entryInfoList();
+  for (int count = -1; auto fi: fi_list)
+  {
+    count++;
+    int  idx      = count;
+    bool load_now = false;
+    if (fi.fileName() == s.world_map_name)
+    {
+      idx      = 0;
+      load_now = true;
+    }
+    insertPack(idx, fi.filePath(), load_now);
+  }
 }
 
 KRender::~KRender()
@@ -46,40 +53,34 @@ KRender::~KRender()
   wait();
 }
 
-void KRender::addPack(QString path, bool load_now)
-{
-  QThreadPool().globalInstance()->waitForDone();
-  wait();
-  insertPack(packs.count(), path, load_now);
-}
-
 void KRender::requestTile(Tile t)
 {
   if (t.z <= 3)
     return;
+  if (isRunning())
+    return;
   int tile_count      = pow(2, t.z);
   int world_width_pix = tile_side * tile_count;
   mip                 = 2 * M_PI * kmath::earth_r / world_width_pix;
-
-  int bx = int(t.x / big_tile_multiplier) * big_tile_multiplier;
-  int by = int(t.y / big_tile_multiplier) * big_tile_multiplier;
-
-  top_left_m = {(bx - tile_count / 2) * tile_side * mip,
-                (by - tile_count / 2) * tile_side * mip};
+  big_tile            = getBigTile(t);
+  top_left_m = {(big_tile.x - tile_count / 2) * tile_side * mip,
+                (big_tile.y - tile_count / 2) * tile_side * mip};
   render();
 }
 
-QByteArray KRender::getTile(Tile t)
+QByteArray KRender::pickTile(Tile t)
 {
-  wait();
-  QThreadPool::globalInstance()->waitForDone();
-  int bx = int(t.x / big_tile_multiplier) * big_tile_multiplier;
-  int by = int(t.y / big_tile_multiplier) * big_tile_multiplier;
+  auto  tile_path = s.cache_dir + "/" + getTileName(t);
+  QFile f(tile_path);
+  if (f.open(QIODevice::ReadOnly))
+    return f.readAll();
   return QByteArray();
 }
 
 void KRender::insertPack(int idx, QString path, bool load_now)
 {
+  QThreadPool().globalInstance()->waitForDone();
+  wait();
   auto map = new KRenderPack(path);
   map->loadMain(load_now, s.pixel_size_mm);
   packs.insert(idx, map);
@@ -252,6 +253,22 @@ void KRender::addDrawTextEntry(
   if (can_fit)
     draw_text_array.append(new_dte);
 };
+
+KRender::Tile KRender::getBigTile(Tile t)
+{
+  Tile bt;
+  bt.x = int(t.x / big_tile_multiplier) * big_tile_multiplier;
+  bt.y = int(t.y / big_tile_multiplier) * big_tile_multiplier;
+  bt.z = t.z;
+  return bt;
+}
+
+QString KRender::getTileName(Tile t)
+{
+  return "z=" + QString("%1").arg(t.z) +
+         ",y=" + QString("%1").arg(t.y) +
+         ",x=" + QString("%1").arg(t.x) + +".bmp";
+}
 
 QPoint KRender::deg2pix(KGeoCoor kp) const
 {
@@ -932,6 +949,22 @@ void KRender::run()
   paintLineNames(&p0);
   paintPolygonNames(&p0);
   paintPointNames(&p0);
+
+  for (int yi = 0; yi < s.tile_multiplier; yi++)
+    for (int xi = 0; xi < s.tile_multiplier; xi++)
+    {
+      Tile t;
+      t.x = big_tile.x + xi;
+      t.y = big_tile.y + yi;
+      t.z = big_tile.z;
+      QFile tile_file(s.cache_dir + "/" + getTileName(t));
+      if (tile_file.open(QIODevice::WriteOnly))
+      {
+        auto pm = render_pixmap.copy(xi * tile_side, yi * tile_side,
+                                     tile_side, tile_side);
+        pm.save(&tile_file);
+      }
+    }
 }
 
 void KRender::render()

@@ -14,8 +14,6 @@
 #include <QtCore/qmath.h>
 #include <QtCore/qstandardpaths.h>
 
-QT_BEGIN_NAMESPACE
-
 QGeoTiledMappingManagerEngineBingmaps::
     QGeoTiledMappingManagerEngineBingmaps(
         const QVariantMap& parameters, QGeoServiceProvider::Error*,
@@ -99,6 +97,11 @@ void QGeoTiledMappingManagerEngineBingmaps::populateMapSchemes()
   m_mapSchemes[3] = QStringLiteral("hybrid");
 }
 
+QString QGeoTiledMappingManagerEngineBingmaps::getCacheDirectory()
+{
+  return m_cacheDirectory;
+}
+
 QString QGeoTiledMappingManagerEngineBingmaps::getScheme(int mapId)
 {
   return m_mapSchemes[mapId];
@@ -108,5 +111,3 @@ QGeoMap* QGeoTiledMappingManagerEngineBingmaps::createMap()
 {
   return new QGeoTiledMapBingmaps(this);
 }
-
-QT_END_NAMESPACE

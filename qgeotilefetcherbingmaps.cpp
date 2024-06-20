@@ -5,14 +5,8 @@
 #include <QtLocation/private/qgeotilespec_p.h>
 
 #include <QDebug>
-#include <QSize>
 #include <QDir>
-#include <QTime>
 #include "krender/krender.h"
-
-#include <math.h>
-
-#include <map>
 
 QGeoTileFetcherBingmaps::QGeoTileFetcherBingmaps(
     const QVariantMap&,
@@ -25,18 +19,23 @@ QGeoTileFetcherBingmaps::QGeoTileFetcherBingmaps(
 QGeoTiledMapReply*
 QGeoTileFetcherBingmaps::getTileImage(const QGeoTileSpec& spec)
 {
-  KRender::Settings s;
-  if (!render)
+  qDebug() << "getTileImage(), spec=" << spec;
+  if (!m_render)
   {
-    render = new KRender(s);
-    render->addPack("/home/user/flashmaps/data/packs/world.kpack",
-                    true);
-    render->addPack(
-        "/home/user/flashmaps/data/packs/ru-spe,ru-len.kpack", false);
+    KRender::Settings s;
+    s.cache_dir = m_engineBingmaps->getCacheDirectory() + "/krender";
+    if (!QDir().exists(s.cache_dir))
+      if (!QDir().mkdir(s.cache_dir))
+      {
+        qDebug() << Q_FUNC_INFO << ": unable to create"
+                 << s.cache_dir;
+        return nullptr;
+      }
+    s.map_dir = "/home/user/flashmaps/data/packs";
+    m_render  = new KRender(s);
   }
   QGeoTiledMapReply* mapReply =
-      new QGeoMapReplyBingmaps(render, spec);
-  render->requestTile({spec.x(), spec.y(), spec.zoom()});
+      new QGeoMapReplyBingmaps(m_render, spec);
 
   return mapReply;
 }

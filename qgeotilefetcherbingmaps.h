@@ -3,12 +3,8 @@
 
 #include "qgeoserviceproviderpluginbingmaps.h"
 #include <QtLocation/private/qgeotilefetcher_p.h>
-#include <QMutex>
 #include "krender/krender.h"
 
-QT_BEGIN_NAMESPACE
-
-class QGeoTiledMapReply;
 class QGeoTileSpec;
 class QGeoTiledMappingManagerEngine;
 class QGeoTiledMappingManagerEngineBingmaps;
@@ -28,9 +24,7 @@ private:
   Q_DISABLE_COPY(QGeoTileFetcherBingmaps)
 
   QPointer<QGeoTiledMappingManagerEngineBingmaps> m_engineBingmaps;
-  KRender*                                        render = nullptr;
+  QPointer<KRender>                               m_render;
 };
-
-QT_END_NAMESPACE
 
 #endif

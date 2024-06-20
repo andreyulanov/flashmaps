@@ -1,10 +1,5 @@
 #include "qgeomapreplybingmaps.h"
-#include <QNetworkAccessManager>
-#include <QNetworkCacheMetaData>
-#include <QDateTime>
-#include <QBuffer>
-
-QT_BEGIN_NAMESPACE
+#include <QDebug>
 
 QGeoMapReplyBingmaps::QGeoMapReplyBingmaps(KRender*            render,
                                            const QGeoTileSpec& spec,
@@ -12,22 +7,37 @@ QGeoMapReplyBingmaps::QGeoMapReplyBingmaps(KRender*            render,
     QGeoTiledMapReply(spec, parent),
     m_render(render)
 {
-  connect(m_render, &KRender::finished, this,
-          &QGeoMapReplyBingmaps::findTiles, Qt::UniqueConnection);
-}
-
-void QGeoMapReplyBingmaps::findTiles()
-{
-  auto tile = m_render->getTile(
-      {tileSpec().x(), tileSpec().y(), tileSpec().zoom()});
-
-  if (tile.isEmpty())
+  KRender::Tile t           = {tileSpec().x(), tileSpec().y(),
+                               tileSpec().zoom()};
+  auto          tile_pixmap = m_render->pickTile(t);
+  if (tile_pixmap.isEmpty())
+  {
+    connect(m_render, &KRender::finished, this,
+            &QGeoMapReplyBingmaps::onFinishedRender);
+    m_render->requestTile({spec.x(), spec.y(), spec.zoom()});
     setFinished(false);
+  }
   else
   {
-    setMapImageData(tile);
+    setMapImageData(tile_pixmap);
     setFinished(true);
   }
 }
 
-QT_END_NAMESPACE
+void QGeoMapReplyBingmaps::onFinishedRender()
+{
+  auto          spec        = tileSpec();
+  KRender::Tile t           = {spec.x(), spec.y(), spec.zoom()};
+  auto          tile_pixmap = m_render->pickTile(t);
+  if (tile_pixmap.isEmpty())
+  {
+    connect(m_render, &KRender::finished, this,
+            &QGeoMapReplyBingmaps::onFinishedRender);
+    m_render->requestTile({spec.x(), spec.y(), spec.zoom()});
+  }
+  else
+  {
+    setMapImageData(tile_pixmap);
+    setFinished(true);
+  }
+}
