@@ -284,7 +284,11 @@ void KRender::paintPointObject(QPainter* p, const KRenderPack& pack,
 
   auto coor_m = frame.top_left.toMeters();
 
-  if (!render_frame_m.contains(coor_m))
+  auto clip_safe_rect_m = render_frame_m.adjusted(
+      -max_object_name_length_pix * mip, -50 * mip,
+      max_object_name_length_pix * mip, 50 * mip);
+
+  if (!clip_safe_rect_m.contains(coor_m))
     return;
 
   auto cl = &pack.classes[obj.class_idx];

@@ -11,8 +11,10 @@ class KRender: public QThread
 {
   friend class KRenderThread;
 
-  static constexpr int tile_side           = 256;
-  static constexpr int big_tile_multiplier = 8;
+  static constexpr int    tile_side                    = 256;
+  static constexpr int    big_tile_multiplier          = 8;
+  static constexpr int    max_object_name_length_pix   = 200;
+  static constexpr double max_object_size_with_name_mm = 20.0;
 
 public:
   struct Settings
@@ -63,8 +65,6 @@ private:
   };
 
   Q_OBJECT
-
-  double max_object_size_with_name_mm = 20.0;
 
   QPointF render_top_left_m;
   double  mip        = 1;
