@@ -1,7 +1,7 @@
-#include "qgeotilefetcherbingmaps.h"
-#include "qgeomapreplybingmaps.h"
-#include "qgeotiledmapbingmaps.h"
-#include "qgeotiledmappingmanagerenginebingmaps.h"
+#include "qgeotilefetcherflashmaps.h"
+#include "qgeomapreplyflashmaps.h"
+#include "qgeotiledmapflashmaps.h"
+#include "qgeotiledmappingmanagerengineflashmaps.h"
 #include <QtLocation/private/qgeotilespec_p.h>
 
 #include <QDebug>

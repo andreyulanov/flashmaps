@@ -19,11 +19,11 @@ HEADERS += \
     krender/krender.h \
     krender/krenderpack.h \
     krender/kserialize.h \
-    qgeoserviceproviderpluginbingmaps.h \
-    qgeomapreplybingmaps.h \
-    qgeotiledmapbingmaps.h \
-    qgeotiledmappingmanagerenginebingmaps.h \
-    qgeotilefetcherbingmaps.h
+    qgeomapreplyflashmaps.h \
+    qgeoserviceproviderpluginflashmaps.h \
+    qgeotiledmapflashmaps.h \
+    qgeotiledmappingmanagerengineflashmaps.h \
+    qgeotilefetcherflashmaps.h
 
 SOURCES += \
     krender/kbase.cpp \
@@ -35,13 +35,13 @@ SOURCES += \
     krender/kpack.cpp \
     krender/krender.cpp \
     krender/krenderpack.cpp \
-    qgeoserviceproviderpluginbingmaps.cpp \
-    qgeomapreplybingmaps.cpp \
-    qgeotiledmapbingmaps.cpp \
-    qgeotiledmappingmanagerenginebingmaps.cpp \
-    qgeotilefetcherbingmaps.cpp
+    qgeomapreplyflashmaps.cpp \
+    qgeoserviceproviderpluginflashmaps.cpp \
+    qgeotiledmapflashmaps.cpp \
+    qgeotiledmappingmanagerengineflashmaps.cpp \
+    qgeotilefetcherflashmaps.cpp
 
 
 OTHER_FILES += \
-    bingmaps_plugin.json
+ flashmaps_plugin.json
 

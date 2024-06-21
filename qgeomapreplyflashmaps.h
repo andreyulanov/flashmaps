@@ -1,5 +1,5 @@
-#ifndef QGEOMAPREPLYBINGMAPS_H
-#define QGEOMAPREPLYBINGMAPS_H
+#ifndef QGEOMAPREPLYFLASHMAPS_H
+#define QGEOMAPREPLYFLASHMAPS_H
 
 #include <QtLocation/private/qgeotilespec_p.h>
 #include <QtLocation/private/qgeotiledmapreply_p.h>

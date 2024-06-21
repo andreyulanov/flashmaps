@@ -1,4 +1,4 @@
-#include "qgeomapreplybingmaps.h"
+#include "qgeomapreplyflashmaps.h"
 #include <QDebug>
 
 QGeoMapReplyBingmaps::QGeoMapReplyBingmaps(KRender*            render,

@@ -1,7 +1,7 @@
 ﻿#include "QtLocation/private/qgeocameracapabilities_p.h"
-#include "qgeotiledmappingmanagerenginebingmaps.h"
-#include "qgeotiledmapbingmaps.h"
-#include "qgeotilefetcherbingmaps.h"
+#include "qgeotiledmappingmanagerengineflashmaps.h"
+#include "qgeotiledmapflashmaps.h"
+#include "qgeotilefetcherflashmaps.h"
 #include "QtLocation/private/qgeotilespec_p.h"
 #include "QtLocation/private/qgeofiletilecache_p.h"
 

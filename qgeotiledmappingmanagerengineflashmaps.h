@@ -1,5 +1,5 @@
-#ifndef QGEOTILEDMAPPINGMANAGERENGINEBINGMAPS_H
-#define QGEOTILEDMAPPINGMANAGERENGINEBINGMAPS_H
+#ifndef QGEOTILEDMAPPINGMANAGERENGINEFLASHMAPS_H
+#define QGEOTILEDMAPPINGMANAGERENGINEFLASHMAPS_H
 
 #include "QtLocation/private/qgeotiledmappingmanagerengine_p.h"
 #include "QtLocation/private/qgeomaptype_p.h"

@@ -1,5 +1,5 @@
-#include "qgeotiledmapbingmaps.h"
-#include "qgeotiledmappingmanagerenginebingmaps.h"
+#include "qgeotiledmapflashmaps.h"
+#include "qgeotiledmappingmanagerengineflashmaps.h"
 #if QT_VERSION <= QT_VERSION_CHECK(5, 6, 0)
   #include "QtLocation/private/qgeomapcontroller_p.h"
 #endif
