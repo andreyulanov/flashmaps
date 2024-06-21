@@ -17,6 +17,7 @@ public:
   QGeoTileFetcherBingmaps(
       const QVariantMap&,
       QGeoTiledMappingManagerEngineBingmaps* engine);
+  ~QGeoTileFetcherBingmaps();
 
   QGeoTiledMapReply* getTileImage(const QGeoTileSpec& spec);
 
@@ -24,7 +25,7 @@ private:
   Q_DISABLE_COPY(QGeoTileFetcherBingmaps)
 
   QPointer<QGeoTiledMappingManagerEngineBingmaps> m_engineBingmaps;
-  QPointer<KRender>                               m_render;
+  KRender*                                        m_render = nullptr;
 };
 
 #endif

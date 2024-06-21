@@ -16,6 +16,11 @@ QGeoTileFetcherBingmaps::QGeoTileFetcherBingmaps(
 {
 }
 
+QGeoTileFetcherBingmaps::~QGeoTileFetcherBingmaps()
+{
+  delete m_render;
+}
+
 QGeoTiledMapReply*
 QGeoTileFetcherBingmaps::getTileImage(const QGeoTileSpec& spec)
 {
