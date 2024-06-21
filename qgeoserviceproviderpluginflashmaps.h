@@ -4,7 +4,7 @@
 #include <QtCore/QObject>
 #include <QtLocation/QGeoServiceProviderFactory>
 
-class QGeoServiceProviderFactoryBingmaps:
+class QGeoServiceProviderFactoryFlashmaps:
     public QObject,
     public QGeoServiceProviderFactory
 {

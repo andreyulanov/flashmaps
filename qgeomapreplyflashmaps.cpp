@@ -1,7 +1,7 @@
 #include "qgeomapreplyflashmaps.h"
 #include <QDebug>
 
-QGeoMapReplyBingmaps::QGeoMapReplyBingmaps(KRender*            render,
+QGeoMapReplyFlashmaps::QGeoMapReplyFlashmaps(KRender*            render,
                                            const QGeoTileSpec& spec,
                                            QObject* parent):
     QGeoTiledMapReply(spec, parent),
@@ -13,7 +13,7 @@ QGeoMapReplyBingmaps::QGeoMapReplyBingmaps(KRender*            render,
   if (tile_pixmap.isEmpty())
   {
     connect(m_render, &KRender::finished, this,
-            &QGeoMapReplyBingmaps::onFinishedRender);
+            &QGeoMapReplyFlashmaps::onFinishedRender);
     m_render->requestTile({spec.x(), spec.y(), spec.zoom()});
     setFinished(false);
   }
@@ -24,7 +24,7 @@ QGeoMapReplyBingmaps::QGeoMapReplyBingmaps(KRender*            render,
   }
 }
 
-void QGeoMapReplyBingmaps::onFinishedRender()
+void QGeoMapReplyFlashmaps::onFinishedRender()
 {
   auto          spec        = tileSpec();
   KRender::Tile t           = {spec.x(), spec.y(), spec.zoom()};
@@ -32,7 +32,7 @@ void QGeoMapReplyBingmaps::onFinishedRender()
   if (tile_pixmap.isEmpty())
   {
     connect(m_render, &KRender::finished, this,
-            &QGeoMapReplyBingmaps::onFinishedRender);
+            &QGeoMapReplyFlashmaps::onFinishedRender);
     m_render->requestTile({spec.x(), spec.y(), spec.zoom()});
   }
   else

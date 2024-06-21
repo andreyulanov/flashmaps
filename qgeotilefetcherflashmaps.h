@@ -7,25 +7,25 @@
 
 class QGeoTileSpec;
 class QGeoTiledMappingManagerEngine;
-class QGeoTiledMappingManagerEngineBingmaps;
+class QGeoTiledMappingManagerEngineFlashmaps;
 
-class QGeoTileFetcherBingmaps: public QGeoTileFetcher
+class QGeoTileFetcherFlashmaps: public QGeoTileFetcher
 {
   Q_OBJECT
 
 public:
-  QGeoTileFetcherBingmaps(
+  QGeoTileFetcherFlashmaps(
       const QVariantMap&,
-      QGeoTiledMappingManagerEngineBingmaps* engine);
-  ~QGeoTileFetcherBingmaps();
+      QGeoTiledMappingManagerEngineFlashmaps* engine);
+  ~QGeoTileFetcherFlashmaps();
 
   QGeoTiledMapReply* getTileImage(const QGeoTileSpec& spec);
 
 private:
-  Q_DISABLE_COPY(QGeoTileFetcherBingmaps)
+  Q_DISABLE_COPY(QGeoTileFetcherFlashmaps)
 
-  QPointer<QGeoTiledMappingManagerEngineBingmaps> m_engineBingmaps;
-  KRender*                                        m_render = nullptr;
+  QPointer<QGeoTiledMappingManagerEngineFlashmaps> m_engineFlashmaps;
+  KRender*                                         m_render = nullptr;
 };
 
 #endif

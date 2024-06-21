@@ -5,16 +5,16 @@
 #include "QtLocation/private/qgeomaptype_p.h"
 #include <QGeoServiceProvider>
 
-class QGeoTiledMappingManagerEngineBingmaps:
+class QGeoTiledMappingManagerEngineFlashmaps:
     public QGeoTiledMappingManagerEngine
 {
   Q_OBJECT
 
 public:
-  QGeoTiledMappingManagerEngineBingmaps(
+  QGeoTiledMappingManagerEngineFlashmaps(
       const QVariantMap&          parameters,
       QGeoServiceProvider::Error* error, QString* errorString);
-  ~QGeoTiledMappingManagerEngineBingmaps();
+  ~QGeoTiledMappingManagerEngineFlashmaps();
 
   virtual QGeoMap* createMap();
   QString          getScheme(int mapId);

@@ -2,7 +2,7 @@
 #include "qgeotiledmappingmanagerengineflashmaps.h"
 
 QGeoCodingManagerEngine*
-QGeoServiceProviderFactoryBingmaps::createGeocodingManagerEngine(
+QGeoServiceProviderFactoryFlashmaps::createGeocodingManagerEngine(
     const QVariantMap& parameters, QGeoServiceProvider::Error* error,
     QString* errorString) const
 {
@@ -15,7 +15,7 @@ QGeoServiceProviderFactoryBingmaps::createGeocodingManagerEngine(
 }
 
 QGeoRoutingManagerEngine*
-QGeoServiceProviderFactoryBingmaps::createRoutingManagerEngine(
+QGeoServiceProviderFactoryFlashmaps::createRoutingManagerEngine(
     const QVariantMap& parameters, QGeoServiceProvider::Error* error,
     QString* errorString) const
 {
@@ -29,7 +29,7 @@ QGeoServiceProviderFactoryBingmaps::createRoutingManagerEngine(
 }
 
 QPlaceManagerEngine*
-QGeoServiceProviderFactoryBingmaps::createPlaceManagerEngine(
+QGeoServiceProviderFactoryFlashmaps::createPlaceManagerEngine(
     const QVariantMap& parameters, QGeoServiceProvider::Error* error,
     QString* errorString) const
 {
@@ -42,10 +42,10 @@ QGeoServiceProviderFactoryBingmaps::createPlaceManagerEngine(
 }
 
 QGeoMappingManagerEngine*
-QGeoServiceProviderFactoryBingmaps::createMappingManagerEngine(
+QGeoServiceProviderFactoryFlashmaps::createMappingManagerEngine(
     const QVariantMap& parameters, QGeoServiceProvider::Error* error,
     QString* errorString) const
 {
-  return new QGeoTiledMappingManagerEngineBingmaps(parameters, error,
+  return new QGeoTiledMappingManagerEngineFlashmaps(parameters, error,
                                                    errorString);
 }

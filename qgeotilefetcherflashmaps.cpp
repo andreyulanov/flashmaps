@@ -8,21 +8,21 @@
 #include <QDir>
 #include "krender/krender.h"
 
-QGeoTileFetcherBingmaps::QGeoTileFetcherBingmaps(
+QGeoTileFetcherFlashmaps::QGeoTileFetcherFlashmaps(
     const QVariantMap&,
-    QGeoTiledMappingManagerEngineBingmaps* engine):
+    QGeoTiledMappingManagerEngineFlashmaps* engine):
     QGeoTileFetcher(engine),
-    m_engineBingmaps(engine)
+    m_engineFlashmaps(engine)
 {
 }
 
-QGeoTileFetcherBingmaps::~QGeoTileFetcherBingmaps()
+QGeoTileFetcherFlashmaps::~QGeoTileFetcherFlashmaps()
 {
   delete m_render;
 }
 
 QGeoTiledMapReply*
-QGeoTileFetcherBingmaps::getTileImage(const QGeoTileSpec& spec)
+QGeoTileFetcherFlashmaps::getTileImage(const QGeoTileSpec& spec)
 {
   qDebug() << "getTileImage(), spec=" << spec;
   if (!m_render)
@@ -32,7 +32,7 @@ QGeoTileFetcherBingmaps::getTileImage(const QGeoTileSpec& spec)
     m_render  = new KRender(s);
   }
   QGeoTiledMapReply* mapReply =
-      new QGeoMapReplyBingmaps(m_render, spec);
+      new QGeoMapReplyFlashmaps(m_render, spec);
 
   return mapReply;
 }

@@ -14,8 +14,8 @@
 #include <QtCore/qmath.h>
 #include <QtCore/qstandardpaths.h>
 
-QGeoTiledMappingManagerEngineBingmaps::
-    QGeoTiledMappingManagerEngineBingmaps(
+QGeoTiledMappingManagerEngineFlashmaps::
+    QGeoTiledMappingManagerEngineFlashmaps(
         const QVariantMap& parameters, QGeoServiceProvider::Error*,
         QString*):
     QGeoTiledMappingManagerEngine()
@@ -63,8 +63,8 @@ QGeoTiledMappingManagerEngineBingmaps::
 
   setSupportedMapTypes(types);
 
-  QGeoTileFetcherBingmaps* fetcher =
-      new QGeoTileFetcherBingmaps(parameters, this);
+  QGeoTileFetcherFlashmaps* fetcher =
+      new QGeoTileFetcherFlashmaps(parameters, this);
   setTileFetcher(fetcher);
 
   if (parameters.contains(QStringLiteral("bingmaps.cachefolder")))
@@ -84,12 +84,12 @@ QGeoTiledMappingManagerEngineBingmaps::
   populateMapSchemes();
 }
 
-QGeoTiledMappingManagerEngineBingmaps::
-    ~QGeoTiledMappingManagerEngineBingmaps()
+QGeoTiledMappingManagerEngineFlashmaps::
+    ~QGeoTiledMappingManagerEngineFlashmaps()
 {
 }
 
-void QGeoTiledMappingManagerEngineBingmaps::populateMapSchemes()
+void QGeoTiledMappingManagerEngineFlashmaps::populateMapSchemes()
 {
   m_mapSchemes[0] = QStringLiteral("roadmap");
   m_mapSchemes[1] = QStringLiteral("roadmap");
@@ -97,17 +97,17 @@ void QGeoTiledMappingManagerEngineBingmaps::populateMapSchemes()
   m_mapSchemes[3] = QStringLiteral("hybrid");
 }
 
-QString QGeoTiledMappingManagerEngineBingmaps::getCacheDirectory()
+QString QGeoTiledMappingManagerEngineFlashmaps::getCacheDirectory()
 {
   return m_cacheDirectory;
 }
 
-QString QGeoTiledMappingManagerEngineBingmaps::getScheme(int mapId)
+QString QGeoTiledMappingManagerEngineFlashmaps::getScheme(int mapId)
 {
   return m_mapSchemes[mapId];
 }
 
-QGeoMap* QGeoTiledMappingManagerEngineBingmaps::createMap()
+QGeoMap* QGeoTiledMappingManagerEngineFlashmaps::createMap()
 {
-  return new QGeoTiledMapBingmaps(this);
+  return new QGeoTiledMapFlashmaps(this);
 }

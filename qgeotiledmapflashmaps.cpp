@@ -9,19 +9,19 @@
  required by \a geoMap and makes use of the functionality provided by
  \a engine.
  */
-QGeoTiledMapBingmaps::QGeoTiledMapBingmaps(
-    QGeoTiledMappingManagerEngineBingmaps* engine,
+QGeoTiledMapFlashmaps::QGeoTiledMapFlashmaps(
+    QGeoTiledMappingManagerEngineFlashmaps* engine,
     QObject*                               parent /*= 0*/):
     QGeoTiledMap(engine, parent),
     m_engine(engine)
 {
 }
 
-QGeoTiledMapBingmaps::~QGeoTiledMapBingmaps()
+QGeoTiledMapFlashmaps::~QGeoTiledMapFlashmaps()
 {
 }
 
-void QGeoTiledMapBingmaps::evaluateCopyrights(
+void QGeoTiledMapFlashmaps::evaluateCopyrights(
     const QSet<QGeoTileSpec>& visibleTiles)
 {
   Q_UNUSED(visibleTiles);
