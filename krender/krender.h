@@ -24,7 +24,6 @@ public:
     QColor  ocean_color           = QColor(150, 210, 240);
     QColor  land_color            = QColor(250, 246, 230);
     double  max_loaded_maps_count = 3;
-    QString cache_dir;
     QString map_dir;
     QString world_map_name = "world.kpack";
   };
@@ -66,11 +65,12 @@ private:
 
   Q_OBJECT
 
-  QPointF render_top_left_m;
-  double  mip        = 1;
-  double  render_mip = 1;
-  QPixmap render_pixmap;
-  Tile    big_tile;
+  QPointF                   render_top_left_m;
+  double                    mip        = 1;
+  double                    render_mip = 1;
+  QPixmap                   render_pixmap;
+  Tile                      big_tile;
+  QMap<QString, QByteArray> tile_map;
 
   Settings              s;
   QPointF               top_left_m;

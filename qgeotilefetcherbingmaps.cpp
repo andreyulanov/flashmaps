@@ -28,14 +28,6 @@ QGeoTileFetcherBingmaps::getTileImage(const QGeoTileSpec& spec)
   if (!m_render)
   {
     KRender::Settings s;
-    s.cache_dir = m_engineBingmaps->getCacheDirectory() + "/krender";
-    if (!QDir().exists(s.cache_dir))
-      if (!QDir().mkdir(s.cache_dir))
-      {
-        qDebug() << Q_FUNC_INFO << ": unable to create"
-                 << s.cache_dir;
-        return nullptr;
-      }
     s.map_dir = "/home/user/flashmaps/data/packs";
     m_render  = new KRender(s);
   }

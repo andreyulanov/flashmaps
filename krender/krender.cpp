@@ -25,9 +25,7 @@ QPointF KRender::pix2meters(QPointF pix) const
 
 KRender::KRender(Settings v)
 {
-  s = v;
-  QDir(s.cache_dir).removeRecursively();
-  QDir().mkdir(s.cache_dir);
+  s                 = v;
   int big_tile_side = tile_side * big_tile_multiplier;
   pixmap_size       = {big_tile_side, big_tile_side};
   QDir dir(s.map_dir);
@@ -70,15 +68,7 @@ void KRender::requestTile(Tile t)
 
 QByteArray KRender::pickTile(Tile t)
 {
-  auto  tile_path = s.cache_dir + "/" + getTileName(t);
-  QFile f(tile_path);
-  if (f.open(QIODevice::ReadOnly))
-  {
-    auto ba = f.readAll();
-    f.remove();
-    return ba;
-  }
-  return QByteArray();
+  return tile_map.value(getTileName(t));
 }
 
 void KRender::insertPack(int idx, QString path, bool load_now)
@@ -971,16 +961,15 @@ void KRender::run()
     for (int xi = 0; xi < s.tile_multiplier; xi++)
     {
       Tile t;
-      t.x = big_tile.x + xi;
-      t.y = big_tile.y + yi;
-      t.z = big_tile.z;
-      QFile tile_file(s.cache_dir + "/" + getTileName(t));
-      if (tile_file.open(QIODevice::WriteOnly))
-      {
-        auto pm = render_pixmap.copy(xi * tile_side, yi * tile_side,
-                                     tile_side, tile_side);
-        pm.save(&tile_file);
-      }
+      t.x     = big_tile.x + xi;
+      t.y     = big_tile.y + yi;
+      t.z     = big_tile.z;
+      auto pm = render_pixmap.copy(xi * tile_side, yi * tile_side,
+                                   tile_side, tile_side);
+      QByteArray ba;
+      QBuffer    buf(&ba);
+      pm.save(&buf, "bmp");
+      tile_map.insert(getTileName(t), ba);
     }
 }
 
