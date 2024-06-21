@@ -352,7 +352,12 @@ void KRender::paintPolygonObject(QPainter* p, const KRenderPack& pack,
   QRectF obj_frame_m    = {top_left_m, bottom_right_m};
 
   auto cl = &pack.classes[obj.class_idx];
-  if (!obj_frame_m.intersects(render_frame_m))
+
+  auto clip_safe_rect_m = render_frame_m.adjusted(
+      -max_object_name_length_pix * mip, -50 * mip,
+      max_object_name_length_pix * mip, 50 * mip);
+
+  if (!obj_frame_m.intersects(clip_safe_rect_m))
     return;
 
   double obj_span_m   = sqrt(pow(obj_frame_m.width(), 2) +
@@ -435,7 +440,11 @@ void KRender::paintLineObject(QPainter*          painter,
 
   QRectF obj_frame_m = {top_left_m, bottom_right_m};
 
-  if (!obj_frame_m.intersects(render_frame_m))
+  auto clip_safe_rect_m = render_frame_m.adjusted(
+      -max_object_name_length_pix * mip, -50 * mip,
+      max_object_name_length_pix * mip, 50 * mip);
+
+  if (!obj_frame_m.intersects(clip_safe_rect_m))
     return;
 
   auto cl = &pack.classes[obj.class_idx];
