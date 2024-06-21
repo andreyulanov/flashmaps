@@ -1,9 +1,9 @@
-TARGET = qtgeoservices_bingmaps
+TARGET = qtgeoservices_flashmaps
 QT += location-private
 CONFIG += c++2a
 
 PLUGIN_TYPE = geoservices
-PLUGIN_CLASS_NAME = QGeoServiceProviderFactoryBingMaps
+PLUGIN_CLASS_NAME = QGeoServiceProviderFactoryFlashMaps
 load(qt_plugin)
 
 QMAKE_CXXFLAGS += -O0

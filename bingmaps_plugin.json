@@ -1,6 +1,6 @@
 {
-    "Keys": ["bingmaps"],
-    "Provider": "bingmaps",
+    "Keys": ["flashmaps"],
+    "Provider": "flashmaps",
     "Version": 100,
     "Experimental": false,
     "Features": [
