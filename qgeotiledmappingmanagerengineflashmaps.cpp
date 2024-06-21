@@ -30,36 +30,9 @@ QGeoTiledMappingManagerEngineFlashmaps::
   setCacheHint(QAbstractGeoTileCache::MemoryCache);
 
   QList<QGeoMapType> types;
-#if QT_VERSION < QT_VERSION_CHECK(5, 9, 0)
-  types << QGeoMapType(QGeoMapType::StreetMap, "Bing Street Map",
-                       "Bing street map", false, false, 1);
-  types << QGeoMapType(QGeoMapType::SatelliteMapDay,
-                       "Bing Satellite Map", "Bing satellite map",
-                       false, false, 2);
-  types << QGeoMapType(QGeoMapType::HybridMap, "Bing Hybrid Map",
-                       "Bing hybrid map", false, false, 3);
-#elif QT_VERSION < QT_VERSION_CHECK(5, 10, 0)
-  types << QGeoMapType(QGeoMapType::StreetMap, "Bing Street Map",
-                       "Bing street map", false, false, 1,
-                       "bingmaps");
-  types << QGeoMapType(QGeoMapType::SatelliteMapDay,
-                       "Bing Satellite Map", "Bing satellite map",
-                       false, false, 2, "bingmaps");
-  types << QGeoMapType(QGeoMapType::HybridMap, "Bing Hybrid Map",
-                       "Bing hybrid map", false, false, 3,
-                       "bingmaps");
-#else
-  types << QGeoMapType(QGeoMapType::StreetMap, "Bing Street Map",
-                       "Bing street map", false, false, 1, "bingmaps",
-                       capabilities, parameters);
-  types << QGeoMapType(QGeoMapType::SatelliteMapDay,
-                       "Bing Satellite Map", "Bing satellite map",
-                       false, false, 2, "bingmaps", capabilities,
-                       parameters);
-  types << QGeoMapType(QGeoMapType::HybridMap, "Bing Hybrid Map",
-                       "Bing hybrid map", false, false, 3, "bingmaps",
-                       capabilities, parameters);
-#endif
+  types << QGeoMapType(QGeoMapType::StreetMap, "Flash Street Map",
+                       "Flash street map", false, false, 1,
+                       "flashmaps", capabilities, parameters);
 
   setSupportedMapTypes(types);
 
@@ -67,14 +40,14 @@ QGeoTiledMappingManagerEngineFlashmaps::
       new QGeoTileFetcherFlashmaps(parameters, this);
   setTileFetcher(fetcher);
 
-  if (parameters.contains(QStringLiteral("bingmaps.cachefolder")))
+  if (parameters.contains(QStringLiteral("flashmaps.cachefolder")))
     m_cacheDirectory =
-        parameters.value(QStringLiteral("bingmaps.cachefolder"))
+        parameters.value(QStringLiteral("flashmaps.cachefolder"))
             .toString()
             .toLatin1();
   else
     m_cacheDirectory = QAbstractGeoTileCache::baseCacheDirectory() +
-                       QLatin1String("bingmaps");
+                       QLatin1String("flashmaps");
 
   QAbstractGeoTileCache* tileCache =
       new QGeoFileTileCache(m_cacheDirectory);
@@ -92,9 +65,6 @@ QGeoTiledMappingManagerEngineFlashmaps::
 void QGeoTiledMappingManagerEngineFlashmaps::populateMapSchemes()
 {
   m_mapSchemes[0] = QStringLiteral("roadmap");
-  m_mapSchemes[1] = QStringLiteral("roadmap");
-  m_mapSchemes[2] = QStringLiteral("satellite");
-  m_mapSchemes[3] = QStringLiteral("hybrid");
 }
 
 QString QGeoTiledMappingManagerEngineFlashmaps::getCacheDirectory()
