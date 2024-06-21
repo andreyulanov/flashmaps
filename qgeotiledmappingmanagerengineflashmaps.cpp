@@ -8,11 +8,6 @@
 #include <QDebug>
 #include <QDir>
 #include <QVariant>
-#include <QtCore/QJsonArray>
-#include <QtCore/QJsonObject>
-#include <QtCore/QJsonDocument>
-#include <QtCore/qmath.h>
-#include <QtCore/qstandardpaths.h>
 
 QGeoTiledMappingManagerEngineFlashmaps::
     QGeoTiledMappingManagerEngineFlashmaps(
@@ -53,28 +48,11 @@ QGeoTiledMappingManagerEngineFlashmaps::
       new QGeoFileTileCache(m_cacheDirectory);
   setTileCache(tileCache);
   tileCache->clearAll();
-
-  populateMapSchemes();
-}
-
-QGeoTiledMappingManagerEngineFlashmaps::
-    ~QGeoTiledMappingManagerEngineFlashmaps()
-{
-}
-
-void QGeoTiledMappingManagerEngineFlashmaps::populateMapSchemes()
-{
-  m_mapSchemes[0] = QStringLiteral("roadmap");
 }
 
 QString QGeoTiledMappingManagerEngineFlashmaps::getCacheDirectory()
 {
   return m_cacheDirectory;
-}
-
-QString QGeoTiledMappingManagerEngineFlashmaps::getScheme(int mapId)
-{
-  return m_mapSchemes[mapId];
 }
 
 QGeoMap* QGeoTiledMappingManagerEngineFlashmaps::createMap()
