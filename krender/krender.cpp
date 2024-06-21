@@ -73,7 +73,11 @@ QByteArray KRender::pickTile(Tile t)
   auto  tile_path = s.cache_dir + "/" + getTileName(t);
   QFile f(tile_path);
   if (f.open(QIODevice::ReadOnly))
-    return f.readAll();
+  {
+    auto ba = f.readAll();
+    f.remove();
+    return ba;
+  }
   return QByteArray();
 }
 
