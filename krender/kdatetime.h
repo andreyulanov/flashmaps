@@ -1,5 +1,4 @@
-#ifndef KDATETIME_H
-#define KDATETIME_H
+#pragma once
 
 #include <QDateTime>
 
@@ -43,5 +42,3 @@ public:
   static QString   timezone2str(double t);
   static double    str2timezone(QString str);
 };
-
-#endif  // KDATETIME_H

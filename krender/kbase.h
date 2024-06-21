@@ -1,5 +1,4 @@
-#ifndef KBASE_H
-#define KBASE_H
+#pragma once
 
 #include <QObject>
 #include <QColor>
@@ -69,5 +68,3 @@ struct KGeoPolygon: public QVector<KGeoCoor>
   void load(const QByteArray& ba, int& pos, int coor_precision_coef);
   QPolygonF toPolygonM();
 };
-
-#endif  // KBASE_H

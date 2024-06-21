@@ -1,5 +1,4 @@
-#ifndef QGEOTILEDMAPPINGMANAGERENGINEFLASHMAPS_H
-#define QGEOTILEDMAPPINGMANAGERENGINEFLASHMAPS_H
+#pragma once
 
 #include "QtLocation/private/qgeotiledmappingmanagerengine_p.h"
 #include "QtLocation/private/qgeomaptype_p.h"
@@ -27,5 +26,3 @@ private:
   QHash<int, QString> m_mapSchemes;
   QString             m_cacheDirectory;
 };
-
-#endif  // QGEOTILEDMAPPINGMANAGERENGINEBingmaps_H

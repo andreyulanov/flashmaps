@@ -1,5 +1,4 @@
-#ifndef QGEOTILEFETCHERFLASHMAPS_H
-#define QGEOTILEFETCHERFLASHMAPS_H
+#pragma once
 
 #include "qgeoserviceproviderpluginflashmaps.h"
 #include <QtLocation/private/qgeotilefetcher_p.h>
@@ -27,5 +26,3 @@ private:
   QPointer<QGeoTiledMappingManagerEngineFlashmaps> m_engineFlashmaps;
   KRender*                                         m_render = nullptr;
 };
-
-#endif

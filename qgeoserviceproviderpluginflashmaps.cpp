@@ -10,7 +10,7 @@ QGeoServiceProviderFactoryFlashmaps::createGeocodingManagerEngine(
   Q_UNUSED(error)
   Q_UNUSED(errorString)
   return Q_NULLPTR;  // new
-                     // QGeoCodingManagerEngineBingmaps(parameters,
+                     // QGeoCodingManagerEngineFlashmaps(parameters,
                      // error, errorString);
 }
 
@@ -24,7 +24,7 @@ QGeoServiceProviderFactoryFlashmaps::createRoutingManagerEngine(
   Q_UNUSED(errorString)
 
   return Q_NULLPTR;  // new
-                     // QGeoRoutingManagerEngineBingmaps(parameters,
+                     // QGeoRoutingManagerEngineFlashmaps(parameters,
                      // error, errorString);
 }
 
@@ -37,7 +37,7 @@ QGeoServiceProviderFactoryFlashmaps::createPlaceManagerEngine(
   Q_UNUSED(error)
   Q_UNUSED(errorString)
 
-  return Q_NULLPTR;  // new QPlaceManagerEngineBingmaps(parameters,
+  return Q_NULLPTR;  // new QPlaceManagerEngineFlashmaps(parameters,
                      // error, errorString);
 }
 
@@ -47,5 +47,5 @@ QGeoServiceProviderFactoryFlashmaps::createMappingManagerEngine(
     QString* errorString) const
 {
   return new QGeoTiledMappingManagerEngineFlashmaps(parameters, error,
-                                                   errorString);
+                                                    errorString);
 }

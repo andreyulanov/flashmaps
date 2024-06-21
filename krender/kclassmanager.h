@@ -1,5 +1,4 @@
-#ifndef KCLASSMANAGER_H
-#define KCLASSMANAGER_H
+#pragma once
 
 #include "kclass.h"
 
@@ -34,5 +33,3 @@ public:
 
   QString getErrorStr();
 };
-
-#endif  // KCLASSMANAGER_H

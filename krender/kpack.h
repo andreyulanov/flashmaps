@@ -1,5 +1,4 @@
-#ifndef KPACK_H
-#define KPACK_H
+#pragma once
 
 #include <QPolygon>
 #include <QColor>
@@ -45,5 +44,3 @@ struct KPack
   void                 addObject(KFreeObject free_obj);
   QVector<KFreeObject> getObjects();
 };
-
-#endif  // KPACK_H

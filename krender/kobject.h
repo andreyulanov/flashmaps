@@ -1,5 +1,4 @@
-#ifndef KOBJECT_H
-#define KOBJECT_H
+#pragma once
 
 #include <QMap>
 #include "kclass.h"
@@ -31,5 +30,3 @@ struct KFreeObject: public KObject
   void  setGuid(QUuid guid);
   QUuid getGuid() const;
 };
-
-#endif  // KOBJECT_H

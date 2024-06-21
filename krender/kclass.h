@@ -1,5 +1,4 @@
-#ifndef KCLASS_H
-#define KCLASS_H
+#pragma once
 
 #include "kbase.h"
 
@@ -52,5 +51,3 @@ struct KClassImage
 };
 
 typedef QVector<KClassImage> KClassImageList;
-
-#endif  // KCLASS_H

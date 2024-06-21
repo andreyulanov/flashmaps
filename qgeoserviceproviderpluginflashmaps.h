@@ -1,5 +1,4 @@
-#ifndef QGEOSERVICEPROVIDERBINGMAPS_H
-#define QGEOSERVICEPROVIDERBINGMAPS_H
+#pragma once
 
 #include <QtCore/QObject>
 #include <QtLocation/QGeoServiceProviderFactory>
@@ -33,5 +32,3 @@ public:
                              QGeoServiceProvider::Error* error,
                              QString* errorString) const;
 };
-
-#endif

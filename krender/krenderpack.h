@@ -1,5 +1,4 @@
-#ifndef KRENDERPACK_H
-#define KRENDERPACK_H
+#pragma once
 
 #include "kpack.h"
 
@@ -36,5 +35,3 @@ struct KRenderPackCollection: public QVector<KRenderPack*>
 {
   virtual ~KRenderPackCollection();
 };
-
-#endif  // KRENDERPACK_H

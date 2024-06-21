@@ -1,5 +1,4 @@
-#ifndef KRENDER_H
-#define KRENDER_H
+#pragma once
 
 #include "krenderpack.h"
 #include <QReadWriteLock>
@@ -137,5 +136,3 @@ public:
   void       requestTile(Tile);
   QByteArray pickTile(Tile);
 };
-
-#endif  // KRENDER_H

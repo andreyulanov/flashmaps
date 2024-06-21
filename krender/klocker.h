@@ -1,5 +1,4 @@
-#ifndef KLOCKER_H
-#define KLOCKER_H
+#pragma once
 
 #include <QReadWriteLock>
 
@@ -18,5 +17,3 @@ public:
   bool hasLocked();
   virtual ~KLocker();
 };
-
-#endif  // KLOCKER_H

@@ -1,5 +1,4 @@
-#ifndef QGEOMAPREPLYFLASHMAPS_H
-#define QGEOMAPREPLYFLASHMAPS_H
+#pragma once
 
 #include <QtLocation/private/qgeotilespec_p.h>
 #include <QtLocation/private/qgeotiledmapreply_p.h>
@@ -13,8 +12,6 @@ class QGeoMapReplyFlashmaps: public QGeoTiledMapReply
 
 public:
   QGeoMapReplyFlashmaps(KRender* render, const QGeoTileSpec& spec,
-                       QObject* parent = 0);
+                        QObject* parent = 0);
   void onFinishedRender();
 };
-
-#endif

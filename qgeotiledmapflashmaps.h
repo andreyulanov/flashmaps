@@ -1,5 +1,4 @@
-#ifndef QGEOMAPBINGMAPS_H
-#define QGEOMAPBINGMAPS_H
+#pragma once
 
 #include "QtLocation/private/qgeotiledmap_p.h"
 #include <QtGui/QImage>
@@ -27,5 +26,3 @@ private:
 
   Q_DISABLE_COPY(QGeoTiledMapFlashmaps)
 };
-
-#endif  // QGEOMAPBingmaps_H
