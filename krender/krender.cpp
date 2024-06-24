@@ -1,5 +1,4 @@
-﻿#include "math.h"
-#include "krender.h"
+﻿#include "krender.h"
 #include "klocker.h"
 #include <QDir>
 #include <QtConcurrent/QtConcurrent>
@@ -51,7 +50,7 @@ KRender::~KRender()
   wait();
 }
 
-void KRender::requestTile(Tile t)
+void KRender::requestTile(TileCoor t)
 {
   if (t.z <= 3)
     return;
@@ -66,9 +65,15 @@ void KRender::requestTile(Tile t)
   render();
 }
 
-QByteArray KRender::pickTile(Tile t)
+QByteArray KRender::pickTile(TileCoor t)
 {
-  return tile_map.value(getTileName(t));
+  auto tile_name = getTileName(t);
+  for (auto result: render_results)
+  {
+    if (result.name == tile_name)
+      return result.data;
+  }
+  return QByteArray();
 }
 
 void KRender::insertPack(int idx, QString path, bool load_now)
@@ -248,16 +253,16 @@ void KRender::addDrawTextEntry(
     draw_text_array.append(new_dte);
 };
 
-KRender::Tile KRender::getBigTile(Tile t)
+KRender::TileCoor KRender::getBigTile(TileCoor t)
 {
-  Tile bt;
+  TileCoor bt;
   bt.x = int(t.x / big_tile_multiplier) * big_tile_multiplier;
   bt.y = int(t.y / big_tile_multiplier) * big_tile_multiplier;
   bt.z = t.z;
   return bt;
 }
 
-QString KRender::getTileName(Tile t)
+QString KRender::getTileName(TileCoor t)
 {
   return "z=" + QString("%1").arg(t.z) +
          ",y=" + QString("%1").arg(t.y) +
@@ -960,7 +965,7 @@ void KRender::run()
   for (int yi = 0; yi < s.tile_multiplier; yi++)
     for (int xi = 0; xi < s.tile_multiplier; xi++)
     {
-      Tile t;
+      TileCoor t;
       t.x     = big_tile.x + xi;
       t.y     = big_tile.y + yi;
       t.z     = big_tile.z;
@@ -969,7 +974,9 @@ void KRender::run()
       QByteArray ba;
       QBuffer    buf(&ba);
       pm.save(&buf, "bmp");
-      tile_map.insert(getTileName(t), ba);
+      render_results.append({getTileName(t), ba});
+      if (render_results.count() > sqr(s.tile_multiplier))
+        render_results.removeFirst();
     }
 }
 

@@ -26,9 +26,14 @@ public:
     QString map_dir;
     QString world_map_name = "world.kpack";
   };
-  struct Tile
+  struct TileCoor
   {
     int x, y, z;
+  };
+  struct RenderResult
+  {
+    QString    name;
+    QByteArray data;
   };
 
 private:
@@ -64,12 +69,12 @@ private:
 
   Q_OBJECT
 
-  QPointF                   render_top_left_m;
-  double                    mip        = 1;
-  double                    render_mip = 1;
-  QPixmap                   render_pixmap;
-  Tile                      big_tile;
-  QMap<QString, QByteArray> tile_map;
+  QPointF               render_top_left_m;
+  double                mip        = 1;
+  double                render_mip = 1;
+  QPixmap               render_pixmap;
+  TileCoor              big_tile;
+  QVector<RenderResult> render_results;
 
   Settings              s;
   QPointF               top_left_m;
@@ -127,12 +132,12 @@ private:
   QPoint   meters2pix(QPointF m) const;
   QPointF  pix2meters(QPointF pix) const;
   QPoint   deg2pix(KGeoCoor) const;
-  Tile     getBigTile(Tile);
-  QString  getTileName(Tile);
+  TileCoor getBigTile(TileCoor);
+  QString  getTileName(TileCoor);
 
 public:
   KRender(Settings);
   virtual ~KRender();
-  void       requestTile(Tile);
-  QByteArray pickTile(Tile);
+  void       requestTile(TileCoor);
+  QByteArray pickTile(TileCoor);
 };
