@@ -1,6 +1,6 @@
 TEMPLATE = subdirs
 
-SUBDIRS += flashmaps minimal_map
+SUBDIRS += flashmaps-geoservice flashmaps
 
 
 

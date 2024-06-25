@@ -1,47 +1,21 @@
-TARGET = qtgeoservices_flashmaps
-QT += location-private
-CONFIG += c++2a
+TEMPLATE = app
 
-PLUGIN_TYPE = geoservices
-PLUGIN_CLASS_NAME = QGeoServiceProviderFactoryFlashMaps
-load(qt_plugin)
+QT += location
 
-QMAKE_CXXFLAGS += -O0
+SOURCES += main.cpp
 
-HEADERS += \
-    krender/kbase.h \
-    krender/kclass.h \
-    krender/kclassmanager.h \
-    krender/kdatetime.h \
-    krender/klocker.h \
-    krender/kobject.h \
-    krender/kpack.h \
-    krender/krender.h \
-    krender/krenderpack.h \
-    krender/kserialize.h \
-    qgeomapreplyflashmaps.h \
-    qgeoserviceproviderpluginflashmaps.h \
-    qgeotiledmapflashmaps.h \
-    qgeotiledmappingmanagerengineflashmaps.h \
-    qgeotilefetcherflashmaps.h
+RESOURCES += qml.qrc
 
-SOURCES += \
-    krender/kbase.cpp \
-    krender/kclass.cpp \
-    krender/kclassmanager.cpp \
-    krender/kdatetime.cpp \
-    krender/klocker.cpp \
-    krender/kobject.cpp \
-    krender/kpack.cpp \
-    krender/krender.cpp \
-    krender/krenderpack.cpp \
-    qgeomapreplyflashmaps.cpp \
-    qgeoserviceproviderpluginflashmaps.cpp \
-    qgeotiledmapflashmaps.cpp \
-    qgeotiledmappingmanagerengineflashmaps.cpp \
-    qgeotilefetcherflashmaps.cpp
+ANDROID_EXTRA_LIBS = $$PWD/../../build-main-Android_Qt_5_15_9_qt_5_15_9_android_dbus_Clang_Multi_Abi-Debug/flashmaps/plugins/geoservices/libplugins_geoservices_qtgeoservices_flashmaps_armeabi-v7a.so
 
+DISTFILES += \
+ android/AndroidManifest.xml \
+ android/build.gradle \
+ android/gradle.properties \
+ android/gradle/wrapper/gradle-wrapper.jar \
+ android/gradle/wrapper/gradle-wrapper.properties \
+ android/gradlew \
+ android/gradlew.bat \
+ android/res/values/libs.xml
 
-OTHER_FILES += \
- flashmaps_plugin.json
-
+ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
