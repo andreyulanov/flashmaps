@@ -6,5 +6,16 @@ SOURCES += main.cpp
 
 RESOURCES += qml.qrc
 
-target.path = $$[QT_INSTALL_EXAMPLES]/location/minimal_map
-INSTALLS += target
+ANDROID_EXTRA_LIBS = $$PWD/../../build-flashmaps-Android_Qt_5_15_9_qt_5_15_9_android_dbus_Clang_Multi_Abi-Debug/plugins/geoservices/libplugins_geoservices_qtgeoservices_flashmaps_armeabi-v7a.so
+
+DISTFILES += \
+ android/AndroidManifest.xml \
+ android/build.gradle \
+ android/gradle.properties \
+ android/gradle/wrapper/gradle-wrapper.jar \
+ android/gradle/wrapper/gradle-wrapper.properties \
+ android/gradlew \
+ android/gradlew.bat \
+ android/res/values/libs.xml
+
+ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android

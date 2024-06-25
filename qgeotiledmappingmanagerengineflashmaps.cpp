@@ -4,6 +4,7 @@
 #include "qgeotilefetcherflashmaps.h"
 #include "QtLocation/private/qgeotilespec_p.h"
 #include "QtLocation/private/qgeofiletilecache_p.h"
+#include <QStandardPaths>
 
 #include <QDebug>
 #include <QDir>
@@ -18,11 +19,10 @@ QGeoTiledMappingManagerEngineFlashmaps::
   QGeoCameraCapabilities capabilities;
 
   capabilities.setMinimumZoomLevel(0.0);
-  capabilities.setMaximumZoomLevel(24.0);
+  capabilities.setMaximumZoomLevel(21.0);
 
   setCameraCapabilities(capabilities);
   setTileSize(QSize(256, 256));
-  setCacheHint(QAbstractGeoTileCache::MemoryCache);
 
   QList<QGeoMapType> types;
   types << QGeoMapType(QGeoMapType::StreetMap, "Flash Street Map",
@@ -44,6 +44,18 @@ QGeoTiledMappingManagerEngineFlashmaps::
     m_cacheDirectory = QAbstractGeoTileCache::baseCacheDirectory() +
                        QLatin1String("flashmaps");
 
+  QStringList dir_list = QStandardPaths::standardLocations(
+      QStandardPaths::AppDataLocation);
+  for (auto dir: dir_list)
+  {
+    auto mapdir = dir + "/maps";
+    if (QDir(mapdir).exists())
+    {
+      m_mapDirectory = mapdir;
+      break;
+    }
+  }
+
   QAbstractGeoTileCache* tileCache =
       new QGeoFileTileCache(m_cacheDirectory);
   setTileCache(tileCache);
@@ -53,6 +65,11 @@ QGeoTiledMappingManagerEngineFlashmaps::
 QString QGeoTiledMappingManagerEngineFlashmaps::getCacheDirectory()
 {
   return m_cacheDirectory;
+}
+
+QString QGeoTiledMappingManagerEngineFlashmaps::getMapDirectory()
+{
+  return m_mapDirectory;
 }
 
 QGeoMap* QGeoTiledMappingManagerEngineFlashmaps::createMap()

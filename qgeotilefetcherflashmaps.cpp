@@ -24,11 +24,10 @@ QGeoTileFetcherFlashmaps::~QGeoTileFetcherFlashmaps()
 QGeoTiledMapReply*
 QGeoTileFetcherFlashmaps::getTileImage(const QGeoTileSpec& spec)
 {
-  qDebug() << "getTileImage(), spec=" << spec;
   if (!m_render)
   {
     KRender::Settings s;
-    s.map_dir = "/home/user/flashmaps/data/packs";
+    s.map_dir = m_engineFlashmaps->getMapDirectory();
     m_render  = new KRender(s);
   }
   QGeoTiledMapReply* mapReply =

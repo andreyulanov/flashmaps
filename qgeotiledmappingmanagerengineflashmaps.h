@@ -16,7 +16,9 @@ public:
 
   virtual QGeoMap* createMap();
   QString          getCacheDirectory();
+  QString          getMapDirectory();
 
 private:
   QString m_cacheDirectory;
+  QString m_mapDirectory;
 };
