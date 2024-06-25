@@ -6,7 +6,7 @@ SOURCES += main.cpp
 
 RESOURCES += qml.qrc
 
-ANDROID_EXTRA_LIBS = $$PWD/../../build-flashmaps-Android_Qt_5_15_9_qt_5_15_9_android_dbus_Clang_Multi_Abi-Debug/plugins/geoservices/libplugins_geoservices_qtgeoservices_flashmaps_armeabi-v7a.so
+ANDROID_EXTRA_LIBS = $$PWD/../../build-main-Android_Qt_5_15_9_qt_5_15_9_android_dbus_Clang_Multi_Abi-Debug/flashmaps/plugins/geoservices/libplugins_geoservices_qtgeoservices_flashmaps_armeabi-v7a.so
 
 DISTFILES += \
  android/AndroidManifest.xml \
