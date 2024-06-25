@@ -69,16 +69,14 @@ private:
 
   Q_OBJECT
 
-  QPointF               render_top_left_m;
-  double                mip        = 1;
-  double                render_mip = 1;
+  Settings              s;
+  QPointF               top_left_m;
+  double                mip = 1;
   QPixmap               render_pixmap;
   TileCoor              big_tile_coor;
   QVector<RenderResult> big_tile;
   QVector<RenderResult> big_tiles;
 
-  Settings              s;
-  QPointF               top_left_m;
   QSize                 pixmap_size;
   KRenderPackCollection packs;
   QFont                 font;

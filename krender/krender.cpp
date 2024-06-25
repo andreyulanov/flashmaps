@@ -117,7 +117,7 @@ void KRender::checkUnload()
 bool KRender::needToLoadPack(const KRenderPack* pack,
                              const QRectF&      draw_rect_m)
 {
-  if (pack->main_mip > 0 && render_mip > pack->main_mip)
+  if (pack->main_mip > 0 && mip > pack->main_mip)
     return false;
   auto map_rect_m       = pack->frame.toMeters();
   bool frame_intersects = draw_rect_m.intersects(map_rect_m);
@@ -170,7 +170,7 @@ void KRender::checkLoad()
           QRectF tile_rect_m = {{tile_left, tile_top}, tile_size_m};
           if (tile.status == KTile::Null &&
               tile_rect_m.intersects(draw_rect_m) &&
-              render_mip < pack->tile_mip)
+              mip < pack->tile_mip)
             pack->loadTile(tile_idx);
           tile_idx++;
         }
@@ -273,8 +273,8 @@ QString KRender::getTileName(TileCoor t)
 QPoint KRender::deg2pix(KGeoCoor kp) const
 {
   auto m = kp.toMeters();
-  return {int((m.x() - render_top_left_m.x()) / render_mip),
-          int((m.y() - render_top_left_m.y()) / render_mip)};
+  return {int((m.x() - top_left_m.x()) / mip),
+          int((m.y() - top_left_m.y()) / mip)};
 }
 
 void KRender::paintPointObject(QPainter* p, const KRenderPack& pack,
@@ -362,7 +362,7 @@ void KRender::paintPolygonObject(QPainter* p, const KRenderPack& pack,
 
   double obj_span_m   = sqrt(pow(obj_frame_m.width(), 2) +
                              pow(obj_frame_m.height(), 2));
-  int    obj_span_pix = obj_span_m / render_mip;
+  int    obj_span_pix = obj_span_m / mip;
 
   if (cl->pen == Qt::black)
     p->setPen(Qt::NoPen);
@@ -633,8 +633,8 @@ bool KRender::isCluttering(const QRect& rect)
 bool KRender::checkMipRange(const KPack* pack, const KObject* obj)
 {
   auto cl = &pack->classes[obj->class_idx];
-  return (cl->min_mip == 0 || render_mip >= cl->min_mip) &&
-         (cl->max_mip == 0 || render_mip <= cl->max_mip);
+  return (cl->min_mip == 0 || mip >= cl->min_mip) &&
+         (cl->max_mip == 0 || mip <= cl->max_mip);
 }
 
 void KRender::paintObject(QPainter* p, const KRenderPack* map,
@@ -869,18 +869,14 @@ void KRender::onFinished()
 
 void KRender::run()
 {
-  render_top_left_m = top_left_m;
-  render_mip        = mip;
-
   for (int i = 0; i < KRenderPack::render_count; i++)
   {
     point_names[i].clear();
     draw_text_array[i].clear();
     name_holder_array[i].clear();
   }
-  size_m         = {pixmap_size.width() * render_mip,
-                    pixmap_size.height() * render_mip};
-  render_frame_m = {render_top_left_m, size_m};
+  size_m = {pixmap_size.width() * mip, pixmap_size.height() * mip};
+  render_frame_m = {top_left_m, size_m};
 
   checkLoad();
 
@@ -906,7 +902,7 @@ void KRender::run()
   auto         draw_rect = getDrawRectM();
   for (int pack_idx = -1; auto& pack: packs)
   {
-    if (pack->main_mip > 0 && render_mip > pack->main_mip)
+    if (pack->main_mip > 0 && mip > pack->main_mip)
       continue;
     pack_idx++;
     if (pack_idx == 0)
