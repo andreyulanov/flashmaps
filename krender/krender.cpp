@@ -26,7 +26,7 @@ KRender::KRender(Settings v)
 {
   s                 = v;
   int big_tile_side = tile_side * big_tile_multiplier;
-  pixmap_size       = {big_tile_side, big_tile_side};
+  pixmap     = QPixmap{big_tile_side, big_tile_side};
   QDir dir(s.map_dir);
   dir.setNameFilters({"*.kpack"});
   auto fi_list = dir.entryInfoList();
@@ -88,8 +88,8 @@ void KRender::insertPack(int idx, QString path, bool load_now)
 
 QRectF KRender::getDrawRectM() const
 {
-  QSizeF size_m      = {pixmap_size.width() * mip,
-                        pixmap_size.height() * mip};
+  QSizeF size_m      = {pixmap.width() * mip,
+                        pixmap.height() * mip};
   QRectF draw_rect_m = {top_left_m.x(), top_left_m.y(),
                         size_m.width(), size_m.height()};
   return draw_rect_m;
@@ -125,8 +125,8 @@ bool KRender::needToLoadPack(const KRenderPack* pack,
     return false;
 
   auto top_left_m     = pix2meters({0, 0});
-  auto bottom_right_m = pix2meters({(double)render_pixmap.width(),
-                                    (double)render_pixmap.height()});
+  auto bottom_right_m = pix2meters({(double)pixmap.width(),
+                                    (double)pixmap.height()});
   auto frame_m = QRectF{top_left_m, bottom_right_m}.normalized();
   frame_m.adjust(-10000, -10000, 10000, 10000);
 
@@ -389,8 +389,8 @@ void KRender::paintPolygonObject(QPainter* p, const KRenderPack& pack,
     auto pl = poly2pix(polygon);
 
     if ((polygon_idx == 0 && !obj.name.isEmpty() &&
-         obj_span_pix < std::min(pixmap_size.width(),
-                                 pixmap_size.height() / 2) &&
+         obj_span_pix < std::min(pixmap.width(),
+                                 pixmap.height() / 2) &&
          obj_span_pix >
              max_object_size_with_name_mm / s.pixel_size_mm) ||
         !cl->image.isNull())
@@ -402,7 +402,7 @@ void KRender::paintPolygonObject(QPainter* p, const KRenderPack& pack,
 
       auto  c = obj_frame_pix.center();
       QRect actual_rect;
-      int   w = pixmap_size.width() / 32;
+      int   w = pixmap.width() / 32;
       actual_rect.setTopLeft(c);
       actual_rect.setSize({w, w});
       actual_rect.translate({-w / 2, -w / 2});
@@ -875,7 +875,8 @@ void KRender::run()
     draw_text_array[i].clear();
     name_holder_array[i].clear();
   }
-  size_m = {pixmap_size.width() * mip, pixmap_size.height() * mip};
+  size_m         = {pixmap.width() * mip,
+                    pixmap.height() * mip};
   render_frame_m = {top_left_m, size_m};
 
   checkLoad();
@@ -883,11 +884,8 @@ void KRender::run()
   QElapsedTimer total_render_time;
   total_render_time.start();
 
-  if (render_pixmap.size() != pixmap_size)
-    render_pixmap = QPixmap(pixmap_size);
-
-  render_pixmap.fill(s.ocean_color);
-  QPainter p0(&render_pixmap);
+  pixmap.fill(s.ocean_color);
+  QPainter p0(&pixmap);
   QFont    f = p0.font();
 
   double font_size =
@@ -947,7 +945,7 @@ void KRender::run()
        render_idx++)
   {
     auto render =
-        new RenderEntry(render_idx, render_pixmap.size(), &f);
+        new RenderEntry(render_idx, pixmap.size(), &f);
     *render->fut = QtConcurrent::run(
         this, &KRender::render, render->p, render_packs, render_idx);
     render_list.append(render);
@@ -975,7 +973,7 @@ void KRender::run()
       t.x     = big_tile_coor.x + xi;
       t.y     = big_tile_coor.y + yi;
       t.z     = big_tile_coor.z;
-      auto pm = render_pixmap.copy(xi * tile_side, yi * tile_side,
+      auto pm = pixmap.copy(xi * tile_side, yi * tile_side,
                                    tile_side, tile_side);
       QByteArray ba;
       QBuffer    buf(&ba);

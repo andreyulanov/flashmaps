@@ -72,12 +72,11 @@ private:
   Settings              s;
   QPointF               top_left_m;
   double                mip = 1;
-  QPixmap               render_pixmap;
+  QPixmap               pixmap;
   TileCoor              big_tile_coor;
   QVector<RenderResult> big_tile;
   QVector<RenderResult> big_tiles;
 
-  QSize                 pixmap_size;
   KRenderPackCollection packs;
   QFont                 font;
 
