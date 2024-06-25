@@ -42,6 +42,7 @@ KRender::KRender(Settings v)
     }
     insertPack(idx, fi.filePath(), load_now);
   }
+  connect(this, &QThread::finished, this, &KRender::onFinished);
 }
 
 KRender::~KRender()
@@ -59,19 +60,19 @@ void KRender::requestTile(TileCoor t)
   int tile_count      = pow(2, t.z);
   int world_width_pix = tile_side * tile_count;
   mip                 = 2 * M_PI * kmath::earth_r / world_width_pix;
-  big_tile            = getBigTile(t);
-  top_left_m = {(big_tile.x - tile_count / 2) * tile_side * mip,
-                (big_tile.y - tile_count / 2) * tile_side * mip};
+  big_tile_coor       = getBigTileCoor(t);
+  top_left_m = {(big_tile_coor.x - tile_count / 2) * tile_side * mip,
+                (big_tile_coor.y - tile_count / 2) * tile_side * mip};
   render();
 }
 
 QByteArray KRender::pickTile(TileCoor t)
 {
   auto tile_name = getTileName(t);
-  for (auto result: render_results)
+  for (auto big_tile: big_tiles)
   {
-    if (result.name == tile_name)
-      return result.data;
+    if (big_tile.name == tile_name)
+      return big_tile.data;
   }
   return QByteArray();
 }
@@ -253,7 +254,7 @@ void KRender::addDrawTextEntry(
     draw_text_array.append(new_dte);
 };
 
-KRender::TileCoor KRender::getBigTile(TileCoor t)
+KRender::TileCoor KRender::getBigTileCoor(TileCoor t)
 {
   TileCoor bt;
   bt.x = int(t.x / big_tile_multiplier) * big_tile_multiplier;
@@ -858,6 +859,14 @@ RenderEntry::~RenderEntry()
   delete fut;
 }
 
+void KRender::onFinished()
+{
+  wait();
+  big_tiles.append(big_tile);
+  while (big_tiles.count() > 2 * sqr(big_tile_multiplier))
+    big_tiles.removeFirst();
+}
+
 void KRender::run()
 {
   render_top_left_m = top_left_m;
@@ -962,21 +971,21 @@ void KRender::run()
   paintPolygonNames(&p0);
   paintPointNames(&p0);
 
+  big_tile.clear();
   for (int yi = 0; yi < s.tile_multiplier; yi++)
     for (int xi = 0; xi < s.tile_multiplier; xi++)
     {
       TileCoor t;
-      t.x     = big_tile.x + xi;
-      t.y     = big_tile.y + yi;
-      t.z     = big_tile.z;
+      t.x     = big_tile_coor.x + xi;
+      t.y     = big_tile_coor.y + yi;
+      t.z     = big_tile_coor.z;
       auto pm = render_pixmap.copy(xi * tile_side, yi * tile_side,
                                    tile_side, tile_side);
       QByteArray ba;
       QBuffer    buf(&ba);
       pm.save(&buf, "bmp");
-      render_results.append({getTileName(t), ba});
-      if (render_results.count() > sqr(s.tile_multiplier))
-        render_results.removeFirst();
+
+      big_tile.append({getTileName(t), ba});
     }
 }
 

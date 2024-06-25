@@ -73,8 +73,9 @@ private:
   double                mip        = 1;
   double                render_mip = 1;
   QPixmap               render_pixmap;
-  TileCoor              big_tile;
-  QVector<RenderResult> render_results;
+  TileCoor              big_tile_coor;
+  QVector<RenderResult> big_tile;
+  QVector<RenderResult> big_tiles;
 
   Settings              s;
   QPointF               top_left_m;
@@ -94,6 +95,8 @@ private:
 
   void run();
   void start() = delete;
+  void onFinished();
+
   void insertPack(int idx, QString path, bool load_now);
   void renderPack(QPainter* p, const KRenderPack* pack,
                   int render_idx, int line_iter);
@@ -132,7 +135,7 @@ private:
   QPoint   meters2pix(QPointF m) const;
   QPointF  pix2meters(QPointF pix) const;
   QPoint   deg2pix(KGeoCoor) const;
-  TileCoor getBigTile(TileCoor);
+  TileCoor getBigTileCoor(TileCoor);
   QString  getTileName(TileCoor);
 
 public:
