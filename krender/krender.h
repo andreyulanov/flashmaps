@@ -69,11 +69,12 @@ private:
 
   Q_OBJECT
 
-  Settings              s;
+  Settings s;
+  TileCoor tile_coor;
+
   QPointF               top_left_m;
-  double                mip = 1;
+  double                mip;
   QPixmap               pixmap;
-  TileCoor              big_tile_coor;
   QVector<RenderResult> big_tile;
   QVector<RenderResult> big_tiles;
 
