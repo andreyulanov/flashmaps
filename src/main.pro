@@ -1,6 +1,6 @@
 TEMPLATE = subdirs
 
-SUBDIRS += flashmaps-geoservice flashmaps
+SUBDIRS += geoservice flashmaps pan2kpack kunite
 
 
 

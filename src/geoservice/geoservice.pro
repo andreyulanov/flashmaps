@@ -7,18 +7,20 @@ PLUGIN_CLASS_NAME = QGeoServiceProviderFactoryFlashMaps
 load(qt_plugin)
 
 QMAKE_CXXFLAGS += -O0
+LIBS += -L$$PWD/krender
+INCLUDEPATH += $$PWD/../base
 
 HEADERS += \
-    krender/kbase.h \
-    krender/kclass.h \
-    krender/kclassmanager.h \
-    krender/kdatetime.h \
-    krender/klocker.h \
-    krender/kobject.h \
-    krender/kpack.h \
+    ../base/kbase.h \
+    ../base/kclass.h \
+    ../base/kclassmanager.h \
+    ../base/kdatetime.h \
+    ../base/klocker.h \
+    ../base/kobject.h \
+    ../base/kpack.h \
+    ../base/kserialize.h \
     krender/krender.h \
     krender/krenderpack.h \
-    krender/kserialize.h \
     qgeomapreplyflashmaps.h \
     qgeoserviceproviderpluginflashmaps.h \
     qgeotiledmapflashmaps.h \
@@ -26,13 +28,13 @@ HEADERS += \
     qgeotilefetcherflashmaps.h
 
 SOURCES += \
-    krender/kbase.cpp \
-    krender/kclass.cpp \
-    krender/kclassmanager.cpp \
-    krender/kdatetime.cpp \
-    krender/klocker.cpp \
-    krender/kobject.cpp \
-    krender/kpack.cpp \
+    ../base/kbase.cpp \
+    ../base/kclass.cpp \
+    ../base/kclassmanager.cpp \
+    ../base/kdatetime.cpp \
+    ../base/klocker.cpp \
+    ../base/kobject.cpp \
+    ../base/kpack.cpp \
     krender/krender.cpp \
     krender/krenderpack.cpp \
     qgeomapreplyflashmaps.cpp \
