@@ -1,5 +1,6 @@
 QMAKE_CXXFLAGS += -std=c++2a
 QMAKE_CXXFLAGS += -Wno-deprecated-enum-enum-conversion
+QMAKE_CXXFLAGS += -O0
 
 INCLUDEPATH += $$PWD/../base
 

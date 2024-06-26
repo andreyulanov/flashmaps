@@ -28,7 +28,7 @@ FlashRender::FlashRender(Settings v)
   int big_tile_side = tile_side * s.big_tile_multiplier;
   pixmap            = QPixmap{big_tile_side, big_tile_side};
   QDir dir(s.map_dir);
-  dir.setNameFilters({"*.kpack"});
+  dir.setNameFilters({"*.flashmap"});
   auto fi_list = dir.entryInfoList();
   for (int count = -1; auto fi: fi_list)
   {
@@ -109,7 +109,7 @@ void FlashRender::checkUnload()
 }
 
 bool FlashRender::needToLoadPack(const FlashRenderPack* pack,
-                             const QRectF&      draw_rect_m)
+                                 const QRectF&          draw_rect_m)
 {
   if (pack->main_mip > 0 && mip > pack->main_mip)
     return false;
@@ -174,7 +174,7 @@ void FlashRender::checkLoad()
 }
 
 void FlashRender::paintPointName(QPainter* p, const QString& text,
-                             const QColor& tcolor)
+                                 const QColor& tcolor)
 {
   QRect rect;
   int   w = 20.0 / s.pixel_size_mm;
@@ -198,7 +198,7 @@ void FlashRender::paintPointName(QPainter* p, const QString& text,
 }
 
 void FlashRender::paintOutlinedText(QPainter* p, const QString& text,
-                                const QColor& tcolor)
+                                    const QColor& tcolor)
 {
   p->setPen(Qt::white);
   auto shifts = {-2, 0, 2};
@@ -210,7 +210,8 @@ void FlashRender::paintOutlinedText(QPainter* p, const QString& text,
   p->drawText(0, 0, text);
 }
 
-void FlashRender::paintOutlinedText(QPainter* p, const DrawTextEntry& dte)
+void FlashRender::paintOutlinedText(QPainter*            p,
+                                    const DrawTextEntry& dte)
 {
   p->setPen(Qt::white);
   auto shifts = {-2, 0, 2};
@@ -271,8 +272,10 @@ QPoint FlashRender::deg2pix(FlashGeoCoor kp) const
           int((m.y() - top_left_m.y()) / mip)};
 }
 
-void FlashRender::paintPointObject(QPainter* p, const FlashRenderPack& pack,
-                               const FlashMapObject& obj, int render_idx)
+void FlashRender::paintPointObject(QPainter*              p,
+                                   const FlashRenderPack& pack,
+                                   const FlashMapObject&  obj,
+                                   int                    render_idx)
 {
   auto frame = obj.frame;
 
@@ -335,8 +338,10 @@ QPolygon FlashRender::poly2pix(const FlashGeoPolygon& polygon)
   return pl;
 }
 
-void FlashRender::paintPolygonObject(QPainter* p, const FlashRenderPack& pack,
-                                 const FlashMapObject& obj, int render_idx)
+void FlashRender::paintPolygonObject(QPainter*              p,
+                                     const FlashRenderPack& pack,
+                                     const FlashMapObject&  obj,
+                                     int render_idx)
 {
   auto  frame = obj.frame;
   QRect obj_frame_pix;
@@ -422,10 +427,10 @@ void FlashRender::paintPolygonObject(QPainter* p, const FlashRenderPack& pack,
   }
 }
 
-void FlashRender::paintLineObject(QPainter*          painter,
-                              const FlashRenderPack& pack,
-                              const FlashMapObject& obj, int render_idx,
-                              int line_iter)
+void FlashRender::paintLineObject(QPainter*              painter,
+                                  const FlashRenderPack& pack,
+                                  const FlashMapObject&  obj,
+                                  int render_idx, int line_iter)
 {
   auto frame = obj.frame;
 
@@ -599,8 +604,10 @@ void FlashRender::paintLineObject(QPainter*          painter,
   }
 }
 
-void FlashRender::NameHolder::fix(const FlashPack* pack, const FlashMapObject* _obj,
-                              const QPoint& start, const QPoint& end)
+void FlashRender::NameHolder::fix(const FlashPack*      pack,
+                                  const FlashMapObject* _obj,
+                                  const QPoint&         start,
+                                  const QPoint&         end)
 {
   obj       = _obj;
   mid_point = {(start.x() + end.x()) / 2, (start.y() + end.y()) / 2};
@@ -624,7 +631,8 @@ bool FlashRender::isCluttering(const QRect& rect)
   return clutter_flag;
 }
 
-bool FlashRender::checkMipRange(const FlashPack* pack, const FlashMapObject* obj)
+bool FlashRender::checkMipRange(const FlashPack*      pack,
+                                const FlashMapObject* obj)
 {
   auto cl = &pack->classes[obj->class_idx];
   return (cl->min_mip == 0 || mip >= cl->min_mip) &&
@@ -632,8 +640,8 @@ bool FlashRender::checkMipRange(const FlashPack* pack, const FlashMapObject* obj
 }
 
 void FlashRender::paintObject(QPainter* p, const FlashRenderPack* map,
-                          const FlashMapObject& obj, int render_idx,
-                          int line_iter)
+                              const FlashMapObject& obj,
+                              int render_idx, int line_iter)
 {
   auto cl = &map->classes[obj.class_idx];
   switch (cl->type)
@@ -760,8 +768,9 @@ void FlashRender::paintPolygonNames(QPainter* p)
     }
 }
 
-void FlashRender::render(QPainter* p, QVector<FlashRenderPack*> render_packs,
-                     int render_idx)
+void FlashRender::render(QPainter*                 p,
+                         QVector<FlashRenderPack*> render_packs,
+                         int                       render_idx)
 {
   for (auto map: render_packs)
   {
@@ -778,7 +787,7 @@ void FlashRender::render(QPainter* p, QVector<FlashRenderPack*> render_packs,
 }
 
 void FlashRender::renderPack(QPainter* p, const FlashRenderPack* pack,
-                         int render_idx, int line_iter)
+                             int render_idx, int line_iter)
 {
   if (!pack || render_idx > pack->render_start_list.count() - 1)
     return;
@@ -865,8 +874,8 @@ void FlashRender::run()
 {
   int tile_count      = pow(2, tile_coor.z);
   int world_width_pix = tile_side * tile_count;
-  mip                 = 2 * M_PI * flashmath::earth_r / world_width_pix;
-  auto big_tile_coor  = getBigTileCoor(tile_coor);
+  mip = 2 * M_PI * flashmath::earth_r / world_width_pix;
+  auto big_tile_coor = getBigTileCoor(tile_coor);
   top_left_m = {(big_tile_coor.x - tile_count / 2) * tile_side * mip,
                 (big_tile_coor.y - tile_count / 2) * tile_side * mip};
 
@@ -944,9 +953,10 @@ void FlashRender::run()
   for (int render_idx = 1; render_idx < FlashRenderPack::render_count;
        render_idx++)
   {
-    auto render  = new RenderEntry(render_idx, pixmap.size(), &f);
-    *render->fut = QtConcurrent::run(
-        this, &FlashRender::render, render->p, render_packs, render_idx);
+    auto render = new RenderEntry(render_idx, pixmap.size(), &f);
+    *render->fut =
+        QtConcurrent::run(this, &FlashRender::render, render->p,
+                          render_packs, render_idx);
     render_list.append(render);
   }
 

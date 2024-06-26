@@ -52,7 +52,7 @@ int main(int argc, char* argv[])
 
   for (auto& fi: fi_list)
   {
-    if (fi.suffix() != "kpack")
+    if (fi.suffix() != "flashmap")
       continue;
 
     if (fi.absoluteFilePath() == first_pack_path)

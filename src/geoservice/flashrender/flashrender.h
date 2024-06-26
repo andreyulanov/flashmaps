@@ -21,7 +21,7 @@ public:
     QColor  land_color                   = QColor(250, 246, 230);
     double  max_loaded_maps_count        = 3;
     QString map_dir;
-    QString world_map_name = "world.kpack";
+    QString world_map_name = "world.flashmap";
   };
   struct TileCoor
   {
@@ -36,31 +36,31 @@ public:
 private:
   struct DrawTextEntry
   {
-    QString       text;
+    QString           text;
     const FlashClass* cl;
-    QRect         rect;
-    QRect         actual_rect;
-    Qt::Alignment alignment;
+    QRect             rect;
+    QRect             actual_rect;
+    Qt::Alignment     alignment;
   };
 
   struct NameHolder
   {
-    int            length_pix  = 0;
-    int            start_idx   = 0;
-    int            end_idx     = 0;
-    int            point_count = 0;
-    double         angle_deg   = 0;
-    QPoint         mid_point;
+    int                   length_pix  = 0;
+    int                   start_idx   = 0;
+    int                   end_idx     = 0;
+    int                   point_count = 0;
+    double                angle_deg   = 0;
+    QPoint                mid_point;
     const FlashMapObject* obj = nullptr;
-    QColor         tcolor;
-    void           fix(const FlashPack* pack, const FlashMapObject* obj,
-                       const QPoint& start, const QPoint& end);
+    QColor                tcolor;
+    void fix(const FlashPack* pack, const FlashMapObject* obj,
+             const QPoint& start, const QPoint& end);
   };
 
   struct PointName
   {
-    QRect         rect;
-    QStringList   str_list;
+    QRect             rect;
+    QStringList       str_list;
     const FlashClass* cl;
   };
 
@@ -100,10 +100,12 @@ private:
   void render(QPainter* p, QVector<FlashRenderPack*> render_packs,
               int render_idx);
 
-  bool checkMipRange(const FlashPack* pack, const FlashMapObject* obj);
+  bool checkMipRange(const FlashPack*      pack,
+                     const FlashMapObject* obj);
 
   void paintObject(QPainter* p, const FlashRenderPack* map,
-                   const FlashMapObject& obj, int render_idx, int line_iter);
+                   const FlashMapObject& obj, int render_idx,
+                   int line_iter);
   void paintPointNames(QPainter* p);
   void paintLineNames(QPainter* p);
   void paintPolygonNames(QPainter* p);

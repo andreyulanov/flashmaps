@@ -39,7 +39,7 @@ void FlashPack::save(QString path) const
     return;
   }
 
-  write(&f, QString("kpack"));
+  write(&f, QString("flashmap"));
   write(&f, frame);
   char has_borders = (borders.count() > 0);
   write(&f, has_borders);
@@ -101,7 +101,7 @@ void FlashPack::save(QString path) const
 }
 
 void FlashPack::loadMain(QString path, bool load_objects,
-                     double pixel_size_mm)
+                         double pixel_size_mm)
 {
   if (main.status == FlashTile::Loading)
     return;
@@ -305,7 +305,7 @@ QVector<FlashFreeObject> FlashPack::getObjects()
   for (auto src_obj: main)
   {
     FlashFreeObject free_obj = src_obj;
-    free_obj.cl          = classes[src_obj.class_idx];
+    free_obj.cl              = classes[src_obj.class_idx];
     free_objects.append(free_obj);
   }
   return free_objects;

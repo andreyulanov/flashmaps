@@ -61,7 +61,7 @@ void setObjects(FlashPack* pack, QVector<FlashMapObject> src_obj_list,
   for (auto& src_obj: src_obj_list)
   {
     FlashMapObject obj(src_obj);
-    auto    cl = pack->classes[obj.class_idx];
+    auto           cl = pack->classes[obj.class_idx];
     if (cl.max_mip == 0 || cl.max_mip > pack->tile_mip)
       pack->main.append(obj);
     else
@@ -126,7 +126,7 @@ int main(int argc, char* argv[])
   if (QString(argv[2]).contains("local"))
     is_analyzing_local_map = true;
 
-  auto  world_map_path = output_dir + "/world.kpack";
+  auto      world_map_path = output_dir + "/world.flashmap";
   FlashPack world_pack;
 
   if (is_analyzing_local_map)
@@ -156,7 +156,7 @@ int main(int argc, char* argv[])
     qDebug() << "  converting...";
 
     int  poi_count = 0;
-    auto path      = output_dir + "/" + map_name + ".kpack";
+    auto path      = output_dir + "/" + map_name + ".flashmap";
     path.remove(".sitx");
     path.remove(".sitz");
     path.remove(".mptz");
@@ -190,7 +190,7 @@ int main(int argc, char* argv[])
     pack.main_mip = class_man.getMainMip();
     pack.tile_mip = class_man.getTileMip();
     QVector<FlashMapObject> obj_list;
-    DFRAME           df;
+    DFRAME                  df;
     mapGetTotalBorder(hMap, &df, PP_GEO);
     auto top_left =
         FlashGeoCoor::fromDegs(rad2deg(df.X2), rad2deg(df.Y1));
@@ -295,7 +295,7 @@ int main(int argc, char* argv[])
       obj.name = name;
 
       obj.class_idx = class_idx;
-      FlashClass cl     = class_list[class_idx];
+      FlashClass cl = class_list[class_idx];
 
       for (auto attr: pan_class->attributes)
       {
@@ -314,10 +314,10 @@ int main(int argc, char* argv[])
       double max_dist   = 0;
       for (int poly_idx = 0; poly_idx < poly_count; poly_idx++)
       {
-        DOUBLEPOINT point;
-        int         point_count = mapPointCount(info, poly_idx);
+        DOUBLEPOINT     point;
+        int             point_count = mapPointCount(info, poly_idx);
         FlashGeoPolygon polygon;
-        DOUBLEPOINT prev_point_m;
+        DOUBLEPOINT     prev_point_m;
         for (int point_idx = 0; point_idx < point_count; point_idx++)
         {
           DOUBLEPOINT point_m;
@@ -340,7 +340,7 @@ int main(int argc, char* argv[])
           if (mapGetGeoPoint(info, &point, point_idx + 1, poly_idx))
           {
             auto vp = FlashGeoCoor::fromDegs(rad2deg(point.x),
-                                         rad2deg(point.y));
+                                             rad2deg(point.y));
             polygon.append(vp);
             prev_point_m = point_m;
           }
