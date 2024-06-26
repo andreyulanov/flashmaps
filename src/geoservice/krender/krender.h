@@ -139,5 +139,5 @@ public:
   KRender(Settings);
   virtual ~KRender();
   void       requestTile(TileCoor);
-  QByteArray pickTile(TileCoor);
+  QByteArray getTile(TileCoor);
 };

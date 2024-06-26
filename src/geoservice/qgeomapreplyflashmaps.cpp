@@ -9,7 +9,7 @@ QGeoMapReplyFlashmaps::QGeoMapReplyFlashmaps(KRender* render,
 {
   KRender::TileCoor t           = {tileSpec().x(), tileSpec().y(),
                                    tileSpec().zoom()};
-  auto              tile_pixmap = m_render->pickTile(t);
+  auto              tile_pixmap = m_render->getTile(t);
   if (tile_pixmap.isEmpty())
   {
     connect(m_render, &KRender::finished, this,
@@ -27,7 +27,7 @@ void QGeoMapReplyFlashmaps::onFinishedRender()
 {
   auto              spec        = tileSpec();
   KRender::TileCoor t           = {spec.x(), spec.y(), spec.zoom()};
-  auto              tile_pixmap = m_render->pickTile(t);
+  auto              tile_pixmap = m_render->getTile(t);
   if (tile_pixmap.isEmpty())
   {
     m_render->requestTile({spec.x(), spec.y(), spec.zoom()});

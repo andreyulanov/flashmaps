@@ -61,7 +61,7 @@ void KRender::requestTile(TileCoor t)
   render();
 }
 
-QByteArray KRender::pickTile(TileCoor t)
+QByteArray KRender::getTile(TileCoor t)
 {
   auto tile_name = getTileName(t);
   for (auto big_tile: big_tiles)
