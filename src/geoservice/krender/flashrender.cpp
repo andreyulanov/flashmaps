@@ -98,7 +98,7 @@ void FlashRender::checkUnload()
     i++;
     if (i == 0)
       continue;
-    if (pack->main.status == KTile::Loaded)
+    if (pack->main.status == FlashTile::Loaded)
     {
       if (!needToLoadPack(pack, draw_rect_m))
         if (loaded_count > s.max_loaded_maps_count)
@@ -144,9 +144,9 @@ void FlashRender::checkLoad()
     if (!needToLoadPack(pack, draw_rect_m))
       continue;
 
-    if (pack->main.status == KTile::Null)
+    if (pack->main.status == FlashTile::Null)
       pack->loadMain(true, s.pixel_size_mm);
-    if (pack->main.status == KTile::Loaded)
+    if (pack->main.status == FlashTile::Loaded)
     {
       if (needToLoadPack(pack, draw_rect_m))
       {
@@ -162,7 +162,7 @@ void FlashRender::checkLoad()
           double tile_top =
               map_rect_m.y() + tile_idx_y * tile_size_m.height();
           QRectF tile_rect_m = {{tile_left, tile_top}, tile_size_m};
-          if (tile.status == KTile::Null &&
+          if (tile.status == FlashTile::Null &&
               tile_rect_m.intersects(draw_rect_m) &&
               mip < pack->tile_mip)
             pack->loadTile(tile_idx);
@@ -272,7 +272,7 @@ QPoint FlashRender::deg2pix(KGeoCoor kp) const
 }
 
 void FlashRender::paintPointObject(QPainter* p, const FlashRenderPack& pack,
-                               const KObject& obj, int render_idx)
+                               const FlashMapObject& obj, int render_idx)
 {
   auto frame = obj.frame;
 
@@ -336,7 +336,7 @@ QPolygon FlashRender::poly2pix(const KGeoPolygon& polygon)
 }
 
 void FlashRender::paintPolygonObject(QPainter* p, const FlashRenderPack& pack,
-                                 const KObject& obj, int render_idx)
+                                 const FlashMapObject& obj, int render_idx)
 {
   auto  frame = obj.frame;
   QRect obj_frame_pix;
@@ -424,7 +424,7 @@ void FlashRender::paintPolygonObject(QPainter* p, const FlashRenderPack& pack,
 
 void FlashRender::paintLineObject(QPainter*          painter,
                               const FlashRenderPack& pack,
-                              const KObject& obj, int render_idx,
+                              const FlashMapObject& obj, int render_idx,
                               int line_iter)
 {
   auto frame = obj.frame;
@@ -599,7 +599,7 @@ void FlashRender::paintLineObject(QPainter*          painter,
   }
 }
 
-void FlashRender::NameHolder::fix(const KPack* pack, const KObject* _obj,
+void FlashRender::NameHolder::fix(const FlashPack* pack, const FlashMapObject* _obj,
                               const QPoint& start, const QPoint& end)
 {
   obj       = _obj;
@@ -624,7 +624,7 @@ bool FlashRender::isCluttering(const QRect& rect)
   return clutter_flag;
 }
 
-bool FlashRender::checkMipRange(const KPack* pack, const KObject* obj)
+bool FlashRender::checkMipRange(const FlashPack* pack, const FlashMapObject* obj)
 {
   auto cl = &pack->classes[obj->class_idx];
   return (cl->min_mip == 0 || mip >= cl->min_mip) &&
@@ -632,7 +632,7 @@ bool FlashRender::checkMipRange(const KPack* pack, const KObject* obj)
 }
 
 void FlashRender::paintObject(QPainter* p, const FlashRenderPack* map,
-                          const KObject& obj, int render_idx,
+                          const FlashMapObject& obj, int render_idx,
                           int line_iter)
 {
   auto cl = &map->classes[obj.class_idx];

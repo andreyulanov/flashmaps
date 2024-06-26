@@ -25,7 +25,7 @@ void FlashRenderPack::clear()
   KLocker small_locker(&tile_lock, KLocker::Write);
   if (!small_locker.hasLocked())
     return;
-  KPack::clear();
+  FlashPack::clear();
   for (int i = 0; i < max_layer_count; i++)
     render_data[i].clear();
   render_object_count = 0;
@@ -34,24 +34,24 @@ void FlashRenderPack::clear()
 
 void FlashRenderPack::loadMain(bool load_objects, double pixel_size_mm)
 {
-  KPack::loadMain(path, load_objects, pixel_size_mm);
+  FlashPack::loadMain(path, load_objects, pixel_size_mm);
   if (load_objects)
   {
     QWriteLocker big_locker(&main_lock);
     addCollectionToIndex(main);
-    main.status = KTile::Loaded;
+    main.status = FlashTile::Loaded;
   }
 }
 
 void FlashRenderPack::loadTile(int tile_idx)
 {
-  KPack::loadTile(path, tile_idx);
+  FlashPack::loadTile(path, tile_idx);
   QWriteLocker small_locker(&tile_lock);
   addCollectionToIndex(tiles[tile_idx]);
-  tiles[tile_idx].status = KTile::Loaded;
+  tiles[tile_idx].status = FlashTile::Loaded;
 }
 
-void FlashRenderPack::addCollectionToIndex(KTile& collection)
+void FlashRenderPack::addCollectionToIndex(FlashTile& collection)
 {
   for (auto& obj: collection)
   {

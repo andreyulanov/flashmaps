@@ -9,7 +9,7 @@
 #include <QVariant>
 #include "kobject.h"
 
-struct KTile: public QVector<KObject>
+struct FlashTile: public QVector<FlashMapObject>
 {
   enum Status
   {
@@ -20,7 +20,7 @@ struct KTile: public QVector<KObject>
   Status status = Null;
 };
 
-struct KPack
+struct FlashPack
 {
   static constexpr int border_coor_precision_coef = 10000;
 
@@ -31,8 +31,8 @@ struct KPack
   KGeoRect             frame;
   QVector<QPolygonF>   borders_m;
   QVector<KGeoPolygon> borders;
-  KTile                main;
-  QVector<KTile>       tiles;
+  FlashTile                main;
+  QVector<FlashTile>       tiles;
 
   void                 save(QString path) const;
   void                 loadMain(QString path, bool load_objects,
@@ -41,6 +41,6 @@ struct KPack
   void                 loadAll(QString path, double pixel_size_mm);
   void                 clear();
   qint64               count();
-  void                 addObject(KFreeObject free_obj);
-  QVector<KFreeObject> getObjects();
+  void                 addObject(FlashFreeObject free_obj);
+  QVector<FlashFreeObject> getObjects();
 };

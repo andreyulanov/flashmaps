@@ -1,15 +1,15 @@
 #include <QCoreApplication>
 #include <QDir>
 #include <QDebug>
-#include "kpack.h"
+#include "flashpack.h"
 
-class KWorldPack: public KPack
+class KWorldPack: public FlashPack
 {
 public:
-  void addPackToMainTile(const KPack&);
+  void addPackToMainTile(const FlashPack&);
 };
 
-void KWorldPack::addPackToMainTile(const KPack& m)
+void KWorldPack::addPackToMainTile(const FlashPack& m)
 {
   frame = frame.united(m.frame);
   for (auto new_obj: m.main)
@@ -59,7 +59,7 @@ int main(int argc, char* argv[])
       continue;
 
     qDebug() << "loading" << fi.absoluteFilePath();
-    KPack pack;
+    FlashPack pack;
     pack.loadAll(fi.absoluteFilePath(), 0);
     united_pack.addPackToMainTile(pack);
   }

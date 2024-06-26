@@ -4,7 +4,7 @@
 #include "mapapi.h"
 #include "qdmcmp.h"
 #include "kpanclassmanager.h"
-#include "kpack.h"
+#include "flashpack.h"
 #include <QApplication>
 #include <QtConcurrent/QtConcurrent>
 #include <QDir>
@@ -20,7 +20,7 @@ bool isVectorMap(QString path)
       .contains(ext);
 }
 
-auto joinPolys(KObject& obj)
+auto joinPolys(FlashMapObject& obj)
 {
   double join_tolerance_m = 1.0;
   auto   polygons         = obj.polygons;
@@ -49,7 +49,7 @@ auto joinPolys(KObject& obj)
   return false;
 }
 
-void setObjects(KPack* pack, QVector<KObject> src_obj_list,
+void setObjects(FlashPack* pack, QVector<FlashMapObject> src_obj_list,
                 int max_objects_per_tile)
 {
   int tile_side_num =
@@ -60,7 +60,7 @@ void setObjects(KPack* pack, QVector<KObject> src_obj_list,
   auto map_top_left_m = pack->frame.top_left.toMeters();
   for (auto& src_obj: src_obj_list)
   {
-    KObject obj(src_obj);
+    FlashMapObject obj(src_obj);
     auto    cl = pack->classes[obj.class_idx];
     if (cl.max_mip == 0 || cl.max_mip > pack->tile_mip)
       pack->main.append(obj);
@@ -127,7 +127,7 @@ int main(int argc, char* argv[])
     is_analyzing_local_map = true;
 
   auto  world_map_path = output_dir + "/world.kpack";
-  KPack world_pack;
+  FlashPack world_pack;
 
   if (is_analyzing_local_map)
   {
@@ -160,7 +160,7 @@ int main(int argc, char* argv[])
     path.remove(".sitx");
     path.remove(".sitz");
     path.remove(".mptz");
-    KPack pack;
+    FlashPack pack;
 
     if (is_analyzing_local_map)
     {
@@ -189,7 +189,7 @@ int main(int argc, char* argv[])
     pack.classes  = class_list;
     pack.main_mip = class_man.getMainMip();
     pack.tile_mip = class_man.getTileMip();
-    QVector<KObject> obj_list;
+    QVector<FlashMapObject> obj_list;
     DFRAME           df;
     mapGetTotalBorder(hMap, &df, PP_GEO);
     auto top_left =
@@ -291,7 +291,7 @@ int main(int argc, char* argv[])
 
       name = name.remove("\"");
 
-      KObject obj;
+      FlashMapObject obj;
       obj.name = name;
 
       obj.class_idx = class_idx;

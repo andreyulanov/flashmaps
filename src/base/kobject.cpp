@@ -4,7 +4,7 @@
 #include "kobject.h"
 #include "kserialize.h"
 
-void KObject::load(QVector<KClass>& class_list, int& pos,
+void FlashMapObject::load(QVector<KClass>& class_list, int& pos,
                    const QByteArray& ba)
 {
   using namespace KSerialize;
@@ -60,7 +60,7 @@ void KObject::load(QVector<KClass>& class_list, int& pos,
   }
 }
 
-KGeoCoor KObject::getCenter()
+KGeoCoor FlashMapObject::getCenter()
 {
   if (polygons.isEmpty())
     return KGeoCoor();
@@ -75,7 +75,7 @@ KGeoCoor KObject::getCenter()
   return KGeoCoor().fromDegs(lat, lon);
 }
 
-void KObject::save(const QVector<KClass>& class_list,
+void FlashMapObject::save(const QVector<KClass>& class_list,
                    QByteArray&            ba) const
 {
   using namespace KSerialize;
@@ -106,7 +106,7 @@ void KObject::save(const QVector<KClass>& class_list,
   }
 }
 
-KFreeObject::KFreeObject(KObject src_obj)
+FlashFreeObject::FlashFreeObject(FlashMapObject src_obj)
 {
   name       = src_obj.name;
   attributes = src_obj.attributes;
@@ -114,7 +114,7 @@ KFreeObject::KFreeObject(KObject src_obj)
   polygons   = src_obj.polygons;
 }
 
-void KFreeObject::save(QString path)
+void FlashFreeObject::save(QString path)
 {
   QFile f(path);
   if (!f.open(QIODevice::WriteOnly))
@@ -136,7 +136,7 @@ void KFreeObject::save(QString path)
   write(&f, attributes);
 }
 
-void KFreeObject::load(QString path, double pixel_size_mm)
+void FlashFreeObject::load(QString path, double pixel_size_mm)
 {
   QFile f(path);
   if (!f.open(QIODevice::ReadOnly))
@@ -161,22 +161,22 @@ void KFreeObject::load(QString path, double pixel_size_mm)
   read(&f, attributes);
 }
 
-int KFreeObject::getWidthPix(double pixel_size_mm)
+int FlashFreeObject::getWidthPix(double pixel_size_mm)
 {
   return round(cl.width_mm / pixel_size_mm);
 }
 
-void KFreeObject::setGuid(QUuid guid)
+void FlashFreeObject::setGuid(QUuid guid)
 {
   attributes.insert("guid", guid.toRfc4122());
 }
 
-void KFreeObject::setGuid(QByteArray guid_ba)
+void FlashFreeObject::setGuid(QByteArray guid_ba)
 {
   attributes.insert("guid", guid_ba);
 }
 
-QUuid KFreeObject::getGuid() const
+QUuid FlashFreeObject::getGuid() const
 {
   return QUuid::fromRfc4122(attributes.value("guid"));
 }

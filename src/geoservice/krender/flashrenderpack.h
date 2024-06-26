@@ -1,8 +1,8 @@
 #pragma once
 
-#include "kpack.h"
+#include "flashpack.h"
 
-class FlashRenderPack: public KPack
+class FlashRenderPack: public FlashPack
 {
   struct RenderAddress
   {
@@ -14,14 +14,14 @@ public:
   static constexpr int max_layer_count = 24;
   static constexpr int render_count    = 4;
 
-  QVector<KObject*>    render_data[max_layer_count];
+  QVector<FlashMapObject*>    render_data[max_layer_count];
   QReadWriteLock       main_lock;
   QReadWriteLock       tile_lock;
   QList<RenderAddress> render_start_list;
   int                  render_object_count;
   QString              path;
 
-  void addCollectionToIndex(KTile& collection);
+  void addCollectionToIndex(FlashTile& collection);
 
 public:
   FlashRenderPack(const QString& path);

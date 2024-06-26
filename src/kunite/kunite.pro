@@ -6,7 +6,7 @@ INCLUDEPATH += $$PWD/../base
 SOURCES += \
     ../base/kbase.cpp \
     ../base/klocker.cpp \
-    ../base/kpack.cpp \
+    ../base/flashpack.cpp \
     ../base/kclass.cpp \
     ../base/kobject.cpp \
     ../base/kclassmanager.cpp \
@@ -15,7 +15,7 @@ SOURCES += \
 HEADERS += \
     ../lib/kbase.h \
     ../base/klocker.h \
-    ../base/kpack.h \
+    ../base/flashpack.h \
     ../base/kserialize.h \
     ../base/kclass.h \
     ../base/kclassmanager.cpp

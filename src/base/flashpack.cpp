@@ -1,5 +1,5 @@
 #include "math.h"
-#include "kpack.h"
+#include "flashpack.h"
 #include "kserialize.h"
 #include "klocker.h"
 #include <QDebug>
@@ -7,20 +7,20 @@
 #include <QDateTime>
 #include <QRegularExpression>
 
-void KPack::clear()
+void FlashPack::clear()
 {
-  if (main.status != KTile::Loaded)
+  if (main.status != FlashTile::Loaded)
     return;
-  if (main.status == KTile::Loading)
+  if (main.status == FlashTile::Loading)
     return;
 
   main.clear();
   tiles.clear();
   classes.clear();
-  main.status = KTile::Null;
+  main.status = FlashTile::Null;
 }
 
-qint64 KPack::count()
+qint64 FlashPack::count()
 {
   qint64 total_count = main.count();
   for (auto t: tiles)
@@ -28,7 +28,7 @@ qint64 KPack::count()
   return total_count;
 }
 
-void KPack::save(QString path) const
+void FlashPack::save(QString path) const
 {
   using namespace KSerialize;
 
@@ -100,10 +100,10 @@ void KPack::save(QString path) const
   write(&f, small_idx_start_pos);
 }
 
-void KPack::loadMain(QString path, bool load_objects,
+void FlashPack::loadMain(QString path, bool load_objects,
                      double pixel_size_mm)
 {
-  if (main.status == KTile::Loading)
+  if (main.status == FlashTile::Loading)
     return;
   QElapsedTimer t;
   t.start();
@@ -116,7 +116,7 @@ void KPack::loadMain(QString path, bool load_objects,
     return;
   }
 
-  if (main.status != KTile::Null)
+  if (main.status != FlashTile::Null)
     return;
 
   QString format_id;
@@ -155,7 +155,7 @@ void KPack::loadMain(QString path, bool load_objects,
     return;
 
   qDebug() << "loading main from" << path;
-  main.status = KTile::Loading;
+  main.status = FlashTile::Loading;
   int class_count;
   read(&f, class_count);
   qDebug() << "class_count" << class_count;
@@ -194,18 +194,18 @@ void KPack::loadMain(QString path, bool load_objects,
   tiles.resize(small_count);
 }
 
-void KPack::loadAll(QString path, double pixel_size_mm)
+void FlashPack::loadAll(QString path, double pixel_size_mm)
 {
   loadMain(path, true, pixel_size_mm);
   for (int i = 0; i < tiles.count(); i++)
     loadTile(path, i);
 }
 
-void KPack::loadTile(QString path, int tile_idx)
+void FlashPack::loadTile(QString path, int tile_idx)
 {
-  if (main.status != KTile::Loaded)
+  if (main.status != FlashTile::Loaded)
     return;
-  if (tiles[tile_idx].status == KTile::Loading)
+  if (tiles[tile_idx].status == FlashTile::Loading)
     return;
 
   qDebug() << "loading tile" << tile_idx << "from" << path;
@@ -252,13 +252,13 @@ void KPack::loadTile(QString path, int tile_idx)
   f.read(ba.data(), ba_count);
   ba = qUncompress(ba);
 
-  tiles[tile_idx].status = KTile::Loading;
+  tiles[tile_idx].status = FlashTile::Loading;
   int pos                = 0;
   for (auto& obj: tiles[tile_idx])
     obj.load(classes, pos, ba);
 }
 
-void KPack::addObject(KFreeObject free_obj)
+void FlashPack::addObject(FlashFreeObject free_obj)
 {
   if (frame.isNull())
     frame = free_obj.polygons.first().getFrame();
@@ -269,7 +269,7 @@ void KPack::addObject(KFreeObject free_obj)
   auto map_size_m     = frame.getSizeMeters();
   auto map_top_left_m = frame.top_left.toMeters();
 
-  KObject obj = free_obj;
+  FlashMapObject obj = free_obj;
 
   obj.class_idx = -1;
   for (auto cl: classes)
@@ -299,12 +299,12 @@ void KPack::addObject(KFreeObject free_obj)
   }
 }
 
-QVector<KFreeObject> KPack::getObjects()
+QVector<FlashFreeObject> FlashPack::getObjects()
 {
-  QVector<KFreeObject> free_objects;
+  QVector<FlashFreeObject> free_objects;
   for (auto src_obj: main)
   {
-    KFreeObject free_obj = src_obj;
+    FlashFreeObject free_obj = src_obj;
     free_obj.cl          = classes[src_obj.class_idx];
     free_objects.append(free_obj);
   }

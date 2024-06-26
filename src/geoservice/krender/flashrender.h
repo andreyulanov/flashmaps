@@ -51,9 +51,9 @@ private:
     int            point_count = 0;
     double         angle_deg   = 0;
     QPoint         mid_point;
-    const KObject* obj = nullptr;
+    const FlashMapObject* obj = nullptr;
     QColor         tcolor;
-    void           fix(const KPack* pack, const KObject* obj,
+    void           fix(const FlashPack* pack, const FlashMapObject* obj,
                        const QPoint& start, const QPoint& end);
   };
 
@@ -100,10 +100,10 @@ private:
   void render(QPainter* p, QVector<FlashRenderPack*> render_packs,
               int render_idx);
 
-  bool checkMipRange(const KPack* pack, const KObject* obj);
+  bool checkMipRange(const FlashPack* pack, const FlashMapObject* obj);
 
   void paintObject(QPainter* p, const FlashRenderPack* map,
-                   const KObject& obj, int render_idx, int line_iter);
+                   const FlashMapObject& obj, int render_idx, int line_iter);
   void paintPointNames(QPainter* p);
   void paintLineNames(QPainter* p);
   void paintPolygonNames(QPainter* p);
@@ -117,11 +117,11 @@ private:
   void     paintPointName(QPainter* p, const QString& text,
                           const QColor& tcolor);
   void     paintPointObject(QPainter* p, const FlashRenderPack& pack,
-                            const KObject& obj, int render_idx);
+                            const FlashMapObject& obj, int render_idx);
   void paintPolygonObject(QPainter* p, const FlashRenderPack& pack,
-                          const KObject& obj, int render_idx);
+                          const FlashMapObject& obj, int render_idx);
   void paintLineObject(QPainter* painter, const FlashRenderPack& pack,
-                       const KObject& obj, int render_idx,
+                       const FlashMapObject& obj, int render_idx,
                        int line_iter);
   QRectF   getDrawRectM() const;
   bool     needToLoadPack(const FlashRenderPack* pack,

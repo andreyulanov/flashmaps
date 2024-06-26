@@ -3,7 +3,7 @@
 #include <QMap>
 #include "kclass.h"
 
-struct KObject
+struct FlashMapObject
 {
   int                       class_idx = 0;
   QString                   name;
@@ -18,11 +18,11 @@ public:
   KGeoCoor getCenter();
 };
 
-struct KFreeObject: public KObject
+struct FlashFreeObject: public FlashMapObject
 {
   KClass cl;
 
-  KFreeObject(KObject obj = KObject());
+  FlashFreeObject(FlashMapObject obj = FlashMapObject());
   void  save(QString path);
   void  load(QString path, double pixel_size_mm);
   int   getWidthPix(double pixel_size_mm);
