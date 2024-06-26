@@ -3,7 +3,7 @@
 #include "math.h"
 #include "mapapi.h"
 #include "qdmcmp.h"
-#include "kpanclassmanager.h"
+#include "flashpanclassmanager.h"
 #include "flashpack.h"
 #include <QApplication>
 #include <QtConcurrent/QtConcurrent>
@@ -81,17 +81,17 @@ void setObjects(FlashPack* pack, QVector<FlashMapObject> src_obj_list,
 
 int main(int argc, char* argv[])
 {
-  using namespace kmath;
+  using namespace flashmath;
 
   QApplication a(argc, argv);
   QDMapView    qd;
 
-  KClassManager class_man(argv[1]);
+  FlashClassManager class_man(argv[1]);
   class_man.loadClasses(QString(argv[1]) + "/" + argv[2],
                         QString(argv[1]) + "/images");
   auto class_list = class_man.getClasses();
 
-  KPanClassManager pan_class_man(argv[1]);
+  FlashPanClassManager pan_class_man(argv[1]);
   pan_class_man.loadClasses(QString(argv[1]) + "/" + argv[2],
                             QString(argv[1]) + "/images");
   auto pan_class_list = pan_class_man.getClasses();
@@ -193,9 +193,9 @@ int main(int argc, char* argv[])
     DFRAME           df;
     mapGetTotalBorder(hMap, &df, PP_GEO);
     auto top_left =
-        KGeoCoor::fromDegs(rad2deg(df.X2), rad2deg(df.Y1));
+        FlashGeoCoor::fromDegs(rad2deg(df.X2), rad2deg(df.Y1));
     auto bottom_right =
-        KGeoCoor::fromDegs(rad2deg(df.X1), rad2deg(df.Y2));
+        FlashGeoCoor::fromDegs(rad2deg(df.X1), rad2deg(df.Y2));
     pack.frame = {top_left, bottom_right};
 
     int  object_count = mapGetObjectCount(hMap, 1);
@@ -268,7 +268,7 @@ int main(int argc, char* argv[])
 
       auto pan_class = pan_class_list.at(class_idx);
 
-      if (pan_class->type == KClass::None)
+      if (pan_class->type == FlashClass::None)
         continue;
 
       WCHAR str_utf16[1000];
@@ -295,7 +295,7 @@ int main(int argc, char* argv[])
       obj.name = name;
 
       obj.class_idx = class_idx;
-      KClass cl     = class_list[class_idx];
+      FlashClass cl     = class_list[class_idx];
 
       for (auto attr: pan_class->attributes)
       {
@@ -316,7 +316,7 @@ int main(int argc, char* argv[])
       {
         DOUBLEPOINT point;
         int         point_count = mapPointCount(info, poly_idx);
-        KGeoPolygon polygon;
+        FlashGeoPolygon polygon;
         DOUBLEPOINT prev_point_m;
         for (int point_idx = 0; point_idx < point_count; point_idx++)
         {
@@ -339,7 +339,7 @@ int main(int argc, char* argv[])
           }
           if (mapGetGeoPoint(info, &point, point_idx + 1, poly_idx))
           {
-            auto vp = KGeoCoor::fromDegs(rad2deg(point.x),
+            auto vp = FlashGeoCoor::fromDegs(rad2deg(point.x),
                                          rad2deg(point.y));
             polygon.append(vp);
             prev_point_m = point_m;
@@ -375,7 +375,7 @@ int main(int argc, char* argv[])
       }
 
       if (max_dist < pan_class->coor_precision_coef * 0.01 &&
-          pan_class->type == KClass::Polygon)
+          pan_class->type == FlashClass::Polygon)
         continue;
 
       if (is_analyzing_local_map)
@@ -399,8 +399,8 @@ int main(int argc, char* argv[])
     t.start();
     for (auto obj: obj_list)
     {
-      KClass cl = class_list[obj.class_idx];
-      if (cl.type == KClass::Line)
+      FlashClass cl = class_list[obj.class_idx];
+      if (cl.type == FlashClass::Line)
         while (joinPolys(obj))
           ;
     }

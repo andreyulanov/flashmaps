@@ -2,7 +2,7 @@
 
 #include <QDateTime>
 
-class KDateTime
+class FlashDateTime
 {
   static constexpr int time_zone_coef = 4;
 
@@ -15,10 +15,10 @@ class KDateTime
   signed char tz;
 
 public:
-  KDateTime();
-  KDateTime(int year, int month, int day, int hour, int min, int sec,
+  FlashDateTime();
+  FlashDateTime(int year, int month, int day, int hour, int min, int sec,
             double tz);
-  explicit KDateTime(QDateTime);
+  explicit FlashDateTime(QDateTime);
   int              getYear() const;
   int              getMonth() const;
   int              getDay() const;
@@ -27,14 +27,14 @@ public:
   int              getSec() const;
   double           getTimeZone() const;
   void             setTimeZone(double);
-  bool             isEqual(const KDateTime&) const;
+  bool             isEqual(const FlashDateTime&) const;
   QString          toString(QString format = QString()) const;
-  static KDateTime fromString(QString);
+  static FlashDateTime fromString(QString);
   bool             isValid() const;
-  int              secsTo(KDateTime) const;
-  int              secsToWithoutTZ(KDateTime) const;
-  KDateTime        addDays(int);
-  KDateTime        addSecs(int secs);
+  int              secsTo(FlashDateTime) const;
+  int              secsToWithoutTZ(FlashDateTime) const;
+  FlashDateTime        addDays(int);
+  FlashDateTime        addSecs(int secs);
   static QTime     str2time(QString);
   static QDate     str2date(QString);
   static int       rus2sec(QString);

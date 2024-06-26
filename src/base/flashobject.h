@@ -1,26 +1,26 @@
 #pragma once
 
 #include <QMap>
-#include "kclass.h"
+#include "flashclass.h"
 
 struct FlashMapObject
 {
   int                       class_idx = 0;
   QString                   name;
   QMap<QString, QByteArray> attributes;
-  KGeoRect                  frame;
-  QVector<KGeoPolygon>      polygons;
+  FlashGeoRect                  frame;
+  QVector<FlashGeoPolygon>      polygons;
 
 public:
-  void save(const QVector<KClass>& class_list, QByteArray& ba) const;
-  void load(QVector<KClass>& class_list, int& pos,
+  void save(const QVector<FlashClass>& class_list, QByteArray& ba) const;
+  void load(QVector<FlashClass>& class_list, int& pos,
             const QByteArray& ba);
-  KGeoCoor getCenter();
+  FlashGeoCoor getCenter();
 };
 
 struct FlashFreeObject: public FlashMapObject
 {
-  KClass cl;
+  FlashClass cl;
 
   FlashFreeObject(FlashMapObject obj = FlashMapObject());
   void  save(QString path);

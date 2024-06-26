@@ -1,10 +1,10 @@
 #include <math.h>
-#include "kbase.h"
-#include "kserialize.h"
+#include "flashbase.h"
+#include "flashserialize.h"
 
-using namespace kmath;
+using namespace flashmath;
 
-namespace kmath
+namespace flashmath
 {
 double deg2rad(double deg)
 {
@@ -75,27 +75,27 @@ bool isNearPolyline(const QPoint& p0, const QPolygon& polyline,
 
 }
 
-double KGeoCoor::longitude() const
+double FlashGeoCoor::longitude() const
 {
   return lon * 1E-7;
 }
 
-double KGeoCoor::latitude() const
+double FlashGeoCoor::latitude() const
 {
   return -lat * 1E-7;
 }
 
-bool KGeoCoor::isValid()
+bool FlashGeoCoor::isValid()
 {
   return !(lat == 0 && lon == 0);
 }
 
-bool KGeoCoor::needToWrap()
+bool FlashGeoCoor::needToWrap()
 {
   return longitude() < wrap_longitude;
 }
 
-KGeoCoor KGeoCoor::wrapped() const
+FlashGeoCoor FlashGeoCoor::wrapped() const
 {
   if (lon > wrap_longitude * 1E+7)
     return {lat, lon};
@@ -103,34 +103,34 @@ KGeoCoor KGeoCoor::wrapped() const
     return {lat, int(lon + 3600000000)};
 }
 
-KGeoCoor KGeoCoor::inc(KGeoCoor step) const
+FlashGeoCoor FlashGeoCoor::inc(FlashGeoCoor step) const
 {
-  KGeoCoor ret = *this;
+  FlashGeoCoor ret = *this;
   ret.lat += step.lat;
   ret.lon += step.lon;
   return ret;
 }
 
-KGeoCoor::KGeoCoor()
+FlashGeoCoor::FlashGeoCoor()
 {
   lat = 0;
   lon = 0;
 }
 
-KGeoCoor::KGeoCoor(int _lat, int _lon)
+FlashGeoCoor::FlashGeoCoor(int _lat, int _lon)
 {
   lat = _lat;
   lon = _lon;
 }
 
-KGeoCoor KGeoCoor::fromDegs(double lat, double lon)
+FlashGeoCoor FlashGeoCoor::fromDegs(double lat, double lon)
 {
-  KGeoCoor ret;
+  FlashGeoCoor ret;
   ret.lon = round(lon * 1E+7);
   ret.lat = -round(lat * 1E+7);
   return ret;
 }
-KGeoCoor KGeoCoor::fromMeters(QPointF m)
+FlashGeoCoor FlashGeoCoor::fromMeters(QPointF m)
 {
   double lon_deg = rad2deg(m.x() / earth_r);
   double lat_deg =
@@ -138,16 +138,16 @@ KGeoCoor KGeoCoor::fromMeters(QPointF m)
   return fromDegs(lat_deg, lon_deg);
 }
 
-QPointF KGeoCoor::toMeters() const
+QPointF FlashGeoCoor::toMeters() const
 {
   double x = deg2rad(longitude()) * earth_r;
   double y = log(tan(deg2rad(-latitude()) / 2 + M_PI / 4)) * earth_r;
   return {x, y};
 }
 
-KGeoRect KGeoRect::united(const KGeoRect& v) const
+FlashGeoRect FlashGeoRect::united(const FlashGeoRect& v) const
 {
-  KGeoRect res;
+  FlashGeoRect res;
   res.top_left.lon = std::min(top_left.lon, v.top_left.lon);
   res.top_left.lat = std::min(top_left.lat, v.top_left.lat);
   res.bottom_right.lon =
@@ -157,18 +157,18 @@ KGeoRect KGeoRect::united(const KGeoRect& v) const
   return res;
 }
 
-bool KGeoRect::isNull() const
+bool FlashGeoRect::isNull() const
 {
   return top_left.lon == bottom_right.lon &&
          top_left.lat == bottom_right.lat;
 }
 
-QRectF KGeoRect::toMeters() const
+QRectF FlashGeoRect::toMeters() const
 {
   return {top_left.toMeters(), bottom_right.toMeters()};
 }
 
-QSizeF KGeoRect::getSizeMeters() const
+QSizeF FlashGeoRect::getSizeMeters() const
 {
   auto   top_left_m     = top_left.toMeters();
   auto   bottom_right_m = bottom_right.toMeters();
@@ -177,12 +177,12 @@ QSizeF KGeoRect::getSizeMeters() const
   return {w, h};
 }
 
-QRectF KGeoRect::toRectM() const
+QRectF FlashGeoRect::toRectM() const
 {
   return {top_left.toMeters(), bottom_right.toMeters()};
 }
 
-KGeoRect KGeoPolygon::getFrame() const
+FlashGeoRect FlashGeoPolygon::getFrame() const
 {
   using namespace std;
   auto minx = numeric_limits<int>().max();
@@ -196,7 +196,7 @@ KGeoRect KGeoPolygon::getFrame() const
     maxx = max(p.lon, maxx);
     maxy = max(p.lat, maxy);
   }
-  KGeoRect rect;
+  FlashGeoRect rect;
   rect.top_left.lon     = minx;
   rect.top_left.lat     = miny;
   rect.bottom_right.lon = maxx;
@@ -204,9 +204,10 @@ KGeoRect KGeoPolygon::getFrame() const
   return rect;
 }
 
-void KGeoPolygon::save(QByteArray& ba, int coor_precision_coef) const
+void FlashGeoPolygon::save(QByteArray& ba,
+                           int         coor_precision_coef) const
 {
-  using namespace KSerialize;
+  using namespace FlashSerialize;
   write(ba, count());
 
   if (count() == 1)
@@ -274,7 +275,7 @@ void KGeoPolygon::save(QByteArray& ba, int coor_precision_coef) const
   }
 }
 
-QPolygonF KGeoPolygon::toPolygonM()
+QPolygonF FlashGeoPolygon::toPolygonM()
 {
   QPolygonF ret;
   for (auto p: *this)
@@ -282,10 +283,10 @@ QPolygonF KGeoPolygon::toPolygonM()
   return ret;
 }
 
-void KGeoPolygon::load(const QByteArray& ba, int& pos,
-                       int coor_precision_coef)
+void FlashGeoPolygon::load(const QByteArray& ba, int& pos,
+                           int coor_precision_coef)
 {
-  using namespace KSerialize;
+  using namespace FlashSerialize;
   int point_count;
   read(ba, pos, point_count);
   resize(point_count);
@@ -297,7 +298,7 @@ void KGeoPolygon::load(const QByteArray& ba, int& pos,
     return;
   }
 
-  KGeoCoor top_left;
+  FlashGeoCoor top_left;
   read(ba, pos, top_left);
 
   uchar span_type;

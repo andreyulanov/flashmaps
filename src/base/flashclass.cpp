@@ -1,5 +1,5 @@
-#include "kclass.h"
-#include "kserialize.h"
+#include "flashclass.h"
+#include "flashserialize.h"
 #include <math.h>
 #include <QFile>
 #include <QJsonDocument>
@@ -7,9 +7,9 @@
 #include <QJsonObject>
 #include <QMetaEnum>
 
-void KClass::save(QFile* f) const
+void FlashClass::save(QFile* f) const
 {
-  using namespace KSerialize;
+  using namespace FlashSerialize;
   write(f, id);
   write(f, type);
   write(f, style);
@@ -33,14 +33,14 @@ void KClass::save(QFile* f) const
   write(f, image);
 }
 
-int KClass::getWidthPix() const
+int FlashClass::getWidthPix() const
 {
   return round(width_mm / pixel_size_mm);
 }
 
-void KClass::load(QFile* f, double _pixel_size_mm)
+void FlashClass::load(QFile* f, double _pixel_size_mm)
 {
-  using namespace KSerialize;
+  using namespace FlashSerialize;
   pixel_size_mm = _pixel_size_mm;
   read(f, id);
   read(f, type);

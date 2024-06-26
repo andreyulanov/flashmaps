@@ -1,9 +1,9 @@
-#include "kdatetime.h"
+#include "flashdatetime.h"
 
 #include <QStringList>
 #include <math.h>
 
-KDateTime::KDateTime()
+FlashDateTime::FlashDateTime()
 {
   year  = 0;
   month = 0;
@@ -14,7 +14,7 @@ KDateTime::KDateTime()
   tz    = 0;
 }
 
-static QDateTime toQDateTime(KDateTime dt)
+static QDateTime toQDateTime(FlashDateTime dt)
 {
   QDateTime qdt(QDate(dt.getYear(), dt.getMonth(), dt.getDay()),
                 QTime(dt.getHour(), dt.getMin(), dt.getSec()));
@@ -22,15 +22,17 @@ static QDateTime toQDateTime(KDateTime dt)
   return qdt;
 }
 
-static KDateTime fromQDateTime(QDateTime dt, double time_zone)
+static FlashDateTime fromQDateTime(QDateTime dt, double time_zone)
 {
-  return KDateTime(dt.date().year(), dt.date().month(),
-                   dt.date().day(), dt.time().hour(),
-                   dt.time().minute(), dt.time().second(), time_zone);
+  return FlashDateTime(dt.date().year(), dt.date().month(),
+                       dt.date().day(), dt.time().hour(),
+                       dt.time().minute(), dt.time().second(),
+                       time_zone);
 }
 
-KDateTime::KDateTime(int _year, int _month, int _day, int _hour,
-                     int _min, int _sec, double _tz)
+FlashDateTime::FlashDateTime(int _year, int _month, int _day,
+                             int _hour, int _min, int _sec,
+                             double _tz)
 {
   year  = _year;
   month = _month;
@@ -41,7 +43,7 @@ KDateTime::KDateTime(int _year, int _month, int _day, int _hour,
   setTimeZone(_tz);
 }
 
-KDateTime::KDateTime(QDateTime qdt)
+FlashDateTime::FlashDateTime(QDateTime qdt)
 {
   year  = qdt.date().year();
   month = qdt.date().month();
@@ -52,53 +54,53 @@ KDateTime::KDateTime(QDateTime qdt)
   setTimeZone(1.0 * qdt.offsetFromUtc() / 3600);
 }
 
-int KDateTime::getYear() const
+int FlashDateTime::getYear() const
 {
   return year;
 }
 
-int KDateTime::getMonth() const
+int FlashDateTime::getMonth() const
 {
   return month;
 }
 
-int KDateTime::getDay() const
+int FlashDateTime::getDay() const
 {
   return day;
 }
 
-int KDateTime::getHour() const
+int FlashDateTime::getHour() const
 {
   return hour;
 }
 
-int KDateTime::getMin() const
+int FlashDateTime::getMin() const
 {
   return min;
 }
 
-int KDateTime::getSec() const
+int FlashDateTime::getSec() const
 {
   return sec;
 }
 
-double KDateTime::getTimeZone() const
+double FlashDateTime::getTimeZone() const
 {
   return (1.0 * int(tz)) / time_zone_coef;
 }
 
-void KDateTime::setTimeZone(double v)
+void FlashDateTime::setTimeZone(double v)
 {
   tz = int(v * time_zone_coef);
 }
 
-bool KDateTime::isEqual(const KDateTime& v) const
+bool FlashDateTime::isEqual(const FlashDateTime& v) const
 {
   return year == v.year && month == v.month && day == v.day &&
          hour == v.hour && min == v.min && sec == v.sec && tz == v.tz;
 }
 
-QString KDateTime::toString(QString format) const
+QString FlashDateTime::toString(QString format) const
 {
   if (format.isEmpty())
   {
@@ -109,9 +111,9 @@ QString KDateTime::toString(QString format) const
     return toQDateTime(*this).toString(format);
 }
 
-KDateTime KDateTime::fromString(QString str)
+FlashDateTime FlashDateTime::fromString(QString str)
 {
-  KDateTime dt;
+  FlashDateTime dt;
   dt.year  = str.mid(0, 4).toDouble();
   dt.month = str.mid(5, 2).toDouble();
   dt.day   = str.mid(8, 2).toDouble();
@@ -122,12 +124,12 @@ KDateTime KDateTime::fromString(QString str)
   return dt;
 }
 
-bool KDateTime::isValid() const
+bool FlashDateTime::isValid() const
 {
   return (bool)year;
 }
 
-int KDateTime::secsTo(KDateTime v) const
+int FlashDateTime::secsTo(FlashDateTime v) const
 {
   QDateTime dt1 = toQDateTime(*this);
   dt1           = dt1.addSecs(-getTimeZone() * 3600);
@@ -136,28 +138,28 @@ int KDateTime::secsTo(KDateTime v) const
   return dt1.secsTo(dt2);
 }
 
-int KDateTime::secsToWithoutTZ(KDateTime v) const
+int FlashDateTime::secsToWithoutTZ(FlashDateTime v) const
 {
   QDateTime dt1 = toQDateTime(*this);
   QDateTime dt2 = toQDateTime(v);
   return dt1.secsTo(dt2);
 }
 
-KDateTime KDateTime::addDays(int days)
+FlashDateTime FlashDateTime::addDays(int days)
 {
   QDateTime dt1 = toQDateTime(*this);
   QDateTime dt2 = dt1.addDays(days);
   return fromQDateTime(dt2, getTimeZone());
 }
 
-KDateTime KDateTime::addSecs(int secs)
+FlashDateTime FlashDateTime::addSecs(int secs)
 {
   QDateTime dt1 = toQDateTime(*this);
   QDateTime dt2 = dt1.addSecs(secs);
   return fromQDateTime(dt2, getTimeZone());
 }
 
-QTime KDateTime::str2time(QString str)
+QTime FlashDateTime::str2time(QString str)
 {
   QStringList str_list = str.split(':');
   if (str_list.count() < 3)
@@ -169,7 +171,7 @@ QTime KDateTime::str2time(QString str)
   return t;
 }
 
-QDate KDateTime::str2date(QString str)
+QDate FlashDateTime::str2date(QString str)
 {
   QStringList str_list = str.split('.');
   if (str_list.count() < 3)
@@ -181,7 +183,7 @@ QDate KDateTime::str2date(QString str)
   return d;
 }
 
-int KDateTime::rus2sec(QString str)
+int FlashDateTime::rus2sec(QString str)
 {
   QStringList str_list = str.split(' ');
   if (str_list.count() == 2)
@@ -198,7 +200,7 @@ int KDateTime::rus2sec(QString str)
     return 0;
 }
 
-QString KDateTime::sec2str(int t)
+QString FlashDateTime::sec2str(int t)
 {
   int h = t / 3600;
   int m = (t - h * 3600) / 60;
@@ -209,7 +211,7 @@ QString KDateTime::sec2str(int t)
     return QString().asprintf("%02d:%02d:%02d", h, m, s);
 }
 
-QString KDateTime::timezone2str(double t)
+QString FlashDateTime::timezone2str(double t)
 {
   int     h = (int)t;
   QString str;
@@ -223,7 +225,7 @@ QString KDateTime::timezone2str(double t)
   return str;
 }
 
-double KDateTime::str2timezone(QString str)
+double FlashDateTime::str2timezone(QString str)
 {
   double sign = 1;
   if (str.at(0) == '-')

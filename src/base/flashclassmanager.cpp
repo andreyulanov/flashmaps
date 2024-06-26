@@ -1,10 +1,10 @@
-#include "kclassmanager.h"
+#include "flashclassmanager.h"
 #include <QJsonDocument>
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QMetaEnum>
 
-void KClassManager::loadClasses(QString path, QString images_dir)
+void FlashClassManager::loadClasses(QString path, QString images_dir)
 {
   QFile         f(path);
   QSet<QString> id_set;
@@ -44,7 +44,7 @@ void KClassManager::loadClasses(QString path, QString images_dir)
           continue;
         }
 
-        KClass cl;
+        FlashClass cl;
 
         cl.id = obj.value("id").toString();
         if (id_set.contains(cl.id))
@@ -58,8 +58,8 @@ void KClassManager::loadClasses(QString path, QString images_dir)
         if (!type_str.isEmpty())
         {
           bool ok = false;
-          cl.type = static_cast<KClass::Type>(
-              QMetaEnum::fromType<KClass::Type>().keyToValue(
+          cl.type = static_cast<FlashClass::Type>(
+              QMetaEnum::fromType<FlashClass::Type>().keyToValue(
                   type_str.toUtf8(), &ok));
           if (!ok)
           {
@@ -68,13 +68,13 @@ void KClassManager::loadClasses(QString path, QString images_dir)
           }
         }
 
-        cl.style       = KClass::Solid;
+        cl.style       = FlashClass::Solid;
         auto style_str = obj.value("style").toString();
         if (!style_str.isEmpty())
         {
           bool ok  = false;
-          cl.style = static_cast<KClass::Style>(
-              QMetaEnum::fromType<KClass::Style>().keyToValue(
+          cl.style = static_cast<FlashClass::Style>(
+              QMetaEnum::fromType<FlashClass::Style>().keyToValue(
                   style_str.toUtf8(), &ok));
           if (!ok)
           {
@@ -138,12 +138,12 @@ void KClassManager::loadClasses(QString path, QString images_dir)
   }
 }
 
-KClassManager::KClassManager(QString _images_dir)
+FlashClassManager::FlashClassManager(QString _images_dir)
 {
   images_dir = _images_dir;
 }
 
-int KClassManager::getClassIdxById(QString id)
+int FlashClassManager::getClassIdxById(QString id)
 {
   for (int i = -1; auto cl: classes)
   {
@@ -154,59 +154,59 @@ int KClassManager::getClassIdxById(QString id)
   return -1;
 }
 
-KClass KClassManager::getClassById(QString id)
+FlashClass FlashClassManager::getClassById(QString id)
 {
   auto idx = getClassIdxById(id);
   if (idx >= 0)
     return classes.at(idx);
   else
-    return KClass();
+    return FlashClass();
 }
 
-QVector<KClass> KClassManager::getClasses()
+QVector<FlashClass> FlashClassManager::getClasses()
 {
   return classes;
 }
 
-KClassImageList KClassManager::getClassImageList()
+FlashClassImageList FlashClassManager::getClassImageList()
 {
-  QVector<KClassImage> ret;
+  QVector<FlashClassImage> ret;
   for (auto cl: classes)
     ret.append({cl.id, cl.image});
   return ret;
 }
 
-void KClassManager::setMainMip(double v)
+void FlashClassManager::setMainMip(double v)
 {
   main_mip = v;
 }
 
-double KClassManager::getMainMip()
+double FlashClassManager::getMainMip()
 {
   return main_mip;
 }
 
-void KClassManager::setTileMip(double v)
+void FlashClassManager::setTileMip(double v)
 {
   tile_mip = v;
 }
 
-double KClassManager::getTileMip()
+double FlashClassManager::getTileMip()
 {
   return tile_mip;
 }
 
-void KClassManager::setDefaultCoorPrecisionCoef(double v)
+void FlashClassManager::setDefaultCoorPrecisionCoef(double v)
 {
   default_coor_precision_coef = v;
 }
 
-double KClassManager::getDefaultCoorPrecisionCoef()
+double FlashClassManager::getDefaultCoorPrecisionCoef()
 {
   return default_coor_precision_coef;
 }
 
-QString KClassManager::getErrorStr()
+QString FlashClassManager::getErrorStr()
 {
   return error_str;
 }

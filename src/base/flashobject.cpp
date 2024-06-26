@@ -1,13 +1,13 @@
 #include <math.h>
 #include <QUuid>
 #include <QDebug>
-#include "kobject.h"
-#include "kserialize.h"
+#include "flashobject.h"
+#include "flashserialize.h"
 
-void FlashMapObject::load(QVector<KClass>& class_list, int& pos,
-                   const QByteArray& ba)
+void FlashMapObject::load(QVector<FlashClass>& class_list, int& pos,
+                          const QByteArray& ba)
 {
-  using namespace KSerialize;
+  using namespace FlashSerialize;
 
   uchar has_name;
   read(ba, pos, has_name);
@@ -27,10 +27,10 @@ void FlashMapObject::load(QVector<KClass>& class_list, int& pos,
 
   if (is_point)
   {
-    KGeoCoor p;
+    FlashGeoCoor p;
     memcpy((char*)&p, (char*)&ba.data()[pos], sizeof(p));
     pos += sizeof(p);
-    KGeoPolygon polygon;
+    FlashGeoPolygon polygon;
     polygon.append(p);
     polygons.append(polygon);
     frame.top_left     = p;
@@ -60,10 +60,10 @@ void FlashMapObject::load(QVector<KClass>& class_list, int& pos,
   }
 }
 
-KGeoCoor FlashMapObject::getCenter()
+FlashGeoCoor FlashMapObject::getCenter()
 {
   if (polygons.isEmpty())
-    return KGeoCoor();
+    return FlashGeoCoor();
   auto   polygon = polygons.first();
   auto   frame   = polygon.getFrame();
   auto   tl      = frame.top_left;
@@ -72,13 +72,13 @@ KGeoCoor FlashMapObject::getCenter()
   double lon     = (tl.longitude() + br.longitude()) * 0.5;
   if (fabs(lon - tl.longitude()) > 90)
     lon += 180;
-  return KGeoCoor().fromDegs(lat, lon);
+  return FlashGeoCoor().fromDegs(lat, lon);
 }
 
-void FlashMapObject::save(const QVector<KClass>& class_list,
-                   QByteArray&            ba) const
+void FlashMapObject::save(const QVector<FlashClass>& class_list,
+                          QByteArray&                ba) const
 {
-  using namespace KSerialize;
+  using namespace FlashSerialize;
   write(ba, (uchar)(name.count() > 0));
   if (!name.isEmpty())
     write(ba, name);
@@ -123,7 +123,7 @@ void FlashFreeObject::save(QString path)
     return;
   }
 
-  using namespace KSerialize;
+  using namespace FlashSerialize;
 
   cl.save(&f);
   write(&f, polygons.count());
@@ -145,7 +145,7 @@ void FlashFreeObject::load(QString path, double pixel_size_mm)
     return;
   }
 
-  using namespace KSerialize;
+  using namespace FlashSerialize;
 
   cl.load(&f, pixel_size_mm);
   int n;

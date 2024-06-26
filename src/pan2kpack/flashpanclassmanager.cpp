@@ -1,15 +1,16 @@
-#include "kpanclassmanager.h"
+#include "flashpanclassmanager.h"
 #include <QJsonDocument>
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QMetaEnum>
 
-KPanClassManager::KPanClassManager(QString image_dir):
-    KClassManager(image_dir)
+FlashPanClassManager::FlashPanClassManager(QString image_dir):
+    FlashClassManager(image_dir)
 {
 }
 
-void KPanClassManager::loadClasses(QString path, QString images_dir)
+void FlashPanClassManager::loadClasses(QString path,
+                                       QString images_dir)
 {
   QFile         f(path);
   QSet<QString> id_set;
@@ -49,7 +50,7 @@ void KPanClassManager::loadClasses(QString path, QString images_dir)
           continue;
         }
 
-        auto sh = new KPanClass;
+        auto sh = new FlashPanClass;
 
         sh->id = obj.value("id").toString();
         if (id_set.contains(sh->id))
@@ -67,8 +68,8 @@ void KPanClassManager::loadClasses(QString path, QString images_dir)
         if (!type_str.isEmpty())
         {
           bool ok  = false;
-          sh->type = static_cast<KClass::Type>(
-              QMetaEnum::fromType<KClass::Type>().keyToValue(
+          sh->type = static_cast<FlashClass::Type>(
+              QMetaEnum::fromType<FlashClass::Type>().keyToValue(
                   type_str.toUtf8(), &ok));
           if (!ok)
           {
@@ -77,13 +78,13 @@ void KPanClassManager::loadClasses(QString path, QString images_dir)
           }
         }
 
-        sh->style      = KClass::Solid;
+        sh->style      = FlashClass::Solid;
         auto style_str = obj.value("style").toString();
         if (!style_str.isEmpty())
         {
           bool ok   = false;
-          sh->style = static_cast<KClass::Style>(
-              QMetaEnum::fromType<KClass::Style>().keyToValue(
+          sh->style = static_cast<FlashClass::Style>(
+              QMetaEnum::fromType<FlashClass::Style>().keyToValue(
                   style_str.toUtf8(), &ok));
           if (!ok)
           {
@@ -146,7 +147,7 @@ void KPanClassManager::loadClasses(QString path, QString images_dir)
             auto attr_obj = attr_entry.toObject();
             if (obj.isEmpty())
               continue;
-            KPanAttribute attr;
+            FlashPanAttribute attr;
             attr.code    = attr_obj.value("code").toInt();
             attr.name    = attr_obj.value("name").toString();
             attr.visible = attr_obj.value("visible").toBool();
@@ -166,14 +167,14 @@ void KPanClassManager::loadClasses(QString path, QString images_dir)
   }
 }
 
-QVector<KPanClass*> KPanClassManager::getClasses()
+QVector<FlashPanClass*> FlashPanClassManager::getClasses()
 {
   return pan_classes;
 }
 
-int KPanClassManager::getClassIdx(int code, QString key,
-                                  QStringList attr_names,
-                                  QStringList attr_values)
+int FlashPanClassManager::getClassIdx(int code, QString key,
+                                      QStringList attr_names,
+                                      QStringList attr_values)
 {
   for (int idx = -1; auto& sh: pan_classes)
   {

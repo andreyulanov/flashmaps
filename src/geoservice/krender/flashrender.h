@@ -37,7 +37,7 @@ private:
   struct DrawTextEntry
   {
     QString       text;
-    const KClass* cl;
+    const FlashClass* cl;
     QRect         rect;
     QRect         actual_rect;
     Qt::Alignment alignment;
@@ -61,7 +61,7 @@ private:
   {
     QRect         rect;
     QStringList   str_list;
-    const KClass* cl;
+    const FlashClass* cl;
   };
 
   Q_OBJECT
@@ -113,7 +113,7 @@ private:
   void addDrawTextEntry(QVector<DrawTextEntry>& draw_text_array,
                         DrawTextEntry           new_dte);
 
-  QPolygon poly2pix(const KGeoPolygon& polygon);
+  QPolygon poly2pix(const FlashGeoPolygon& polygon);
   void     paintPointName(QPainter* p, const QString& text,
                           const QColor& tcolor);
   void     paintPointObject(QPainter* p, const FlashRenderPack& pack,
@@ -131,7 +131,7 @@ private:
   void     render();
   QPoint   meters2pix(QPointF m) const;
   QPointF  pix2meters(QPointF pix) const;
-  QPoint   deg2pix(KGeoCoor) const;
+  QPoint   deg2pix(FlashGeoCoor) const;
   TileCoor getBigTileCoor(TileCoor);
   QString  getTileName(TileCoor);
 

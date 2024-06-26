@@ -11,14 +11,14 @@ LIBS += -L$$PWD/krender
 INCLUDEPATH += $$PWD/../base
 
 HEADERS += \
+    ../base/flashbase.h \
+    ../base/flashclass.h \
+    ../base/flashclassmanager.h \
+    ../base/flashdatetime.h \
+    ../base/flashlocker.h \
+    ../base/flashobject.h \
     ../base/flashpack.h \
-    ../base/kbase.h \
-    ../base/kclass.h \
-    ../base/kclassmanager.h \
-    ../base/kdatetime.h \
-    ../base/klocker.h \
-    ../base/kobject.h \
-    ../base/kserialize.h \
+    ../base/flashserialize.h \
     krender/flashrender.h \
     krender/flashrenderpack.h \
     qgeomapreplyflashmaps.h \
@@ -28,13 +28,13 @@ HEADERS += \
     qgeotilefetcherflashmaps.h
 
 SOURCES += \
+    ../base/flashbase.cpp \
+    ../base/flashclass.cpp \
+    ../base/flashclassmanager.cpp \
+    ../base/flashdatetime.cpp \
+    ../base/flashlocker.cpp \
+    ../base/flashobject.cpp \
     ../base/flashpack.cpp \
-    ../base/kbase.cpp \
-    ../base/kclass.cpp \
-    ../base/kclassmanager.cpp \
-    ../base/kdatetime.cpp \
-    ../base/klocker.cpp \
-    ../base/kobject.cpp \
     krender/flashrender.cpp \
     krender/flashrenderpack.cpp \
     qgeomapreplyflashmaps.cpp \

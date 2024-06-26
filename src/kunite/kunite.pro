@@ -4,21 +4,21 @@ QMAKE_CXXFLAGS += -Wno-deprecated-enum-enum-conversion
 INCLUDEPATH += $$PWD/../base
 
 SOURCES += \
-    ../base/kbase.cpp \
-    ../base/klocker.cpp \
+    ../base/flashbase.cpp \
+    ../base/flashlocker.cpp \
     ../base/flashpack.cpp \
-    ../base/kclass.cpp \
-    ../base/kobject.cpp \
-    ../base/kclassmanager.cpp \
+    ../base/flashclass.cpp \
+    ../base/flashobject.cpp \
+    ../base/flashclassmanager.cpp \
     main.cpp
 
 HEADERS += \
-    ../lib/kbase.h \
-    ../base/klocker.h \
+    ../base/flashbase.h \
+    ../base/flashlocker.h \
     ../base/flashpack.h \
-    ../base/kserialize.h \
-    ../base/kclass.h \
-    ../base/kclassmanager.cpp
+    ../base/flashserialize.h \
+    ../base/flashclass.h \
+    ../base/flashclassmanager.cpp
 
 
 

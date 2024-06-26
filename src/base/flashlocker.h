@@ -2,7 +2,7 @@
 
 #include <QReadWriteLock>
 
-class KLocker
+class FlashLocker
 {
   QReadWriteLock* lock;
 
@@ -13,7 +13,7 @@ public:
     Write
   };
   bool has_locked;
-  KLocker(QReadWriteLock* lock, Mode);
+  FlashLocker(QReadWriteLock* lock, Mode);
   bool hasLocked();
-  virtual ~KLocker();
+  virtual ~FlashLocker();
 };

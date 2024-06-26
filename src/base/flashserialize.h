@@ -1,5 +1,4 @@
-#ifndef KSERIALIZE_H
-#define KSERIALIZE_H
+#pragma once
 
 #include <type_traits>
 #include <QFile>
@@ -7,7 +6,7 @@
 #include <QImage>
 #include <QPen>
 
-namespace KSerialize
+namespace FlashSerialize
 {
 template<class T>
 inline void write(QFile* f, const T& v)
@@ -275,4 +274,3 @@ inline void read(QFile* f, QMap<Key, Value>& map)
 }
 
 }
-#endif  // KSERIALIZE_H

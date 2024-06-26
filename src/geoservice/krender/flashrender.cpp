@@ -1,11 +1,11 @@
 ﻿#include "flashrender.h"
-#include "klocker.h"
+#include "flashlocker.h"
 #include <QDir>
 #include <QtConcurrent/QtConcurrent>
 #include <QPainterPath>
 #include <numeric>
 
-using namespace kmath;
+using namespace flashmath;
 
 QPoint FlashRender::meters2pix(QPointF coor_m) const
 {
@@ -264,7 +264,7 @@ QString FlashRender::getTileName(TileCoor t)
          ",x=" + QString("%1").arg(t.x) + +".bmp";
 }
 
-QPoint FlashRender::deg2pix(KGeoCoor kp) const
+QPoint FlashRender::deg2pix(FlashGeoCoor kp) const
 {
   auto m = kp.toMeters();
   return {int((m.x() - top_left_m.x()) / mip),
@@ -316,7 +316,7 @@ void FlashRender::paintPointObject(QPainter* p, const FlashRenderPack& pack,
   point_names[render_idx].append({rect, str_list, cl});
 }
 
-QPolygon FlashRender::poly2pix(const KGeoPolygon& polygon)
+QPolygon FlashRender::poly2pix(const FlashGeoPolygon& polygon)
 {
   QPoint   prev_point_pix = deg2pix(polygon.first());
   QPolygon pl;
@@ -362,15 +362,15 @@ void FlashRender::paintPolygonObject(QPainter* p, const FlashRenderPack& pack,
     p->setPen(Qt::NoPen);
   else
     p->setPen(cl->pen);
-  if (cl->style == KClass::Hatch)
+  if (cl->style == FlashClass::Hatch)
     p->setBrush(QBrush(cl->brush, Qt::HorPattern));
-  else if (cl->style == KClass::BDiag)
+  else if (cl->style == FlashClass::BDiag)
     p->setBrush(QBrush(cl->brush, Qt::BDiagPattern));
-  else if (cl->style == KClass::FDiag)
+  else if (cl->style == FlashClass::FDiag)
     p->setBrush(QBrush(cl->brush, Qt::FDiagPattern));
-  else if (cl->style == KClass::Horiz)
+  else if (cl->style == FlashClass::Horiz)
     p->setBrush(QBrush(cl->brush, Qt::HorPattern));
-  else if (cl->style == KClass::Vert)
+  else if (cl->style == FlashClass::Vert)
     p->setBrush(QBrush(cl->brush, Qt::VerPattern));
   else
     p->setBrush(cl->brush);
@@ -444,9 +444,9 @@ void FlashRender::paintLineObject(QPainter*          painter,
   auto cl = &pack.classes[obj.class_idx];
 
   Qt::PenStyle style = Qt::SolidLine;
-  if (cl->style == KClass::Dash)
+  if (cl->style == FlashClass::Dash)
     style = Qt::DashLine;
-  if (cl->style == KClass::Dots)
+  if (cl->style == FlashClass::Dots)
     style = Qt::DotLine;
   int obj_name_width = 0;
   if (!obj.name.isEmpty())
@@ -487,7 +487,7 @@ void FlashRender::paintLineObject(QPainter*          painter,
     auto size_pix     = (size_m.width() + size_m.height()) / mip;
     auto hatch_length = size_pix * 0.05;
     if (hatch_length > 5)
-      if (cl->style == KClass::Hatch)
+      if (cl->style == FlashClass::Hatch)
       {
         if (hatch_length > 5)
           hatch_length = 5;
@@ -638,13 +638,13 @@ void FlashRender::paintObject(QPainter* p, const FlashRenderPack* map,
   auto cl = &map->classes[obj.class_idx];
   switch (cl->type)
   {
-  case KClass::Point:
+  case FlashClass::Point:
     paintPointObject(p, *map, obj, render_idx);
     break;
-  case KClass::Line:
+  case FlashClass::Line:
     paintLineObject(p, *map, obj, render_idx, line_iter);
     break;
-  case KClass::Polygon:
+  case FlashClass::Polygon:
     paintPolygonObject(p, *map, obj, render_idx);
     break;
   default:
@@ -765,10 +765,10 @@ void FlashRender::render(QPainter* p, QVector<FlashRenderPack*> render_packs,
 {
   for (auto map: render_packs)
   {
-    KLocker main_locker(&map->main_lock, KLocker::Read);
+    FlashLocker main_locker(&map->main_lock, FlashLocker::Read);
     if (!main_locker.hasLocked())
       continue;
-    KLocker tile_locker(&map->tile_lock, KLocker::Read);
+    FlashLocker tile_locker(&map->tile_lock, FlashLocker::Read);
     if (!tile_locker.hasLocked())
       continue;
 
@@ -807,10 +807,10 @@ void FlashRender::renderPack(QPainter* p, const FlashRenderPack* pack,
 
       auto cl = &pack->classes[obj->class_idx];
 
-      if (cl->type != KClass::Line && line_iter == 1)
+      if (cl->type != FlashClass::Line && line_iter == 1)
         continue;
 
-      if (cl->type == KClass::Line && line_iter == 0 &&
+      if (cl->type == FlashClass::Line && line_iter == 0 &&
           cl->brush == Qt::black)
         continue;
 
@@ -865,7 +865,7 @@ void FlashRender::run()
 {
   int tile_count      = pow(2, tile_coor.z);
   int world_width_pix = tile_side * tile_count;
-  mip                 = 2 * M_PI * kmath::earth_r / world_width_pix;
+  mip                 = 2 * M_PI * flashmath::earth_r / world_width_pix;
   auto big_tile_coor  = getBigTileCoor(tile_coor);
   top_left_m = {(big_tile_coor.x - tile_count / 2) * tile_side * mip,
                 (big_tile_coor.y - tile_count / 2) * tile_side * mip};
@@ -919,7 +919,7 @@ void FlashRender::run()
       if (!intersecting_packs.contains(pack_idx))
         continue;
 
-    KLocker big_locker(&pack->main_lock, KLocker::Read);
+    FlashLocker big_locker(&pack->main_lock, FlashLocker::Read);
     if (!big_locker.hasLocked())
       continue;
 
@@ -930,7 +930,7 @@ void FlashRender::run()
     if (pack_idx > 0 && !render_frame_m.intersects(pack_rect_m))
       continue;
 
-    KLocker small_locker(&pack->tile_lock, KLocker::Read);
+    FlashLocker small_locker(&pack->tile_lock, FlashLocker::Read);
     if (!small_locker.hasLocked())
       continue;
 

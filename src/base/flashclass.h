@@ -1,8 +1,8 @@
 #pragma once
 
-#include "kbase.h"
+#include "flashbase.h"
 
-struct KClass
+struct FlashClass
 {
   Q_GADGET
 public:
@@ -44,10 +44,10 @@ public:
   int     getWidthPix() const;
 };
 
-struct KClassImage
+struct FlashClassImage
 {
   QString id;
   QImage  image;
 };
 
-typedef QVector<KClassImage> KClassImageList;
+typedef QVector<FlashClassImage> FlashClassImageList;

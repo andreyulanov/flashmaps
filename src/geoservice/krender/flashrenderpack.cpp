@@ -1,5 +1,5 @@
 #include "flashrenderpack.h"
-#include "klocker.h"
+#include "flashlocker.h"
 #include <QDebug>
 
 FlashRenderPack::FlashRenderPack(const QString& _path)
@@ -19,10 +19,10 @@ bool FlashRenderPack::intersects(QPolygonF polygon_m) const
 
 void FlashRenderPack::clear()
 {
-  KLocker big_locker(&main_lock, KLocker::Write);
+  FlashLocker big_locker(&main_lock, FlashLocker::Write);
   if (!big_locker.hasLocked())
     return;
-  KLocker small_locker(&tile_lock, KLocker::Write);
+  FlashLocker small_locker(&tile_lock, FlashLocker::Write);
   if (!small_locker.hasLocked())
     return;
   FlashPack::clear();

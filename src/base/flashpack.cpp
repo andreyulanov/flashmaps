@@ -1,7 +1,7 @@
 #include "math.h"
 #include "flashpack.h"
-#include "kserialize.h"
-#include "klocker.h"
+#include "flashserialize.h"
+#include "flashlocker.h"
 #include <QDebug>
 #include <QElapsedTimer>
 #include <QDateTime>
@@ -30,7 +30,7 @@ qint64 FlashPack::count()
 
 void FlashPack::save(QString path) const
 {
-  using namespace KSerialize;
+  using namespace FlashSerialize;
 
   QFile f(path);
   if (!f.open(QIODevice::WriteOnly))
@@ -108,7 +108,7 @@ void FlashPack::loadMain(QString path, bool load_objects,
   QElapsedTimer t;
   t.start();
 
-  using namespace KSerialize;
+  using namespace FlashSerialize;
   QFile f(path);
   if (!f.open(QIODevice::ReadOnly))
   {
@@ -161,7 +161,7 @@ void FlashPack::loadMain(QString path, bool load_objects,
   qDebug() << "class_count" << class_count;
   for (int i = 0; i < class_count; i++)
   {
-    KClass cl;
+    FlashClass cl;
     cl.load(&f, pixel_size_mm);
     classes.append(cl);
   }
@@ -211,7 +211,7 @@ void FlashPack::loadTile(QString path, int tile_idx)
   qDebug() << "loading tile" << tile_idx << "from" << path;
   QElapsedTimer t;
   t.start();
-  using namespace KSerialize;
+  using namespace FlashSerialize;
   QFile f(path);
   if (!f.open(QIODevice::ReadOnly))
   {

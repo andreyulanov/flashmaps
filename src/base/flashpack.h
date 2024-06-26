@@ -7,7 +7,7 @@
 #include <QMap>
 #include <QElapsedTimer>
 #include <QVariant>
-#include "kobject.h"
+#include "flashobject.h"
 
 struct FlashTile: public QVector<FlashMapObject>
 {
@@ -27,10 +27,10 @@ struct FlashPack
   double main_mip = 0;
   double tile_mip = 0;
 
-  QVector<KClass>      classes;
-  KGeoRect             frame;
+  QVector<FlashClass>      classes;
+  FlashGeoRect             frame;
   QVector<QPolygonF>   borders_m;
-  QVector<KGeoPolygon> borders;
+  QVector<FlashGeoPolygon> borders;
   FlashTile                main;
   QVector<FlashTile>       tiles;
 

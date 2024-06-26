@@ -1,6 +1,6 @@
-#include "klocker.h"
+#include "flashlocker.h"
 
-KLocker::KLocker(QReadWriteLock* _lock, Mode mode)
+FlashLocker::FlashLocker(QReadWriteLock* _lock, Mode mode)
 {
   lock       = _lock;
   has_locked = false;
@@ -10,12 +10,12 @@ KLocker::KLocker(QReadWriteLock* _lock, Mode mode)
     has_locked = lock->tryLockForWrite();
 }
 
-bool KLocker::hasLocked()
+bool FlashLocker::hasLocked()
 {
   return has_locked;
 }
 
-KLocker::~KLocker()
+FlashLocker::~FlashLocker()
 {
   if (has_locked)
     lock->unlock();

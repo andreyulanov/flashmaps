@@ -1,9 +1,9 @@
 #ifndef KPANCLASS_H
 #define KPANCLASS_H
 
-#include "kclass.h"
+#include "flashclass.h"
 
-struct KPanAttribute
+struct FlashPanAttribute
 {
   QString name;
   int     code;
@@ -11,14 +11,14 @@ struct KPanAttribute
   double  max_mip;
 };
 
-struct KPanClass: public KClass
+struct FlashPanClass: public FlashClass
 {
   int                    pan_code = 0;
   QString                pan_key;
   int                    name_code = 0;
   QString                attrname;
   QString                attrval;
-  QVector<KPanAttribute> attributes;
+  QVector<FlashPanAttribute> attributes;
 };
 
 #endif  // KPANCLASS_H
