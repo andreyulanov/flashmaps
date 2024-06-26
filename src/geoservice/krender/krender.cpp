@@ -25,7 +25,7 @@ QPointF KRender::pix2meters(QPointF pix) const
 KRender::KRender(Settings v)
 {
   s                 = v;
-  int big_tile_side = tile_side * big_tile_multiplier;
+  int big_tile_side = tile_side * s.big_tile_multiplier;
   pixmap            = QPixmap{big_tile_side, big_tile_side};
   QDir dir(s.map_dir);
   dir.setNameFilters({"*.kpack"});
@@ -251,8 +251,8 @@ void KRender::addDrawTextEntry(
 KRender::TileCoor KRender::getBigTileCoor(TileCoor t)
 {
   TileCoor bt;
-  bt.x = int(t.x / big_tile_multiplier) * big_tile_multiplier;
-  bt.y = int(t.y / big_tile_multiplier) * big_tile_multiplier;
+  bt.x = int(t.x / s.big_tile_multiplier) * s.big_tile_multiplier;
+  bt.y = int(t.y / s.big_tile_multiplier) * s.big_tile_multiplier;
   bt.z = t.z;
   return bt;
 }
@@ -279,8 +279,8 @@ void KRender::paintPointObject(QPainter* p, const KRenderPack& pack,
   auto coor_m = frame.top_left.toMeters();
 
   auto clip_safe_rect_m = render_frame_m.adjusted(
-      -max_object_name_length_pix * mip, -50 * mip,
-      max_object_name_length_pix * mip, 50 * mip);
+      -s.max_object_name_length_pix * mip, -50 * mip,
+      s.max_object_name_length_pix * mip, 50 * mip);
 
   if (!clip_safe_rect_m.contains(coor_m))
     return;
@@ -348,8 +348,8 @@ void KRender::paintPolygonObject(QPainter* p, const KRenderPack& pack,
   auto cl = &pack.classes[obj.class_idx];
 
   auto clip_safe_rect_m = render_frame_m.adjusted(
-      -max_object_name_length_pix * mip, -50 * mip,
-      max_object_name_length_pix * mip, 50 * mip);
+      -s.max_object_name_length_pix * mip, -50 * mip,
+      s.max_object_name_length_pix * mip, 50 * mip);
 
   if (!obj_frame_m.intersects(clip_safe_rect_m))
     return;
@@ -386,7 +386,7 @@ void KRender::paintPolygonObject(QPainter* p, const KRenderPack& pack,
          obj_span_pix <
              std::min(pixmap.width(), pixmap.height() / 2) &&
          obj_span_pix >
-             max_object_size_with_name_mm / s.pixel_size_mm) ||
+             s.max_object_size_with_name_mm / s.pixel_size_mm) ||
         !cl->image.isNull())
     {
 
@@ -435,8 +435,8 @@ void KRender::paintLineObject(QPainter*          painter,
   QRectF obj_frame_m = {top_left_m, bottom_right_m};
 
   auto clip_safe_rect_m = render_frame_m.adjusted(
-      -max_object_name_length_pix * mip, -50 * mip,
-      max_object_name_length_pix * mip, 50 * mip);
+      -s.max_object_name_length_pix * mip, -50 * mip,
+      s.max_object_name_length_pix * mip, 50 * mip);
 
   if (!obj_frame_m.intersects(clip_safe_rect_m))
     return;
@@ -857,7 +857,7 @@ void KRender::onFinished()
 {
   wait();
   big_tiles.append(big_tile);
-  while (big_tiles.count() > 2 * sqr(big_tile_multiplier))
+  while (big_tiles.count() > 4 * sqr(s.big_tile_multiplier))
     big_tiles.removeFirst();
 }
 
@@ -965,8 +965,8 @@ void KRender::run()
   paintPointNames(&p0);
 
   big_tile.clear();
-  for (int yi = 0; yi < s.tile_multiplier; yi++)
-    for (int xi = 0; xi < s.tile_multiplier; xi++)
+  for (int yi = 0; yi < s.big_tile_multiplier; yi++)
+    for (int xi = 0; xi < s.big_tile_multiplier; xi++)
     {
       TileCoor t;
       t.x     = big_tile_coor.x + xi;
@@ -980,6 +980,7 @@ void KRender::run()
 
       big_tile.append({getTileName(t), ba});
     }
+  qDebug() << "render time=" << total_render_time.elapsed();
 }
 
 void KRender::render()

@@ -10,19 +10,18 @@ class KRender: public QThread
 {
   friend class KRenderThread;
 
-  static constexpr int    tile_side                    = 256;
-  static constexpr int    big_tile_multiplier          = 8;
-  static constexpr int    max_object_name_length_pix   = 200;
-  static constexpr double max_object_size_with_name_mm = 20.0;
+  static constexpr int tile_side = 256;
 
 public:
   struct Settings
   {
-    double  pixel_size_mm         = 0.1;
-    int     tile_multiplier       = 8;
-    QColor  ocean_color           = QColor(150, 210, 240);
-    QColor  land_color            = QColor(250, 246, 230);
-    double  max_loaded_maps_count = 3;
+    int     big_tile_multiplier          = 4;
+    int     max_object_name_length_pix   = 200;
+    double  max_object_size_with_name_mm = 20.0;
+    double  pixel_size_mm                = 0.1;
+    QColor  ocean_color                  = QColor(150, 210, 240);
+    QColor  land_color                   = QColor(250, 246, 230);
+    double  max_loaded_maps_count        = 3;
     QString map_dir;
     QString world_map_name = "world.kpack";
   };

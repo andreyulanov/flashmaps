@@ -67,7 +67,7 @@ int main(int argc, char* argv[])
 {
   QCoreApplication::addLibraryPath(
       "/home/user/flashmaps/build-main-Desktop-Debug/"
-      "flashmaps-geoservice/plugins");
+      "geoservice/plugins");
 
   QGuiApplication app(argc, argv);
 
