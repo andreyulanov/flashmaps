@@ -1,6 +1,6 @@
 #pragma once
 
-#include "kpanclass.h"
+#include "flashpanclass.h"
 #include "flashclassmanager.h"
 
 class FlashPanClassManager: public FlashClassManager
