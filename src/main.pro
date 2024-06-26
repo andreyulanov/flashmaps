@@ -1,6 +1,7 @@
 TEMPLATE = subdirs
 
-SUBDIRS += geoservice flashmaps pan2kpack kunite
+android: SUBDIRS += geoservice flashmaps
+else: SUBDIRS += geoservice flashmaps pan2kpack kunite
 
 
 
