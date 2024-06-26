@@ -2,7 +2,7 @@
 
 #include "qgeoserviceproviderpluginflashmaps.h"
 #include <QtLocation/private/qgeotilefetcher_p.h>
-#include "krender/krender.h"
+#include "krender/flashrender.h"
 
 class QGeoTileSpec;
 class QGeoTiledMappingManagerEngine;
@@ -24,5 +24,5 @@ private:
   Q_DISABLE_COPY(QGeoTileFetcherFlashmaps)
 
   QPointer<QGeoTiledMappingManagerEngineFlashmaps> m_engineFlashmaps;
-  KRender*                                         m_render = nullptr;
+  FlashRender*                                         m_render = nullptr;
 };

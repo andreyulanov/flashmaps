@@ -1,15 +1,13 @@
 #pragma once
 
-#include "krenderpack.h"
+#include "flashrenderpack.h"
 #include <QReadWriteLock>
 #include <QThread>
 #include <QSet>
 #include <QMutex>
 
-class KRender: public QThread
+class FlashRender: public QThread
 {
-  friend class KRenderThread;
-
   static constexpr int tile_side = 256;
 
 public:
@@ -80,12 +78,14 @@ private:
   KRenderPackCollection packs;
   QFont                 font;
 
-  QVector<PointName>     point_names[KRenderPack::render_count];
-  QVector<DrawTextEntry> draw_text_array[KRenderPack::render_count];
-  QVector<NameHolder>    name_holder_array[KRenderPack::render_count];
-  QVector<QRect>         text_rect_array;
-  QSizeF                 size_m;
-  QRectF                 render_frame_m;
+  QVector<PointName> point_names[FlashRenderPack::render_count];
+  QVector<DrawTextEntry>
+      draw_text_array[FlashRenderPack::render_count];
+  QVector<NameHolder>
+                 name_holder_array[FlashRenderPack::render_count];
+  QVector<QRect> text_rect_array;
+  QSizeF         size_m;
+  QRectF         render_frame_m;
 
   static void paintOutlinedText(QPainter* p, const QString& text,
                                 const QColor& tcolor);
@@ -95,14 +95,14 @@ private:
   void onFinished();
 
   void insertPack(int idx, QString path, bool load_now);
-  void renderPack(QPainter* p, const KRenderPack* pack,
+  void renderPack(QPainter* p, const FlashRenderPack* pack,
                   int render_idx, int line_iter);
-  void render(QPainter* p, QVector<KRenderPack*> render_packs,
+  void render(QPainter* p, QVector<FlashRenderPack*> render_packs,
               int render_idx);
 
   bool checkMipRange(const KPack* pack, const KObject* obj);
 
-  void paintObject(QPainter* p, const KRenderPack* map,
+  void paintObject(QPainter* p, const FlashRenderPack* map,
                    const KObject& obj, int render_idx, int line_iter);
   void paintPointNames(QPainter* p);
   void paintLineNames(QPainter* p);
@@ -116,16 +116,16 @@ private:
   QPolygon poly2pix(const KGeoPolygon& polygon);
   void     paintPointName(QPainter* p, const QString& text,
                           const QColor& tcolor);
-  void     paintPointObject(QPainter* p, const KRenderPack& pack,
+  void     paintPointObject(QPainter* p, const FlashRenderPack& pack,
                             const KObject& obj, int render_idx);
-  void     paintPolygonObject(QPainter* p, const KRenderPack& pack,
-                              const KObject& obj, int render_idx);
-  void     paintLineObject(QPainter* painter, const KRenderPack& pack,
-                           const KObject& obj, int render_idx,
-                           int line_iter);
+  void paintPolygonObject(QPainter* p, const FlashRenderPack& pack,
+                          const KObject& obj, int render_idx);
+  void paintLineObject(QPainter* painter, const FlashRenderPack& pack,
+                       const KObject& obj, int render_idx,
+                       int line_iter);
   QRectF   getDrawRectM() const;
-  bool     needToLoadPack(const KRenderPack* pack,
-                          const QRectF&      draw_rect);
+  bool     needToLoadPack(const FlashRenderPack* pack,
+                          const QRectF&          draw_rect);
   void     checkLoad();
   void     checkUnload();
   void     render();
@@ -136,8 +136,8 @@ private:
   QString  getTileName(TileCoor);
 
 public:
-  KRender(Settings);
-  virtual ~KRender();
+  FlashRender(Settings);
+  virtual ~FlashRender();
   void       requestTile(TileCoor);
   QByteArray getTile(TileCoor);
 };

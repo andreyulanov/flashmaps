@@ -1,4 +1,4 @@
-﻿#include "krender.h"
+﻿#include "flashrender.h"
 #include "klocker.h"
 #include <QDir>
 #include <QtConcurrent/QtConcurrent>
@@ -7,14 +7,14 @@
 
 using namespace kmath;
 
-QPoint KRender::meters2pix(QPointF coor_m) const
+QPoint FlashRender::meters2pix(QPointF coor_m) const
 {
   auto rectm = getDrawRectM();
   int  pix_x = (coor_m.x() - rectm.left()) / mip;
   int  pix_y = (coor_m.y() - rectm.top()) / mip;
   return {pix_x, pix_y};
 }
-QPointF KRender::pix2meters(QPointF pix) const
+QPointF FlashRender::pix2meters(QPointF pix) const
 {
   auto   rectm = getDrawRectM();
   double xm    = pix.x() * mip + rectm.left();
@@ -22,7 +22,7 @@ QPointF KRender::pix2meters(QPointF pix) const
   return {xm, ym};
 }
 
-KRender::KRender(Settings v)
+FlashRender::FlashRender(Settings v)
 {
   s                 = v;
   int big_tile_side = tile_side * s.big_tile_multiplier;
@@ -42,16 +42,16 @@ KRender::KRender(Settings v)
     }
     insertPack(idx, fi.filePath(), load_now);
   }
-  connect(this, &QThread::finished, this, &KRender::onFinished);
+  connect(this, &QThread::finished, this, &FlashRender::onFinished);
 }
 
-KRender::~KRender()
+FlashRender::~FlashRender()
 {
   QThreadPool().globalInstance()->waitForDone();
   wait();
 }
 
-void KRender::requestTile(TileCoor t)
+void FlashRender::requestTile(TileCoor t)
 {
   if (t.z <= 3)
     return;
@@ -61,7 +61,7 @@ void KRender::requestTile(TileCoor t)
   render();
 }
 
-QByteArray KRender::getTile(TileCoor t)
+QByteArray FlashRender::getTile(TileCoor t)
 {
   auto tile_name = getTileName(t);
   for (auto big_tile: big_tiles)
@@ -72,16 +72,16 @@ QByteArray KRender::getTile(TileCoor t)
   return QByteArray();
 }
 
-void KRender::insertPack(int idx, QString path, bool load_now)
+void FlashRender::insertPack(int idx, QString path, bool load_now)
 {
   QThreadPool().globalInstance()->waitForDone();
   wait();
-  auto map = new KRenderPack(path);
+  auto map = new FlashRenderPack(path);
   map->loadMain(load_now, s.pixel_size_mm);
   packs.insert(idx, map);
 }
 
-QRectF KRender::getDrawRectM() const
+QRectF FlashRender::getDrawRectM() const
 {
   QSizeF size_m      = {pixmap.width() * mip, pixmap.height() * mip};
   QRectF draw_rect_m = {top_left_m.x(), top_left_m.y(),
@@ -89,7 +89,7 @@ QRectF KRender::getDrawRectM() const
   return draw_rect_m;
 }
 
-void KRender::checkUnload()
+void FlashRender::checkUnload()
 {
   auto draw_rect_m  = getDrawRectM();
   int  loaded_count = 0;
@@ -108,7 +108,7 @@ void KRender::checkUnload()
   }
 }
 
-bool KRender::needToLoadPack(const KRenderPack* pack,
+bool FlashRender::needToLoadPack(const FlashRenderPack* pack,
                              const QRectF&      draw_rect_m)
 {
   if (pack->main_mip > 0 && mip > pack->main_mip)
@@ -134,7 +134,7 @@ bool KRender::needToLoadPack(const KRenderPack* pack,
   return false;
 }
 
-void KRender::checkLoad()
+void FlashRender::checkLoad()
 {
   auto draw_rect_m = getDrawRectM();
   for (auto& pack: packs)
@@ -173,7 +173,7 @@ void KRender::checkLoad()
   }
 }
 
-void KRender::paintPointName(QPainter* p, const QString& text,
+void FlashRender::paintPointName(QPainter* p, const QString& text,
                              const QColor& tcolor)
 {
   QRect rect;
@@ -197,7 +197,7 @@ void KRender::paintPointName(QPainter* p, const QString& text,
   p->drawText(rect, flags, text);
 }
 
-void KRender::paintOutlinedText(QPainter* p, const QString& text,
+void FlashRender::paintOutlinedText(QPainter* p, const QString& text,
                                 const QColor& tcolor)
 {
   p->setPen(Qt::white);
@@ -210,7 +210,7 @@ void KRender::paintOutlinedText(QPainter* p, const QString& text,
   p->drawText(0, 0, text);
 }
 
-void KRender::paintOutlinedText(QPainter* p, const DrawTextEntry& dte)
+void FlashRender::paintOutlinedText(QPainter* p, const DrawTextEntry& dte)
 {
   p->setPen(Qt::white);
   auto shifts = {-2, 0, 2};
@@ -232,7 +232,7 @@ void KRender::paintOutlinedText(QPainter* p, const DrawTextEntry& dte)
               dte.text);
 }
 
-void KRender::addDrawTextEntry(
+void FlashRender::addDrawTextEntry(
     QVector<DrawTextEntry>& draw_text_array, DrawTextEntry new_dte)
 {
   bool can_fit = true;
@@ -248,7 +248,7 @@ void KRender::addDrawTextEntry(
     draw_text_array.append(new_dte);
 };
 
-KRender::TileCoor KRender::getBigTileCoor(TileCoor t)
+FlashRender::TileCoor FlashRender::getBigTileCoor(TileCoor t)
 {
   TileCoor bt;
   bt.x = int(t.x / s.big_tile_multiplier) * s.big_tile_multiplier;
@@ -257,21 +257,21 @@ KRender::TileCoor KRender::getBigTileCoor(TileCoor t)
   return bt;
 }
 
-QString KRender::getTileName(TileCoor t)
+QString FlashRender::getTileName(TileCoor t)
 {
   return "z=" + QString("%1").arg(t.z) +
          ",y=" + QString("%1").arg(t.y) +
          ",x=" + QString("%1").arg(t.x) + +".bmp";
 }
 
-QPoint KRender::deg2pix(KGeoCoor kp) const
+QPoint FlashRender::deg2pix(KGeoCoor kp) const
 {
   auto m = kp.toMeters();
   return {int((m.x() - top_left_m.x()) / mip),
           int((m.y() - top_left_m.y()) / mip)};
 }
 
-void KRender::paintPointObject(QPainter* p, const KRenderPack& pack,
+void FlashRender::paintPointObject(QPainter* p, const FlashRenderPack& pack,
                                const KObject& obj, int render_idx)
 {
   auto frame = obj.frame;
@@ -316,7 +316,7 @@ void KRender::paintPointObject(QPainter* p, const KRenderPack& pack,
   point_names[render_idx].append({rect, str_list, cl});
 }
 
-QPolygon KRender::poly2pix(const KGeoPolygon& polygon)
+QPolygon FlashRender::poly2pix(const KGeoPolygon& polygon)
 {
   QPoint   prev_point_pix = deg2pix(polygon.first());
   QPolygon pl;
@@ -335,7 +335,7 @@ QPolygon KRender::poly2pix(const KGeoPolygon& polygon)
   return pl;
 }
 
-void KRender::paintPolygonObject(QPainter* p, const KRenderPack& pack,
+void FlashRender::paintPolygonObject(QPainter* p, const FlashRenderPack& pack,
                                  const KObject& obj, int render_idx)
 {
   auto  frame = obj.frame;
@@ -422,8 +422,8 @@ void KRender::paintPolygonObject(QPainter* p, const KRenderPack& pack,
   }
 }
 
-void KRender::paintLineObject(QPainter*          painter,
-                              const KRenderPack& pack,
+void FlashRender::paintLineObject(QPainter*          painter,
+                              const FlashRenderPack& pack,
                               const KObject& obj, int render_idx,
                               int line_iter)
 {
@@ -599,7 +599,7 @@ void KRender::paintLineObject(QPainter*          painter,
   }
 }
 
-void KRender::NameHolder::fix(const KPack* pack, const KObject* _obj,
+void FlashRender::NameHolder::fix(const KPack* pack, const KObject* _obj,
                               const QPoint& start, const QPoint& end)
 {
   obj       = _obj;
@@ -612,7 +612,7 @@ void KRender::NameHolder::fix(const KPack* pack, const KObject* _obj,
   tcolor = pack->classes[_obj->class_idx].tcolor;
 }
 
-bool KRender::isCluttering(const QRect& rect)
+bool FlashRender::isCluttering(const QRect& rect)
 {
   bool clutter_flag = false;
   for (auto ex_rect: text_rect_array)
@@ -624,14 +624,14 @@ bool KRender::isCluttering(const QRect& rect)
   return clutter_flag;
 }
 
-bool KRender::checkMipRange(const KPack* pack, const KObject* obj)
+bool FlashRender::checkMipRange(const KPack* pack, const KObject* obj)
 {
   auto cl = &pack->classes[obj->class_idx];
   return (cl->min_mip == 0 || mip >= cl->min_mip) &&
          (cl->max_mip == 0 || mip <= cl->max_mip);
 }
 
-void KRender::paintObject(QPainter* p, const KRenderPack* map,
+void FlashRender::paintObject(QPainter* p, const FlashRenderPack* map,
                           const KObject& obj, int render_idx,
                           int line_iter)
 {
@@ -652,9 +652,9 @@ void KRender::paintObject(QPainter* p, const KRenderPack* map,
   }
 }
 
-void KRender::paintPointNames(QPainter* p)
+void FlashRender::paintPointNames(QPainter* p)
 {
-  for (int render_idx = 0; render_idx < KRenderPack::render_count;
+  for (int render_idx = 0; render_idx < FlashRenderPack::render_count;
        render_idx++)
     for (auto item: point_names[render_idx])
     {
@@ -687,7 +687,7 @@ void KRender::paintPointNames(QPainter* p)
     }
 }
 
-void KRender::paintLineNames(QPainter* p)
+void FlashRender::paintLineNames(QPainter* p)
 {
   text_rect_array.clear();
   auto f = p->font();
@@ -695,7 +695,7 @@ void KRender::paintLineNames(QPainter* p)
   f.setPixelSize(w);
   p->setFont(f);
 
-  for (int render_idx = 0; render_idx < KRenderPack::render_count;
+  for (int render_idx = 0; render_idx < FlashRenderPack::render_count;
        render_idx++)
     for (auto nh: name_holder_array[render_idx])
     {
@@ -724,9 +724,9 @@ void KRender::paintLineNames(QPainter* p)
     }
 }
 
-void KRender::paintPolygonNames(QPainter* p)
+void FlashRender::paintPolygonNames(QPainter* p)
 {
-  for (int render_idx = 0; render_idx < KRenderPack::render_count;
+  for (int render_idx = 0; render_idx < FlashRenderPack::render_count;
        render_idx++)
     for (auto& dte: draw_text_array[render_idx])
     {
@@ -760,7 +760,7 @@ void KRender::paintPolygonNames(QPainter* p)
     }
 }
 
-void KRender::render(QPainter* p, QVector<KRenderPack*> render_packs,
+void FlashRender::render(QPainter* p, QVector<FlashRenderPack*> render_packs,
                      int render_idx)
 {
   for (auto map: render_packs)
@@ -777,7 +777,7 @@ void KRender::render(QPainter* p, QVector<KRenderPack*> render_packs,
   }
 }
 
-void KRender::renderPack(QPainter* p, const KRenderPack* pack,
+void FlashRender::renderPack(QPainter* p, const FlashRenderPack* pack,
                          int render_idx, int line_iter)
 {
   if (!pack || render_idx > pack->render_start_list.count() - 1)
@@ -788,7 +788,7 @@ void KRender::renderPack(QPainter* p, const KRenderPack* pack,
 
   p->setRenderHint(QPainter::Antialiasing);
   for (int layer_idx = start.layer_idx;
-       layer_idx < KRenderPack::max_layer_count; layer_idx++)
+       layer_idx < FlashRenderPack::max_layer_count; layer_idx++)
   {
     int start_obj_idx = 0;
     if (layer_idx == start.layer_idx)
@@ -853,7 +853,7 @@ RenderEntry::~RenderEntry()
   delete fut;
 }
 
-void KRender::onFinished()
+void FlashRender::onFinished()
 {
   wait();
   big_tiles.append(big_tile);
@@ -861,7 +861,7 @@ void KRender::onFinished()
     big_tiles.removeFirst();
 }
 
-void KRender::run()
+void FlashRender::run()
 {
   int tile_count      = pow(2, tile_coor.z);
   int world_width_pix = tile_side * tile_count;
@@ -870,7 +870,7 @@ void KRender::run()
   top_left_m = {(big_tile_coor.x - tile_count / 2) * tile_side * mip,
                 (big_tile_coor.y - tile_count / 2) * tile_side * mip};
 
-  for (int i = 0; i < KRenderPack::render_count; i++)
+  for (int i = 0; i < FlashRenderPack::render_count; i++)
   {
     point_names[i].clear();
     draw_text_array[i].clear();
@@ -910,7 +910,7 @@ void KRender::run()
       intersecting_packs.append(pack_idx);
   }
 
-  QVector<KRenderPack*> render_packs;
+  QVector<FlashRenderPack*> render_packs;
   for (int pack_idx = -1; auto& pack: packs)
   {
     pack_idx++;
@@ -941,12 +941,12 @@ void KRender::run()
   }
 
   QList<RenderEntry*> render_list;
-  for (int render_idx = 1; render_idx < KRenderPack::render_count;
+  for (int render_idx = 1; render_idx < FlashRenderPack::render_count;
        render_idx++)
   {
     auto render  = new RenderEntry(render_idx, pixmap.size(), &f);
     *render->fut = QtConcurrent::run(
-        this, &KRender::render, render->p, render_packs, render_idx);
+        this, &FlashRender::render, render->p, render_packs, render_idx);
     render_list.append(render);
   }
 
@@ -983,7 +983,7 @@ void KRender::run()
   qDebug() << "render time=" << total_render_time.elapsed();
 }
 
-void KRender::render()
+void FlashRender::render()
 {
   if (isRunning())
     return;

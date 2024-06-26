@@ -1,13 +1,13 @@
-#include "krenderpack.h"
+#include "flashrenderpack.h"
 #include "klocker.h"
 #include <QDebug>
 
-KRenderPack::KRenderPack(const QString& _path)
+FlashRenderPack::FlashRenderPack(const QString& _path)
 {
   path = _path;
 }
 
-bool KRenderPack::intersects(QPolygonF polygon_m) const
+bool FlashRenderPack::intersects(QPolygonF polygon_m) const
 {
   if (borders_m.isEmpty())
     return polygon_m.intersects(frame.toRectM());
@@ -17,7 +17,7 @@ bool KRenderPack::intersects(QPolygonF polygon_m) const
   return false;
 }
 
-void KRenderPack::clear()
+void FlashRenderPack::clear()
 {
   KLocker big_locker(&main_lock, KLocker::Write);
   if (!big_locker.hasLocked())
@@ -32,7 +32,7 @@ void KRenderPack::clear()
   render_start_list.clear();
 }
 
-void KRenderPack::loadMain(bool load_objects, double pixel_size_mm)
+void FlashRenderPack::loadMain(bool load_objects, double pixel_size_mm)
 {
   KPack::loadMain(path, load_objects, pixel_size_mm);
   if (load_objects)
@@ -43,7 +43,7 @@ void KRenderPack::loadMain(bool load_objects, double pixel_size_mm)
   }
 }
 
-void KRenderPack::loadTile(int tile_idx)
+void FlashRenderPack::loadTile(int tile_idx)
 {
   KPack::loadTile(path, tile_idx);
   QWriteLocker small_locker(&tile_lock);
@@ -51,7 +51,7 @@ void KRenderPack::loadTile(int tile_idx)
   tiles[tile_idx].status = KTile::Loaded;
 }
 
-void KRenderPack::addCollectionToIndex(KTile& collection)
+void FlashRenderPack::addCollectionToIndex(KTile& collection)
 {
   for (auto& obj: collection)
   {

@@ -6,7 +6,7 @@
 
 #include <QDebug>
 #include <QDir>
-#include "krender/krender.h"
+#include "krender/flashrender.h"
 
 QGeoTileFetcherFlashmaps::QGeoTileFetcherFlashmaps(
     const QVariantMap&,
@@ -26,9 +26,9 @@ QGeoTileFetcherFlashmaps::getTileImage(const QGeoTileSpec& spec)
 {
   if (!m_render)
   {
-    KRender::Settings s;
+    FlashRender::Settings s;
     s.map_dir = m_engineFlashmaps->getMapDirectory();
-    m_render  = new KRender(s);
+    m_render  = new FlashRender(s);
   }
   QGeoTiledMapReply* mapReply =
       new QGeoMapReplyFlashmaps(m_render, spec);

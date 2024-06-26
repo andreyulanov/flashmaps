@@ -2,7 +2,7 @@
 
 #include "kpack.h"
 
-class KRenderPack: public KPack
+class FlashRenderPack: public KPack
 {
   struct RenderAddress
   {
@@ -24,14 +24,14 @@ public:
   void addCollectionToIndex(KTile& collection);
 
 public:
-  KRenderPack(const QString& path);
+  FlashRenderPack(const QString& path);
   void clear();
   void loadMain(bool load_objects, double pixel_size_mm);
   void loadTile(int tile_idx);
   bool intersects(QPolygonF polygon) const;
 };
 
-struct KRenderPackCollection: public QVector<KRenderPack*>
+struct KRenderPackCollection: public QVector<FlashRenderPack*>
 {
   virtual ~KRenderPackCollection();
 };

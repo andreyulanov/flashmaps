@@ -19,8 +19,8 @@ HEADERS += \
     ../base/kobject.h \
     ../base/kpack.h \
     ../base/kserialize.h \
-    krender/krender.h \
-    krender/krenderpack.h \
+    krender/flashrender.h \
+    krender/flashrenderpack.h \
     qgeomapreplyflashmaps.h \
     qgeoserviceproviderpluginflashmaps.h \
     qgeotiledmapflashmaps.h \
@@ -35,8 +35,8 @@ SOURCES += \
     ../base/klocker.cpp \
     ../base/kobject.cpp \
     ../base/kpack.cpp \
-    krender/krender.cpp \
-    krender/krenderpack.cpp \
+    krender/flashrender.cpp \
+    krender/flashrenderpack.cpp \
     qgeomapreplyflashmaps.cpp \
     qgeoserviceproviderpluginflashmaps.cpp \
     qgeotiledmapflashmaps.cpp \

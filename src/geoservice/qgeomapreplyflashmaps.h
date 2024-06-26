@@ -2,16 +2,16 @@
 
 #include <QtLocation/private/qgeotilespec_p.h>
 #include <QtLocation/private/qgeotiledmapreply_p.h>
-#include "krender/krender.h"
+#include "krender/flashrender.h"
 
 class QGeoMapReplyFlashmaps: public QGeoTiledMapReply
 {
   Q_OBJECT
 
-  KRender* m_render = nullptr;
+  FlashRender* m_render = nullptr;
 
 public:
-  QGeoMapReplyFlashmaps(KRender* render, const QGeoTileSpec& spec,
+  QGeoMapReplyFlashmaps(FlashRender* render, const QGeoTileSpec& spec,
                         QObject* parent = 0);
   void onFinishedRender();
 };
