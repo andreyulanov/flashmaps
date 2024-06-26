@@ -2,7 +2,7 @@
 
 #include <QtLocation/private/qgeotilespec_p.h>
 #include <QtLocation/private/qgeotiledmapreply_p.h>
-#include "krender/flashrender.h"
+#include "flashrender/flashrender.h"
 
 class QGeoMapReplyFlashmaps: public QGeoTiledMapReply
 {

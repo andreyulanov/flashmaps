@@ -6,7 +6,7 @@
 
 #include <QDebug>
 #include <QDir>
-#include "krender/flashrender.h"
+#include "flashrender/flashrender.h"
 
 QGeoTileFetcherFlashmaps::QGeoTileFetcherFlashmaps(
     const QVariantMap&,
