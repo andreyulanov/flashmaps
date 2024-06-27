@@ -40,7 +40,7 @@ FlashRender::FlashRender(Settings v)
       idx      = 0;
       load_now = true;
     }
-    insertPack(idx, fi.filePath(), load_now);
+    insertMap(idx, fi.filePath(), load_now);
   }
   connect(this, &QThread::finished, this, &FlashRender::onFinished);
 }
@@ -72,13 +72,13 @@ QByteArray FlashRender::getTile(TileCoor t)
   return QByteArray();
 }
 
-void FlashRender::insertPack(int idx, QString path, bool load_now)
+void FlashRender::insertMap(int idx, QString path, bool load_now)
 {
   QThreadPool().globalInstance()->waitForDone();
   wait();
-  auto map = new FlashRenderPack(path);
+  auto map = new FlashRenderMap(path);
   map->loadMain(load_now, s.pixel_size_mm);
-  packs.insert(idx, map);
+  maps.insert(idx, map);
 }
 
 QRectF FlashRender::getDrawRectM() const
@@ -93,27 +93,27 @@ void FlashRender::checkUnload()
 {
   auto draw_rect_m  = getDrawRectM();
   int  loaded_count = 0;
-  for (int i = -1; auto& pack: packs)
+  for (int i = -1; auto& map: maps)
   {
     i++;
     if (i == 0)
       continue;
-    if (pack->main.status == FlashTile::Loaded)
+    if (map->main.status == FlashTile::Loaded)
     {
-      if (!needToLoadPack(pack, draw_rect_m))
+      if (!needToLoadMap(map, draw_rect_m))
         if (loaded_count > s.max_loaded_maps_count)
-          pack->clear();
+          map->clear();
       loaded_count++;
     }
   }
 }
 
-bool FlashRender::needToLoadPack(const FlashRenderPack* pack,
-                                 const QRectF&          draw_rect_m)
+bool FlashRender::needToLoadMap(const FlashRenderMap* map,
+                                const QRectF&         draw_rect_m)
 {
-  if (pack->main_mip > 0 && mip > pack->main_mip)
+  if (map->main_mip > 0 && mip > map->main_mip)
     return false;
-  auto map_rect_m       = pack->frame.toMeters();
+  auto map_rect_m       = map->frame.toMeters();
   bool frame_intersects = draw_rect_m.intersects(map_rect_m);
   if (!frame_intersects)
     return false;
@@ -129,7 +129,7 @@ bool FlashRender::needToLoadPack(const FlashRenderPack* pack,
   rect << frame_m.topRight();
   rect << frame_m.bottomLeft();
   rect << frame_m.bottomRight();
-  if (pack->intersects(rect))
+  if (map->intersects(rect))
     return true;
   return false;
 }
@@ -137,23 +137,23 @@ bool FlashRender::needToLoadPack(const FlashRenderPack* pack,
 void FlashRender::checkLoad()
 {
   auto draw_rect_m = getDrawRectM();
-  for (auto& pack: packs)
+  for (auto& map: maps)
   {
-    auto map_rect_m = pack->frame.toMeters();
+    auto map_rect_m = map->frame.toMeters();
 
-    if (!needToLoadPack(pack, draw_rect_m))
+    if (!needToLoadMap(map, draw_rect_m))
       continue;
 
-    if (pack->main.status == FlashTile::Null)
-      pack->loadMain(true, s.pixel_size_mm);
-    if (pack->main.status == FlashTile::Loaded)
+    if (map->main.status == FlashTile::Null)
+      map->loadMain(true, s.pixel_size_mm);
+    if (map->main.status == FlashTile::Loaded)
     {
-      if (needToLoadPack(pack, draw_rect_m))
+      if (needToLoadMap(map, draw_rect_m))
       {
-        int    tile_side_count = sqrt(pack->tiles.count());
+        int    tile_side_count = sqrt(map->tiles.count());
         QSizeF tile_size_m = {map_rect_m.width() / tile_side_count,
                               map_rect_m.height() / tile_side_count};
-        for (int tile_idx = 0; auto& tile: pack->tiles)
+        for (int tile_idx = 0; auto& tile: map->tiles)
         {
           int    tile_idx_y = tile_idx / tile_side_count;
           int    tile_idx_x = tile_idx - tile_idx_y * tile_side_count;
@@ -164,8 +164,8 @@ void FlashRender::checkLoad()
           QRectF tile_rect_m = {{tile_left, tile_top}, tile_size_m};
           if (tile.status == FlashTile::Null &&
               tile_rect_m.intersects(draw_rect_m) &&
-              mip < pack->tile_mip)
-            pack->loadTile(tile_idx);
+              mip < map->tile_mip)
+            map->loadTile(tile_idx);
           tile_idx++;
         }
       }
@@ -272,10 +272,10 @@ QPoint FlashRender::deg2pix(FlashGeoCoor kp) const
           int((m.y() - top_left_m.y()) / mip)};
 }
 
-void FlashRender::paintPointObject(QPainter*              p,
-                                   const FlashRenderPack& pack,
-                                   const FlashMapObject&  obj,
-                                   int                    render_idx)
+void FlashRender::paintPointObject(QPainter*             p,
+                                   const FlashRenderMap& map,
+                                   const FlashMapObject& obj,
+                                   int                   render_idx)
 {
   auto frame = obj.frame;
 
@@ -288,7 +288,7 @@ void FlashRender::paintPointObject(QPainter*              p,
   if (!clip_safe_rect_m.contains(coor_m))
     return;
 
-  auto cl = &pack.classes[obj.class_idx];
+  auto cl = &map.classes[obj.class_idx];
   p->setPen(QPen(cl->pen, 2));
   p->setBrush(cl->brush);
   auto        kpos       = obj.polygons.first().first();
@@ -338,10 +338,10 @@ QPolygon FlashRender::poly2pix(const FlashGeoPolygon& polygon)
   return pl;
 }
 
-void FlashRender::paintPolygonObject(QPainter*              p,
-                                     const FlashRenderPack& pack,
-                                     const FlashMapObject&  obj,
-                                     int render_idx)
+void FlashRender::paintPolygonObject(QPainter*             p,
+                                     const FlashRenderMap& map,
+                                     const FlashMapObject& obj,
+                                     int                   render_idx)
 {
   auto  frame = obj.frame;
   QRect obj_frame_pix;
@@ -350,7 +350,7 @@ void FlashRender::paintPolygonObject(QPainter*              p,
   auto   bottom_right_m = frame.bottom_right.toMeters();
   QRectF obj_frame_m    = {top_left_m, bottom_right_m};
 
-  auto cl = &pack.classes[obj.class_idx];
+  auto cl = &map.classes[obj.class_idx];
 
   auto clip_safe_rect_m = render_frame_m.adjusted(
       -s.max_object_name_length_pix * mip, -50 * mip,
@@ -427,9 +427,9 @@ void FlashRender::paintPolygonObject(QPainter*              p,
   }
 }
 
-void FlashRender::paintLineObject(QPainter*              painter,
-                                  const FlashRenderPack& pack,
-                                  const FlashMapObject&  obj,
+void FlashRender::paintLineObject(QPainter*             painter,
+                                  const FlashRenderMap& map,
+                                  const FlashMapObject& obj,
                                   int render_idx, int line_iter)
 {
   auto frame = obj.frame;
@@ -446,7 +446,7 @@ void FlashRender::paintLineObject(QPainter*              painter,
   if (!obj_frame_m.intersects(clip_safe_rect_m))
     return;
 
-  auto cl = &pack.classes[obj.class_idx];
+  auto cl = &map.classes[obj.class_idx];
 
   Qt::PenStyle style = Qt::SolidLine;
   if (cl->style == FlashClass::Dash)
@@ -544,7 +544,7 @@ void FlashRender::paintLineObject(QPainter*              painter,
         {
           if (nh.length_pix > obj_name_width)
           {
-            nh.fix(&pack, &obj, pl.at(nh.start_idx),
+            nh.fix(&map, &obj, pl.at(nh.start_idx),
                    pl.at(nh.end_idx));
             name_holder_array[render_idx].append(nh);
           }
@@ -604,7 +604,7 @@ void FlashRender::paintLineObject(QPainter*              painter,
   }
 }
 
-void FlashRender::NameHolder::fix(const FlashPack*      pack,
+void FlashRender::NameHolder::fix(const FlashMap*       map,
                                   const FlashMapObject* _obj,
                                   const QPoint&         start,
                                   const QPoint&         end)
@@ -616,7 +616,7 @@ void FlashRender::NameHolder::fix(const FlashPack*      pack,
     angle_deg -= 180;
   if (angle_deg < -90)
     angle_deg += 180;
-  tcolor = pack->classes[_obj->class_idx].tcolor;
+  tcolor = map->classes[_obj->class_idx].tcolor;
 }
 
 bool FlashRender::isCluttering(const QRect& rect)
@@ -631,15 +631,15 @@ bool FlashRender::isCluttering(const QRect& rect)
   return clutter_flag;
 }
 
-bool FlashRender::checkMipRange(const FlashPack*      pack,
+bool FlashRender::checkMipRange(const FlashMap*       map,
                                 const FlashMapObject* obj)
 {
-  auto cl = &pack->classes[obj->class_idx];
+  auto cl = &map->classes[obj->class_idx];
   return (cl->min_mip == 0 || mip >= cl->min_mip) &&
          (cl->max_mip == 0 || mip <= cl->max_mip);
 }
 
-void FlashRender::paintObject(QPainter* p, const FlashRenderPack* map,
+void FlashRender::paintObject(QPainter* p, const FlashRenderMap* map,
                               const FlashMapObject& obj,
                               int render_idx, int line_iter)
 {
@@ -662,7 +662,7 @@ void FlashRender::paintObject(QPainter* p, const FlashRenderPack* map,
 
 void FlashRender::paintPointNames(QPainter* p)
 {
-  for (int render_idx = 0; render_idx < FlashRenderPack::render_count;
+  for (int render_idx = 0; render_idx < FlashRenderMap::render_count;
        render_idx++)
     for (auto item: point_names[render_idx])
     {
@@ -703,7 +703,7 @@ void FlashRender::paintLineNames(QPainter* p)
   f.setPixelSize(w);
   p->setFont(f);
 
-  for (int render_idx = 0; render_idx < FlashRenderPack::render_count;
+  for (int render_idx = 0; render_idx < FlashRenderMap::render_count;
        render_idx++)
     for (auto nh: name_holder_array[render_idx])
     {
@@ -734,7 +734,7 @@ void FlashRender::paintLineNames(QPainter* p)
 
 void FlashRender::paintPolygonNames(QPainter* p)
 {
-  for (int render_idx = 0; render_idx < FlashRenderPack::render_count;
+  for (int render_idx = 0; render_idx < FlashRenderMap::render_count;
        render_idx++)
     for (auto& dte: draw_text_array[render_idx])
     {
@@ -768,11 +768,11 @@ void FlashRender::paintPolygonNames(QPainter* p)
     }
 }
 
-void FlashRender::render(QPainter*                 p,
-                         QVector<FlashRenderPack*> render_packs,
-                         int                       render_idx)
+void FlashRender::render(QPainter*                p,
+                         QVector<FlashRenderMap*> render_maps,
+                         int                      render_idx)
 {
-  for (auto map: render_packs)
+  for (auto map: render_maps)
   {
     FlashLocker main_locker(&map->main_lock, FlashLocker::Read);
     if (!main_locker.hasLocked())
@@ -782,39 +782,39 @@ void FlashRender::render(QPainter*                 p,
       continue;
 
     for (int line_iter = 0; line_iter < 2; line_iter++)
-      renderPack(p, map, render_idx, line_iter);
+      renderMap(p, map, render_idx, line_iter);
   }
 }
 
-void FlashRender::renderPack(QPainter* p, const FlashRenderPack* pack,
-                             int render_idx, int line_iter)
+void FlashRender::renderMap(QPainter* p, const FlashRenderMap* map,
+                            int render_idx, int line_iter)
 {
-  if (!pack || render_idx > pack->render_start_list.count() - 1)
+  if (!map || render_idx > map->render_start_list.count() - 1)
     return;
 
-  auto start        = pack->render_start_list[render_idx];
+  auto start        = map->render_start_list[render_idx];
   int  object_count = 0;
 
   p->setRenderHint(QPainter::Antialiasing);
   for (int layer_idx = start.layer_idx;
-       layer_idx < FlashRenderPack::max_layer_count; layer_idx++)
+       layer_idx < FlashRenderMap::max_layer_count; layer_idx++)
   {
     int start_obj_idx = 0;
     if (layer_idx == start.layer_idx)
       start_obj_idx = start.obj_idx;
-    auto& layer     = pack->render_data[layer_idx];
+    auto& layer     = map->render_data[layer_idx];
     auto  obj_count = layer.count();
 
     for (int obj_idx = start_obj_idx; obj_idx < obj_count; obj_idx++)
     {
       auto obj = layer[obj_idx];
       object_count++;
-      if (object_count == pack->render_object_count)
+      if (object_count == map->render_object_count)
         return;
       if (!obj)
         continue;
 
-      auto cl = &pack->classes[obj->class_idx];
+      auto cl = &map->classes[obj->class_idx];
 
       if (cl->type != FlashClass::Line && line_iter == 1)
         continue;
@@ -823,10 +823,10 @@ void FlashRender::renderPack(QPainter* p, const FlashRenderPack* pack,
           cl->brush == Qt::black)
         continue;
 
-      if (!checkMipRange(pack, obj))
+      if (!checkMipRange(map, obj))
         continue;
 
-      paintObject(p, pack, *obj, render_idx, line_iter);
+      paintObject(p, map, *obj, render_idx, line_iter);
     }
   }
 }
@@ -879,7 +879,7 @@ void FlashRender::run()
   top_left_m = {(big_tile_coor.x - tile_count / 2) * tile_side * mip,
                 (big_tile_coor.y - tile_count / 2) * tile_side * mip};
 
-  for (int i = 0; i < FlashRenderPack::render_count; i++)
+  for (int i = 0; i < FlashRenderMap::render_count; i++)
   {
     point_names[i].clear();
     draw_text_array[i].clear();
@@ -905,62 +905,62 @@ void FlashRender::run()
   f.setBold(true);
   p0.setFont(f);
 
-  QVector<int> intersecting_packs;
+  QVector<int> intersecting_maps;
   auto         draw_rect = getDrawRectM();
-  for (int pack_idx = -1; auto& pack: packs)
+  for (int map_idx = -1; auto& map: maps)
   {
-    if (pack->main_mip > 0 && mip > pack->main_mip)
+    if (map->main_mip > 0 && mip > map->main_mip)
       continue;
-    pack_idx++;
-    if (pack_idx == 0)
+    map_idx++;
+    if (map_idx == 0)
       continue;
 
-    if (needToLoadPack(pack, draw_rect))
-      intersecting_packs.append(pack_idx);
+    if (needToLoadMap(map, draw_rect))
+      intersecting_maps.append(map_idx);
   }
 
-  QVector<FlashRenderPack*> render_packs;
-  for (int pack_idx = -1; auto& pack: packs)
+  QVector<FlashRenderMap*> render_maps;
+  for (int map_idx = -1; auto& map: maps)
   {
-    pack_idx++;
+    map_idx++;
 
-    if (pack_idx > 0)
-      if (!intersecting_packs.contains(pack_idx))
+    if (map_idx > 0)
+      if (!intersecting_maps.contains(map_idx))
         continue;
 
-    FlashLocker big_locker(&pack->main_lock, FlashLocker::Read);
+    FlashLocker big_locker(&map->main_lock, FlashLocker::Read);
     if (!big_locker.hasLocked())
       continue;
 
-    if (pack_idx > 0 && !needToLoadPack(pack, render_frame_m))
+    if (map_idx > 0 && !needToLoadMap(map, render_frame_m))
       continue;
 
-    auto pack_rect_m = pack->frame.toMeters();
-    if (pack_idx > 0 && !render_frame_m.intersects(pack_rect_m))
+    auto map_rect_m = map->frame.toMeters();
+    if (map_idx > 0 && !render_frame_m.intersects(map_rect_m))
       continue;
 
-    FlashLocker small_locker(&pack->tile_lock, FlashLocker::Read);
+    FlashLocker small_locker(&map->tile_lock, FlashLocker::Read);
     if (!small_locker.hasLocked())
       continue;
 
-    if (pack->render_start_list.isEmpty())
+    if (map->render_start_list.isEmpty())
       continue;
 
-    render_packs.append(pack);
+    render_maps.append(map);
   }
 
   QList<RenderEntry*> render_list;
-  for (int render_idx = 1; render_idx < FlashRenderPack::render_count;
+  for (int render_idx = 1; render_idx < FlashRenderMap::render_count;
        render_idx++)
   {
     auto render = new RenderEntry(render_idx, pixmap.size(), &f);
     *render->fut =
         QtConcurrent::run(this, &FlashRender::render, render->p,
-                          render_packs, render_idx);
+                          render_maps, render_idx);
     render_list.append(render);
   }
 
-  render(&p0, render_packs, 0);
+  render(&p0, render_maps, 0);
 
   for (auto render: render_list)
     render->fut->waitForFinished();

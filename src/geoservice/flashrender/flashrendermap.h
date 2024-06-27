@@ -1,8 +1,8 @@
 #pragma once
 
-#include "flashpack.h"
+#include "flashmap.h"
 
-class FlashRenderPack: public FlashPack
+class FlashRenderMap: public FlashMap
 {
   struct RenderAddress
   {
@@ -24,14 +24,14 @@ public:
   void addCollectionToIndex(FlashTile& collection);
 
 public:
-  FlashRenderPack(const QString& path);
+  FlashRenderMap(const QString& path);
   void clear();
   void loadMain(bool load_objects, double pixel_size_mm);
   void loadTile(int tile_idx);
   bool intersects(QPolygonF polygon) const;
 };
 
-struct KRenderPackCollection: public QVector<FlashRenderPack*>
+struct KRenderMapCollection: public QVector<FlashRenderMap*>
 {
-  virtual ~KRenderPackCollection();
+  virtual ~KRenderMapCollection();
 };

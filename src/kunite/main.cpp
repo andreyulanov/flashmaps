@@ -1,15 +1,15 @@
 #include <QCoreApplication>
 #include <QDir>
 #include <QDebug>
-#include "flashpack.h"
+#include "flashmap.h"
 
-class KWorldPack: public FlashPack
+class WorldMap: public FlashMap
 {
 public:
-  void addPackToMainTile(const FlashPack&);
+  void addMapToMainTile(const FlashMap&);
 };
 
-void KWorldPack::addPackToMainTile(const FlashPack& m)
+void WorldMap::addMapToMainTile(const FlashMap& m)
 {
   frame = frame.united(m.frame);
   for (auto new_obj: m.main)
@@ -46,23 +46,23 @@ int main(int argc, char* argv[])
 
   QFile().remove(result_path);
 
-  QString    first_pack_path = QString(argv[1]) + "/" + argv[2];
-  KWorldPack united_pack;
-  united_pack.loadAll(first_pack_path, 0);
+  QString  first_map_path = QString(argv[1]) + "/" + argv[2];
+  WorldMap united_map;
+  united_map.loadAll(first_map_path, 0);
 
   for (auto& fi: fi_list)
   {
     if (fi.suffix() != "flashmap")
       continue;
 
-    if (fi.absoluteFilePath() == first_pack_path)
+    if (fi.absoluteFilePath() == first_map_path)
       continue;
 
     qDebug() << "loading" << fi.absoluteFilePath();
-    FlashPack pack;
-    pack.loadAll(fi.absoluteFilePath(), 0);
-    united_pack.addPackToMainTile(pack);
+    FlashMap map;
+    map.loadAll(fi.absoluteFilePath(), 0);
+    united_map.addMapToMainTile(map);
   }
-  qDebug() << "saving united pack...";
-  united_pack.save(result_path);
+  qDebug() << "saving united map...";
+  united_map.save(result_path);
 }

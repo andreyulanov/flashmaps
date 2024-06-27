@@ -1,6 +1,6 @@
 #pragma once
 
-#include "flashrenderpack.h"
+#include "flashrendermap.h"
 #include <QReadWriteLock>
 #include <QThread>
 #include <QSet>
@@ -53,7 +53,7 @@ private:
     QPoint                mid_point;
     const FlashMapObject* obj = nullptr;
     QColor                tcolor;
-    void fix(const FlashPack* pack, const FlashMapObject* obj,
+    void fix(const FlashMap* map, const FlashMapObject* obj,
              const QPoint& start, const QPoint& end);
   };
 
@@ -75,17 +75,16 @@ private:
   QVector<RenderResult> big_tile;
   QVector<RenderResult> big_tiles;
 
-  KRenderPackCollection packs;
-  QFont                 font;
+  KRenderMapCollection maps;
+  QFont                font;
 
-  QVector<PointName> point_names[FlashRenderPack::render_count];
+  QVector<PointName> point_names[FlashRenderMap::render_count];
   QVector<DrawTextEntry>
-      draw_text_array[FlashRenderPack::render_count];
-  QVector<NameHolder>
-                 name_holder_array[FlashRenderPack::render_count];
-  QVector<QRect> text_rect_array;
-  QSizeF         size_m;
-  QRectF         render_frame_m;
+                      draw_text_array[FlashRenderMap::render_count];
+  QVector<NameHolder> name_holder_array[FlashRenderMap::render_count];
+  QVector<QRect>      text_rect_array;
+  QSizeF              size_m;
+  QRectF              render_frame_m;
 
   static void paintOutlinedText(QPainter* p, const QString& text,
                                 const QColor& tcolor);
@@ -94,16 +93,15 @@ private:
   void start() = delete;
   void onFinished();
 
-  void insertPack(int idx, QString path, bool load_now);
-  void renderPack(QPainter* p, const FlashRenderPack* pack,
-                  int render_idx, int line_iter);
-  void render(QPainter* p, QVector<FlashRenderPack*> render_packs,
+  void insertMap(int idx, QString path, bool load_now);
+  void renderMap(QPainter* p, const FlashRenderMap* map,
+                 int render_idx, int line_iter);
+  void render(QPainter* p, QVector<FlashRenderMap*> render_maps,
               int render_idx);
 
-  bool checkMipRange(const FlashPack*      pack,
-                     const FlashMapObject* obj);
+  bool checkMipRange(const FlashMap* map, const FlashMapObject* obj);
 
-  void paintObject(QPainter* p, const FlashRenderPack* map,
+  void paintObject(QPainter* p, const FlashRenderMap* map,
                    const FlashMapObject& obj, int render_idx,
                    int line_iter);
   void paintPointNames(QPainter* p);
@@ -118,20 +116,20 @@ private:
   QPolygon poly2pix(const FlashGeoPolygon& polygon);
   void     paintPointName(QPainter* p, const QString& text,
                           const QColor& tcolor);
-  void     paintPointObject(QPainter* p, const FlashRenderPack& pack,
+  void     paintPointObject(QPainter* p, const FlashRenderMap& map,
                             const FlashMapObject& obj, int render_idx);
-  void paintPolygonObject(QPainter* p, const FlashRenderPack& pack,
-                          const FlashMapObject& obj, int render_idx);
-  void paintLineObject(QPainter* painter, const FlashRenderPack& pack,
-                       const FlashMapObject& obj, int render_idx,
-                       int line_iter);
-  QRectF   getDrawRectM() const;
-  bool     needToLoadPack(const FlashRenderPack* pack,
-                          const QRectF&          draw_rect);
-  void     checkLoad();
-  void     checkUnload();
-  void     render();
-  QPoint   meters2pix(QPointF m) const;
+  void     paintPolygonObject(QPainter* p, const FlashRenderMap& map,
+                              const FlashMapObject& obj, int render_idx);
+  void   paintLineObject(QPainter* painter, const FlashRenderMap& map,
+                         const FlashMapObject& obj, int render_idx,
+                         int line_iter);
+  QRectF getDrawRectM() const;
+  bool   needToLoadMap(const FlashRenderMap* map,
+                       const QRectF&         draw_rect);
+  void   checkLoad();
+  void   checkUnload();
+  void   render();
+  QPoint meters2pix(QPointF m) const;
   QPointF  pix2meters(QPointF pix) const;
   QPoint   deg2pix(FlashGeoCoor) const;
   TileCoor getBigTileCoor(TileCoor);

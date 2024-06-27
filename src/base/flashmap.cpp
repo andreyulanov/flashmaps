@@ -1,5 +1,5 @@
 #include "math.h"
-#include "flashpack.h"
+#include "flashmap.h"
 #include "flashserialize.h"
 #include "flashlocker.h"
 #include <QDebug>
@@ -7,7 +7,7 @@
 #include <QDateTime>
 #include <QRegularExpression>
 
-void FlashPack::clear()
+void FlashMap::clear()
 {
   if (main.status != FlashTile::Loaded)
     return;
@@ -20,7 +20,7 @@ void FlashPack::clear()
   main.status = FlashTile::Null;
 }
 
-qint64 FlashPack::count()
+qint64 FlashMap::count()
 {
   qint64 total_count = main.count();
   for (auto t: tiles)
@@ -28,7 +28,7 @@ qint64 FlashPack::count()
   return total_count;
 }
 
-void FlashPack::save(QString path) const
+void FlashMap::save(QString path) const
 {
   using namespace FlashSerialize;
 
@@ -100,8 +100,8 @@ void FlashPack::save(QString path) const
   write(&f, small_idx_start_pos);
 }
 
-void FlashPack::loadMain(QString path, bool load_objects,
-                         double pixel_size_mm)
+void FlashMap::loadMain(QString path, bool load_objects,
+                        double pixel_size_mm)
 {
   if (main.status == FlashTile::Loading)
     return;
@@ -194,14 +194,14 @@ void FlashPack::loadMain(QString path, bool load_objects,
   tiles.resize(small_count);
 }
 
-void FlashPack::loadAll(QString path, double pixel_size_mm)
+void FlashMap::loadAll(QString path, double pixel_size_mm)
 {
   loadMain(path, true, pixel_size_mm);
   for (int i = 0; i < tiles.count(); i++)
     loadTile(path, i);
 }
 
-void FlashPack::loadTile(QString path, int tile_idx)
+void FlashMap::loadTile(QString path, int tile_idx)
 {
   if (main.status != FlashTile::Loaded)
     return;
@@ -258,7 +258,7 @@ void FlashPack::loadTile(QString path, int tile_idx)
     obj.load(classes, pos, ba);
 }
 
-void FlashPack::addObject(FlashFreeObject free_obj)
+void FlashMap::addObject(FlashFreeObject free_obj)
 {
   if (frame.isNull())
     frame = free_obj.polygons.first().getFrame();
@@ -299,7 +299,7 @@ void FlashPack::addObject(FlashFreeObject free_obj)
   }
 }
 
-QVector<FlashFreeObject> FlashPack::getObjects()
+QVector<FlashFreeObject> FlashMap::getObjects()
 {
   QVector<FlashFreeObject> free_objects;
   for (auto src_obj: main)

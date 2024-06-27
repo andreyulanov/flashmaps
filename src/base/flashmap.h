@@ -20,7 +20,7 @@ struct FlashTile: public QVector<FlashMapObject>
   Status status = Null;
 };
 
-struct FlashPack
+struct FlashMap
 {
   static constexpr int border_coor_precision_coef = 10000;
 

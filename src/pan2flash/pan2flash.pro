@@ -10,8 +10,8 @@ LIBS += -lmapcomponents -lqdmapacces
 SOURCES += \
     ../base/flashbase.cpp \
     ../base/flashlocker.cpp \
-    ../base/flashpack.cpp \
     ../base/flashclass.cpp \
+    ../base/flashmap.cpp \
     ../base/flashobject.cpp \
     ../base/flashclassmanager.cpp \
     flashpanclassmanager.cpp \
@@ -20,7 +20,7 @@ SOURCES += \
 HEADERS += \
     ../base/flashbase.h \
     ../base/flashlocker.h \
-    ../base/flashpack.h \
+ ../base/flashmap.h \
     ../base/flashserialize.h \
     ../base/flashclass.h \
     ../base/flashclassmanager.h \

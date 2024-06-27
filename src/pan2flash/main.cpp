@@ -4,7 +4,7 @@
 #include "mapapi.h"
 #include "qdmcmp.h"
 #include "flashpanclassmanager.h"
-#include "flashpack.h"
+#include "flashmap.h"
 #include <QApplication>
 #include <QtConcurrent/QtConcurrent>
 #include <QDir>
@@ -49,21 +49,21 @@ auto joinPolys(FlashMapObject& obj)
   return false;
 }
 
-void setObjects(FlashPack* pack, QVector<FlashMapObject> src_obj_list,
+void setObjects(FlashMap* map, QVector<FlashMapObject> src_obj_list,
                 int max_objects_per_tile)
 {
   int tile_side_num =
       std::ceil(1.0 * src_obj_list.count() / max_objects_per_tile);
   int tile_num = pow(tile_side_num, 2);
-  pack->tiles.resize(tile_num);
-  auto map_size_m     = pack->frame.getSizeMeters();
-  auto map_top_left_m = pack->frame.top_left.toMeters();
+  map->tiles.resize(tile_num);
+  auto map_size_m     = map->frame.getSizeMeters();
+  auto map_top_left_m = map->frame.top_left.toMeters();
   for (auto& src_obj: src_obj_list)
   {
     FlashMapObject obj(src_obj);
-    auto           cl = pack->classes[obj.class_idx];
-    if (cl.max_mip == 0 || cl.max_mip > pack->tile_mip)
-      pack->main.append(obj);
+    auto           cl = map->classes[obj.class_idx];
+    if (cl.max_mip == 0 || cl.max_mip > map->tile_mip)
+      map->main.append(obj);
     else
     {
       auto   obj_top_left_m = obj.frame.top_left.toMeters();
@@ -74,7 +74,7 @@ void setObjects(FlashPack* pack, QVector<FlashMapObject> src_obj_list,
       int part_idx_y =
           1.0 * shift_y / map_size_m.height() * tile_side_num;
       int tile_idx = part_idx_y * tile_side_num + part_idx_x;
-      pack->tiles[tile_idx].append(obj);
+      map->tiles[tile_idx].append(obj);
     }
   }
 }
@@ -126,13 +126,13 @@ int main(int argc, char* argv[])
   if (QString(argv[2]).contains("local"))
     is_analyzing_local_map = true;
 
-  auto      world_map_path = output_dir + "/world.flashmap";
-  FlashPack world_pack;
+  auto     world_map_path = output_dir + "/world.flashmap";
+  FlashMap world_map;
 
   if (is_analyzing_local_map)
   {
     if (QFile(world_map_path).exists())
-      world_pack.loadAll(world_map_path, 0);
+      world_map.loadAll(world_map_path, 0);
     else
     {
       qDebug() << "ERROR: world map not found!";
@@ -160,7 +160,7 @@ int main(int argc, char* argv[])
     path.remove(".sitx");
     path.remove(".sitz");
     path.remove(".mptz");
-    FlashPack pack;
+    FlashMap map;
 
     if (is_analyzing_local_map)
     {
@@ -170,7 +170,7 @@ int main(int argc, char* argv[])
       map_code.remove(".sitz");
       map_code.remove(".mptz");
       bool found_borders = false;
-      for (auto obj: world_pack.main)
+      for (auto obj: world_map.main)
       {
         auto attr_val =
             QString::fromUtf8(obj.attributes.value("iso_code"))
@@ -179,16 +179,16 @@ int main(int argc, char* argv[])
         {
           found_borders = true;
           for (auto polygon: obj.polygons)
-            pack.borders.append(polygon);
+            map.borders.append(polygon);
         }
       }
       if (!found_borders)
         qDebug() << "ERROR: no borders found for" << map_name;
     }
 
-    pack.classes  = class_list;
-    pack.main_mip = class_man.getMainMip();
-    pack.tile_mip = class_man.getTileMip();
+    map.classes  = class_list;
+    map.main_mip = class_man.getMainMip();
+    map.tile_mip = class_man.getTileMip();
     QVector<FlashMapObject> obj_list;
     DFRAME                  df;
     mapGetTotalBorder(hMap, &df, PP_GEO);
@@ -196,7 +196,7 @@ int main(int argc, char* argv[])
         FlashGeoCoor::fromDegs(rad2deg(df.X2), rad2deg(df.Y1));
     auto bottom_right =
         FlashGeoCoor::fromDegs(rad2deg(df.X1), rad2deg(df.Y2));
-    pack.frame = {top_left, bottom_right};
+    map.frame = {top_left, bottom_right};
 
     int  object_count = mapGetObjectCount(hMap, 1);
     HOBJ info         = mapCreateSiteObject(hMap, hMap);
@@ -406,10 +406,10 @@ int main(int argc, char* argv[])
     }
     qDebug() << "joinPolys() elapsed" << t.restart();
 
-    setObjects(&pack, obj_list, 200000);
+    setObjects(&map, obj_list, 200000);
 
     qDebug() << "  saving...";
-    pack.save(path);
+    map.save(path);
 
     mapCloseData(hMap);
 

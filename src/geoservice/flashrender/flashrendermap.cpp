@@ -1,13 +1,13 @@
-#include "flashrenderpack.h"
+#include "flashrendermap.h"
 #include "flashlocker.h"
 #include <QDebug>
 
-FlashRenderPack::FlashRenderPack(const QString& _path)
+FlashRenderMap::FlashRenderMap(const QString& _path)
 {
   path = _path;
 }
 
-bool FlashRenderPack::intersects(QPolygonF polygon_m) const
+bool FlashRenderMap::intersects(QPolygonF polygon_m) const
 {
   if (borders_m.isEmpty())
     return polygon_m.intersects(frame.toRectM());
@@ -17,7 +17,7 @@ bool FlashRenderPack::intersects(QPolygonF polygon_m) const
   return false;
 }
 
-void FlashRenderPack::clear()
+void FlashRenderMap::clear()
 {
   FlashLocker big_locker(&main_lock, FlashLocker::Write);
   if (!big_locker.hasLocked())
@@ -25,16 +25,16 @@ void FlashRenderPack::clear()
   FlashLocker small_locker(&tile_lock, FlashLocker::Write);
   if (!small_locker.hasLocked())
     return;
-  FlashPack::clear();
+  FlashMap::clear();
   for (int i = 0; i < max_layer_count; i++)
     render_data[i].clear();
   render_object_count = 0;
   render_start_list.clear();
 }
 
-void FlashRenderPack::loadMain(bool load_objects, double pixel_size_mm)
+void FlashRenderMap::loadMain(bool load_objects, double pixel_size_mm)
 {
-  FlashPack::loadMain(path, load_objects, pixel_size_mm);
+  FlashMap::loadMain(path, load_objects, pixel_size_mm);
   if (load_objects)
   {
     QWriteLocker big_locker(&main_lock);
@@ -43,15 +43,15 @@ void FlashRenderPack::loadMain(bool load_objects, double pixel_size_mm)
   }
 }
 
-void FlashRenderPack::loadTile(int tile_idx)
+void FlashRenderMap::loadTile(int tile_idx)
 {
-  FlashPack::loadTile(path, tile_idx);
+  FlashMap::loadTile(path, tile_idx);
   QWriteLocker small_locker(&tile_lock);
   addCollectionToIndex(tiles[tile_idx]);
   tiles[tile_idx].status = FlashTile::Loaded;
 }
 
-void FlashRenderPack::addCollectionToIndex(FlashTile& collection)
+void FlashRenderMap::addCollectionToIndex(FlashTile& collection)
 {
   for (auto& obj: collection)
   {
@@ -85,7 +85,7 @@ void FlashRenderPack::addCollectionToIndex(FlashTile& collection)
   }
 }
 
-KRenderPackCollection::~KRenderPackCollection()
+KRenderMapCollection::~KRenderMapCollection()
 {
   qDeleteAll(*this);
 }

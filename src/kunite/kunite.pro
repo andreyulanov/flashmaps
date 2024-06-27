@@ -7,7 +7,7 @@ INCLUDEPATH += $$PWD/../base
 SOURCES += \
     ../base/flashbase.cpp \
     ../base/flashlocker.cpp \
-    ../base/flashpack.cpp \
+    ../base/flashmap.cpp \
     ../base/flashclass.cpp \
     ../base/flashobject.cpp \
     ../base/flashclassmanager.cpp \
@@ -16,7 +16,7 @@ SOURCES += \
 HEADERS += \
     ../base/flashbase.h \
     ../base/flashlocker.h \
-    ../base/flashpack.h \
+    ../base/flashmap.h \
     ../base/flashserialize.h \
     ../base/flashclass.h \
     ../base/flashclassmanager.cpp

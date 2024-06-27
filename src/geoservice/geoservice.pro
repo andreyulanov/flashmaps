@@ -16,11 +16,11 @@ HEADERS += \
     ../base/flashclassmanager.h \
     ../base/flashdatetime.h \
     ../base/flashlocker.h \
+    ../base/flashmap.h \
     ../base/flashobject.h \
-    ../base/flashpack.h \
     ../base/flashserialize.h \
     flashrender/flashrender.h \
-    flashrender/flashrenderpack.h \
+    flashrender/flashrendermap.h \
     qgeomapreplyflashmaps.h \
     qgeoserviceproviderpluginflashmaps.h \
     qgeotiledmapflashmaps.h \
@@ -33,10 +33,10 @@ SOURCES += \
     ../base/flashclassmanager.cpp \
     ../base/flashdatetime.cpp \
     ../base/flashlocker.cpp \
+    ../base/flashmap.cpp \
     ../base/flashobject.cpp \
-    ../base/flashpack.cpp \
     flashrender/flashrender.cpp \
-    flashrender/flashrenderpack.cpp \
+    flashrender/flashrendermap.cpp \
     qgeomapreplyflashmaps.cpp \
     qgeoserviceproviderpluginflashmaps.cpp \
     qgeotiledmapflashmaps.cpp \
