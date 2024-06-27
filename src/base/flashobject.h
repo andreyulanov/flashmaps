@@ -34,9 +34,9 @@ struct FlashFreeObject: public FlashMapObject
   QUuid getGuid() const;
 };
 
-struct FlashPack: public QVector<FlashFreeObject>
+struct FlashPack: QVector<FlashFreeObject>
 {
   void save(QString path);
   void load(QString path, double pixel_size_mm);
-  void append(QString path, FlashFreeObject obj);
+  void addObject(QString path, FlashFreeObject obj);
 };

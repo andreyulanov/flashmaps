@@ -209,11 +209,15 @@ void FlashPack::load(QString path, double pixel_size_mm)
     qDebug() << "ERROR: unable to write to" << path;
     return;
   }
-  for (auto& obj: *this)
+  while (!f.atEnd())
+  {
+    FlashFreeObject obj;
     obj.loadFromFile(&f, pixel_size_mm);
+    append(obj);
+  }
 }
 
-void FlashPack::append(QString path, FlashFreeObject obj)
+void FlashPack::addObject(QString path, FlashFreeObject obj)
 {
   QFile f(path);
   if (!f.open(QIODevice::Append))
