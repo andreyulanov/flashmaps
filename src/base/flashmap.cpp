@@ -61,14 +61,9 @@ void FlashMap::save(QString path) const
   for (auto cl: classes)
     cl.save(&f);
 
-  QByteArray ba;
-  ba = qCompress(ba, 9);
-  write(&f, ba.count());
-  f.write(ba.data(), ba.count());
-
   write(&f, main.count());
-  ba.clear();
 
+  QByteArray ba;
   for (auto& obj: main)
     obj.save(classes, ba);
   ba = qCompress(ba, 9);
@@ -166,21 +161,14 @@ void FlashMap::loadMain(QString path, bool load_objects,
     classes.append(cl);
   }
 
-  int ba_count = 0;
-  read(&f, ba_count);
-  QByteArray ba;
-  ba.resize(ba_count);
-  f.read(ba.data(), ba_count);
-  ba = qUncompress(ba);
-
   int pos = 0;
 
   int big_obj_count;
   read(&f, big_obj_count);
   main.resize(big_obj_count);
 
-  ba.clear();
-  ba_count = 0;
+  QByteArray ba;
+  int        ba_count = 0;
   read(&f, ba_count);
   ba.resize(ba_count);
   f.read(ba.data(), ba_count);
