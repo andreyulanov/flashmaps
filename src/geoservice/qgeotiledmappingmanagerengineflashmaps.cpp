@@ -35,14 +35,8 @@ QGeoTiledMappingManagerEngineFlashmaps::
       new QGeoTileFetcherFlashmaps(parameters, this);
   setTileFetcher(fetcher);
 
-  if (parameters.contains(QStringLiteral("flashmaps.cachefolder")))
-    m_cacheDirectory =
-        parameters.value(QStringLiteral("flashmaps.cachefolder"))
-            .toString()
-            .toLatin1();
-  else
-    m_cacheDirectory = QAbstractGeoTileCache::baseCacheDirectory() +
-                       QLatin1String("flashmaps");
+  m_cacheDirectory =
+      QAbstractGeoTileCache::baseCacheDirectory() + "flashmaps";
 
   QStringList dir_list = QStandardPaths::standardLocations(
       QStandardPaths::AppDataLocation);
