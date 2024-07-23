@@ -1,0 +1,13 @@
+[
+{
+  "reduction_precision_m" : 100
+},
+{
+    "id"     : "land",
+    "type"   : "Polygon",
+    "code"   : 1000000002,
+    "key"    : "S1000000002",
+    "layer"  : 1,
+    "coor_precision_coef" : 100
+}
+]

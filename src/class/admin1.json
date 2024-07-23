@@ -1,0 +1,25 @@
+[
+{
+  "reduction_precision_m" : 100
+},
+{
+    "id"     : "admin1",
+    "type"   : "Line",
+    "code"   : 1000000002,
+    "key"    : "S1000000002",
+    "layer"  : 4,
+    "style"  : "Dash",
+    "name_code": 1,
+    "max_mip": 0.001,
+    "min_mip": 0.001,
+    "coor_precision_coef" : 100,
+    "attributes":
+    [
+    {
+      "code"   : 660005,
+      "name"   : "iso_code",
+      "visible": false
+    }
+    ]
+}
+]

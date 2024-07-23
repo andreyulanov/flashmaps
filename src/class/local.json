@@ -1,0 +1,1676 @@
+[
+{
+  "main_mip" : 200
+},
+{
+  "tile_mip" : 50
+},
+{
+  "default_coor_precision_coef" : 100
+},
+{
+    "id"     : "Территория административных единиц 1 порядка",
+    "type"   : "Polygon",
+    "code"   : 81110002,
+    "key"    : "480-000-S",
+    "layer"  : 10,
+    "pen"    : [0, 0, 0],
+    "brush"  : [250, 246, 230],
+    "max_mip": 200
+},
+{
+    "id"     : "Административный район",
+    "type"   : "Polygon",
+    "code"   : 81110004,
+    "key"    : "482-000-S",
+    "layer"  : 10,
+    "pen"    : [0, 0, 0],
+    "brush"  : [250, 246, 230],
+    "max_mip": 200
+},
+{
+    "id"     : "protected_area",
+    "type"   : "Polygon",
+    "code"   : 53890002,
+    "key"    : "a_nature_reserve",
+    "layer"  : 11,
+    "pen"    : [50, 155, 50],
+    "brush"  : [150, 255, 150],
+    "tcolor" : [50, 155, 50],
+    "style"  : "BDiag",
+    "width_mm"  : 0.2,
+    "max_mip": 200
+},
+{
+    "id"     : "Столицы государств",
+    "type"   : "Point",
+    "code"   : 41000001,
+    "key"    : "p_city_2",
+    "layer"  : 23,
+    "pen"    : [0, 0, 0],
+    "brush"  : [255, 255, 255],
+    "width_mm"  : 1.5,
+    "max_mip": 200,
+    "min_mip": 50
+},
+{
+    "id"     : "Федеральные центры",
+    "type"   : "Point",
+    "code"   : 41000002,
+    "key"    : "p_city_3",
+    "layer"  : 23,
+    "pen"    : [0, 0, 0],
+    "brush"  : [255, 255, 255],
+    "width_mm"  : 1.4,
+    "max_mip": 200,
+    "min_mip": 50
+},
+{
+    "id"     : "Города прочие",
+    "type"   : "Point",
+    "code"   : 41100001,
+    "key"    : "P0041100001",
+    "layer"  : 22,
+    "pen"    : [0, 0, 0],
+    "brush"  : [255, 255, 255],
+    "width_mm"  : 1.3,
+    "max_mip": 200,
+    "min_mip": 50
+},
+{
+    "id"     : "Посёлок сельского типа",
+    "type"   : "Point",
+    "code"   : 42100000,
+    "key"    : "P0042100000",
+    "layer"  : 21,
+    "pen"    : [0, 0, 0],
+    "brush"  : [255, 255, 255],
+    "width_mm" : 1.2,
+    "max_mip": 200,
+    "min_mip": 20
+},
+{
+    "id"     : "Деревня",
+    "type"   : "Point",
+    "code"   : 42100001,
+    "key"    : "P0042100001",
+    "layer"  : 21,
+    "pen"    : [0, 0, 0],
+    "brush"  : [255, 255, 255],
+    "width_mm" : 1,
+    "max_mip": 200
+},
+{
+    "id"     : "default_named_point",
+    "type"   : "Point",
+    "code"   : 41100001,
+    "key"    : "P0041100001",
+    "layer"  : 23,
+    "pen"    : [0, 0, 0],
+    "brush"  : [255, 255, 255],
+    "width_mm"  : 1,
+    "max_mip": 0.3
+},
+{
+    "id"     : "океан, море",
+    "type"   : "Polygon",
+    "code"   : 31110000,
+    "layer"  : 11,
+    "brush"  : [150, 210, 240],
+    "tcolor" : [79, 147, 184],
+    "max_mip": 200
+},
+{
+    "id"     : "complex_water",
+    "type"   : "Polygon",
+    "layer"  : 10,
+    "brush"  : [150, 210, 240],
+    "tcolor" : [79, 147, 184],
+    "max_mip": 200
+},
+{
+    "id"     : "водоём",
+    "type"   : "Polygon",
+    "code"   : 31120002,
+    "layer"  : 15,
+    "brush"  : [150, 210, 240],
+    "tcolor" : [79, 147, 184],
+    "max_mip": 200
+},
+{
+    "id"     : "лес густой высокий",
+    "type"   : "Polygon",
+    "code"   : 71111110,
+    "layer"  : 11,
+    "brush"  : [190, 216, 141],
+    "tcolor" : [0, 168, 0],
+    "max_mip": 30
+},
+{
+    "id"     : "водоём пересыхающий",
+    "type"   : "Polygon",
+    "code"   : 31120003,
+    "layer"  : 15,
+    "pen"    : [37, 151, 194],
+    "brush"  : [166, 220, 238],
+    "tcolor" : [37, 151, 194],
+    "style"  : "Dash",
+    "max_mip": 30
+},
+{
+    "id"     : "река (площадной)",
+    "type"   : "Polygon",
+    "code"   : 31410000,
+    "key"    : "237-000-S",
+    "layer"  : 14,
+    "width_mm"  : 0.1,
+    "brush"  : [150, 210, 240],
+    "tcolor" : [79, 147, 184],
+    "max_mip": 200
+},
+{
+    "id"     : "река (линия)",
+    "type"   : "Line",
+    "code"   : 31410000,
+    "key"    : "237-000-L",
+    "layer"  : 13,
+    "width_mm"  : 0.2,
+    "pen"    : [37, 151, 194],
+    "tcolor" : [37, 151, 194],
+    "max_mip": 200
+},
+{
+    "id"     : "река пересыхающая (линия)",
+    "type"   : "Line",
+    "code"   : 31412000,
+    "key"    : "237-000-L",
+    "layer"  : 13,
+    "width_mm"  : 0.2,
+    "style"  : "Dash",
+    "pen"    : [37, 151, 194],
+    "tcolor" : [37, 151, 194],
+    "max_mip": 200
+},
+{
+    "id"     : "река(часть) пересыхающая (линия)",
+    "type"   : "Line",
+    "code"   : 31412000,
+    "key"    : "237-000-L_I",
+    "layer"  : 13,
+    "width_mm"  : 0.2,
+    "style"  : "Dash",
+    "pen"    : [37, 151, 194],
+    "tcolor" : [37, 151, 194],
+    "max_mip": 200
+},
+{
+    "id"     : "ditch",
+    "type"   : "Line",
+    "code"   : 31432000,
+    "key"    : "248-400-L",
+    "layer"  : 13,
+    "width_mm" : 0.1,
+    "pen"    : [37, 151, 194],
+    "tcolor" : [37, 151, 194],
+    "max_mip": 30
+},
+{
+    "id"     : "dry ditch",
+    "type"   : "Line",
+    "code"   : 31432200,
+    "key"    : "248-400-L_I",
+    "layer"  : 13,
+    "width_mm" : 0.1,
+    "style"  : "Dash",
+    "pen"    : [37, 151, 194],
+    "tcolor" : [37, 151, 194],
+    "max_mip": 30
+},
+{
+    "id"     : "проходимое болото",
+    "type"   : "Polygon",
+    "style"  : "Hatch",
+    "code"   : 72312000,
+    "layer"  : 13,
+    "pen"    : [37, 151, 194],
+    "brush"  : [166, 220, 238],
+    "tcolor" : [37, 151, 194],
+    "max_mip": 30
+},
+{
+    "id"     : "wetland",
+    "type"   : "Polygon",
+    "style"  : "FDiag",
+    "code"   : 31263100,
+    "layer"  : 13,
+    "pen"    : [0, 168, 0],
+    "brush"  : [0, 168, 0],
+    "tcolor" : [0, 168, 0],
+    "max_mip": 30
+},
+{
+    "id"     : "wetland2",
+    "type"   : "Polygon",
+    "style"  : "BDiag",
+    "code"   : 31263200,
+    "layer"  : 13,
+    "pen"    : [0, 168, 0],
+    "brush"  : [0, 168, 0],
+    "tcolor" : [0, 168, 0],
+    "max_mip": 30
+},
+{
+    "id"     : "wetland3",
+    "type"   : "Polygon",
+    "style"  : "BDiag",
+    "code"   : 31263300,
+    "layer"  : 13,
+    "pen"    : [0, 168, 0],
+    "brush"  : [0, 168, 0],
+    "tcolor" : [0, 168, 0],
+    "max_mip": 30
+},
+{
+    "id"     : "кустарничек",
+    "type"   : "Polygon",
+    "code"   : 71420000,
+    "layer"  : 12,
+    "brush"  : [217, 241, 192],
+    "max_mip": 30
+},
+{
+    "id"     : "сельскохозяйственные угодья",
+    "type"   : "Polygon",
+    "code"   : 71324000,
+    "layer"  : 12,
+    "brush"  : [255, 241, 150],
+    "max_mip": 30
+},
+{
+    "id"     : "заросли кустарника",
+    "type"   : "Polygon",
+    "code"   : 71211220,
+    "layer"  : 12,
+    "brush"  : [239, 250, 228],
+    "max_mip": 30
+},
+{
+    "id"     : "древесные насаждения (парк)",
+    "type"   : "Polygon",
+    "code"   : 71126000,
+    "layer"  : 11,
+    "brush"  : [217, 241, 192],
+    "tcolor" : [0, 168, 0],
+    "max_mip": 30
+},
+{
+    "id"     : "луговая растительность",
+    "type"   : "Polygon",
+    "code"   : 71314000,
+    "layer"  : 12,
+    "brush"  : [237, 239, 183],
+    "max_mip": 30
+},
+{
+    "id"     : "rocks",
+    "type"   : "Polygon",
+    "code"   : 22410000,
+    "key"    : "333-000-S",
+    "layer"  : 12,
+    "style"  : "Vert",
+    "pen"    : [200, 100, 2],
+    "brush"  : [200, 100, 2],
+    "width_mm"  : 0.2,
+    "max_mip": 30
+},
+{
+    "id"     : "жилой квартал",
+    "type"   : "Polygon",
+    "code"   : 45111000,
+    "layer"  : 14,
+    "brush"  : [252, 209, 166],
+    "max_mip": 30
+},
+{
+    "id"     : "кварталы в прочих населённых пунктах (неоднородные)",
+    "type"   : "Polygon",
+    "code"   : 45141000,
+    "layer"  : 14,
+    "brush"  : [251, 249, 243],
+    "max_mip": 30
+},
+{
+    "id"     : "промзона 1",
+    "type"   : "Polygon",
+    "code"   : 81110026,
+    "layer"  : 14,
+    "pen"  : [200, 195, 190],
+    "brush"  : [200, 195, 190],
+    "max_mip": 30
+},
+{
+    "id"     : "промзона 2",
+    "type"   : "Polygon",
+    "code"   : 45142000,
+    "layer"  : 14,
+    "pen"  : [200, 195, 190],
+    "brush"  : [200, 195, 190],
+    "max_mip": 30
+},
+{
+    "id"     : "территория жд транспорта",
+    "type"   : "Polygon",
+    "code"   : 61122002,
+    "layer"  : 14,
+    "pen"  : [180, 175, 160],
+    "brush"  : [180, 175, 160],
+    "max_mip": 30
+},
+{
+    "id"     : "строение строящееся",
+    "type"   : "Polygon",
+    "code"   : 44200000,
+    "key"    : "a_constraction_b",
+    "layer"  : 15,
+    "width_mm"  : 0.1,
+    "style"  : "Dash",
+    "pen"    : [116, 116, 116],
+    "brush"  : [221, 221, 221],
+    "name_code": 100,
+    "attributes":
+    [
+    {
+    "code"   : 3120,
+    "name"   : "street",
+    "visible": false
+    }
+    ],
+    "max_mip": 3,
+    "coor_precision_coef" : 10
+},
+{
+    "id"     : "строение 1",
+    "type"   : "Polygon",
+    "code"   : 44200000,
+    "layer"  : 15,
+    "width_mm"  : 0.1,
+    "pen"    : [116, 116, 116],
+    "brush"  : [232, 224, 212],
+    "name_code": 100,
+    "attributes":
+    [
+    {
+    "code"   : 3120,
+    "name"   : "street",
+    "visible": false
+    }
+    ],
+    "max_mip": 3,
+    "coor_precision_coef" : 10
+},
+{
+    "id"     : "gas_station",
+    "type"   : "Polygon",
+    "code"   : 51220000,
+    "key"    : "S0051220000",
+    "layer"  : 15,
+    "image"  : "gas_station.png",
+    "width_mm"  : 1.0,
+    "pen"    : [116, 116, 116],
+    "brush"  : [232, 224, 212],
+    "attributes":
+    [
+    {
+      "code"   : 3120,
+      "name"   : "street",
+      "visible": false
+    }
+    ],
+    "max_mip": 3
+},
+{
+    "id"     : "подъезд",
+    "type"   : "Point",
+    "code"   : 47100001,
+    "layer"  : 22,
+    "width_mm"  : 1.0,
+    "image"  : "entrance.png",
+    "name_code": 3206,
+    "max_mip": 0.25
+},
+{
+    "id"     : "playground",
+    "type"   : "Polygon",
+    "code"   : 53600000,
+    "key"    : "D-53600000-S",
+    "attrval": "playground",
+    "layer"  : 20,
+    "width_mm"  : 1.0,
+    "pen"    : [100, 150, 100],
+    "brush"  : [200, 255, 200],
+    "image"  : "playground.png",
+    "max_mip": 3
+},
+{
+    "id"     : "объект социально-культурного назначения",
+    "type"   : "Polygon",
+    "code"   : 53600000,
+    "layer"  : 15,
+    "width_mm"  : 0.1,
+    "pen"    : [116, 116, 116],
+    "brush"  : [168, 168, 168],
+    "style"  : "BDiag",
+    "max_mip": 3
+},
+{
+    "id"     : "строение 2",
+    "type"   : "Polygon",
+    "code"   : 44200001,
+    "layer"  : 15,
+    "width_mm"  : 0.1,
+    "pen"    : [116, 116, 116],
+    "brush"  : [215, 212, 228],
+    "max_mip": 3,
+    "name_code": 100
+},
+{
+    "id"     : "мол",
+    "type"   : "Polygon",
+    "code"   : 32230000,
+    "layer"  : 15,
+    "width_mm"  : 0.1,
+    "pen"    : [116, 116, 116],
+    "brush"  : [215, 212, 228],
+    "max_mip": 3,
+    "name_code": 100
+},
+{
+    "id"     : "ruins",
+    "type"   : "Polygon",
+    "code"   : 44300000,
+    "layer"  : 15,
+    "width_mm"  : 0.1,
+    "pen"    : [116, 116, 116],
+    "brush"  : [215, 212, 228],
+    "style"  : "BDiag",
+    "max_mip": 3
+},
+{
+    "id"     : "спортивная площадка",
+    "type"   : "Polygon",
+    "code"   : 53712000,
+    "layer"  : 14,
+    "pen"    : [48, 173, 145],
+    "brush"  : [100, 210, 130],
+    "max_mip": 3
+},
+{
+    "id"     : "религиозные территории",
+    "type"   : "Polygon",
+    "code"   : 44200000,
+    "layer"  : 14,
+    "pen"    : [84, 84, 84],
+    "brush"  : [221, 221, 221],
+    "tcolor" : [84, 84, 84],
+    "max_mip": 30
+},
+{
+    "id"     : "кладбища",
+    "type"   : "Polygon",
+    "code"   : 53512000,
+    "layer"  : 14,
+    "pen"    : [84, 84, 84],
+    "brush"  : [221, 221, 221],
+    "tcolor" : [84, 84, 84],
+    "max_mip": 30
+},
+{
+    "id"     : "мост",
+    "type"   : "Polygon",
+    "code"   : 62310000,
+    "key"    : "313-000-S",
+    "layer"  : 15,
+    "pen"    : [150, 150, 150],
+    "brush"  : [255, 255, 255],
+    "max_mip": 30
+},
+{
+    "id"     : "город крупный",
+    "type"   : "Polygon",
+    "code"   : 41100000,
+    "name_code": 1,
+    "layer"  : 10,
+    "brush"  : [253, 234, 215],
+    "max_mip": 200
+},
+{
+    "id"     : "город прочий",
+    "type"   : "Polygon",
+    "code"   : 41100001,
+    "name_code": 1,
+    "layer"  : 10,
+    "brush"  : [253, 234, 215],
+    "max_mip": 200
+},
+{
+    "id"     : "посёлок сельского типа",
+    "type"   : "Polygon",
+    "code"   : 42100000,
+    "name_code": 1,
+    "layer"  : 14,
+    "brush"  : [253, 234, 215],
+    "max_mip": 200
+},
+{
+    "id"     : "деревня",
+    "type"   : "Polygon",
+    "code"   : 42100001,
+    "name_code": 1,
+    "layer"  : 14,
+    "brush"  : [253, 234, 215],
+    "max_mip": 200
+},
+{
+    "id"     : "locality",
+    "type"   : "Point",
+    "code"   : 43200000,
+    "key"    : "S0043200000",
+    "layer"  : 22,
+    "width_mm"  : 1.0,
+    "pen"    : [0, 0, 0],
+    "brush"  : [0, 0, 0],
+    "max_mip": 30
+},
+{
+    "id"     : "аэропорты и аэродромы",
+    "type"   : "Polygon",
+    "code"   : 53110000,
+    "layer"  : 14,
+    "brush"  : [233, 209, 255],
+    "max_mip": 30
+},
+{
+    "id"     : "пляж оборудованный",
+    "type"   : "Polygon",
+    "code"   : 32282000,
+    "layer"  : 14,
+    "brush"  : [255, 234, 150],
+    "max_mip": 30
+},
+{
+    "id"     : "открытое зелёное пространство для общего отдыха",
+    "type"   : "Polygon",
+    "code"   : 53891008,
+    "layer"  : 14,
+    "width_mm"  : 0.1,
+    "brush"  : [90, 174, 90],
+    "max_mip": 30
+},
+{
+    "id"     : "территория административных единиц 1 порядка",
+    "type"   : "Line",
+    "code"   : 81110002,
+    "key"    : "480-000-S",
+    "layer"  : 19,
+    "width_mm"  : 0.5,
+    "pen"    : [252, 0, 84],
+    "style"  : "Dash",
+    "max_mip": 200
+},
+{
+    "id"     : "границы государственные",
+    "type"   : "Line",
+    "code"   : 81141000,
+    "layer"  : 19,
+    "width_mm"  : 0.8,
+    "pen"    : [252, 0, 84],
+    "max_mip": 200
+},
+{
+    "id"     : "Автомагистраль (автострада)",
+    "type"   : "Line",
+    "key"    : "186-000-L",
+    "layer"  : 20,
+    "width_mm"  : 0.8,
+    "pen"    : [241, 155, 31],
+    "brush"  : [255, 255, 255],
+    "max_mip": 200,
+    "coor_precision_coef" : 10,
+    "attributes":
+    [
+    {
+    "code"   : 3196,
+    "name"   : "oneway"
+    },
+    {
+    "code"   : 50,
+    "name"   : "lanes"
+    }
+    ]
+},
+{
+    "id"     : "Автомагистраль (автострада), мост",
+    "type"   : "Line",
+    "key"    : "186-000-L_b",
+    "layer"  : 20,
+    "width_mm"  : 0.8,
+    "pen"    : [241, 155, 31],
+    "brush"  : [255, 255, 255],
+    "max_mip": 200,
+    "coor_precision_coef" : 10,
+    "attributes":
+    [
+    {
+    "code"   : 3196,
+    "name"   : "oneway"
+    },
+    {
+    "code"   : 50,
+    "name"   : "lanes"
+    }
+    ]
+},
+{
+    "id"     : "усовершенствованное шоссе",
+    "type"   : "Line",
+    "key"    : "187-000-L",
+    "layer"  : 19,
+    "width_mm"  : 0.6,
+    "pen"    : [252, 188, 61],
+    "brush"  : [255, 255, 255],
+    "max_mip": 200,
+    "coor_precision_coef" : 10,
+    "attributes":
+    [
+    {
+    "code"   : 3196,
+    "name"   : "oneway"
+    },
+    {
+    "code"   : 50,
+    "name"   : "lanes"
+    }
+    ]
+},
+{
+    "id"     : "усовершенствованное шоссе, мост",
+    "type"   : "Line",
+    "key"    : "187-000-L_b",
+    "layer"  : 19,
+    "width_mm"  : 0.6,
+    "pen"    : [252, 188, 61],
+    "brush"  : [255, 255, 255],
+    "max_mip": 200,
+    "coor_precision_coef" : 10,
+    "attributes":
+    [
+    {
+    "code"   : 3196,
+    "name"   : "oneway"
+    },
+    {
+    "code"   : 50,
+    "name"   : "lanes"
+    }
+    ]
+},
+{
+    "id"     : "шоссе",
+    "type"   : "Line",
+    "key"    : "188-000-L",
+    "layer"  : 18,
+    "width_mm"  : 0.5,
+    "pen"    : [247, 200, 121],
+    "brush"  : [255, 255, 255],
+    "max_mip": 30,
+    "coor_precision_coef" : 10,
+    "attributes":
+    [
+    {
+    "code"   : 3196,
+    "name"   : "oneway"
+    },
+    {
+    "code"   : 50,
+    "name"   : "lanes"
+    }
+    ]
+},
+{
+    "id"     : "шоссе, мост",
+    "type"   : "Line",
+    "key"    : "188-000-L_b",
+    "layer"  : 18,
+    "width_mm"  : 0.5,
+    "pen"    : [247, 200, 121],
+    "brush"  : [255, 255, 255],
+    "max_mip": 30,
+    "coor_precision_coef" : 10,
+    "attributes":
+    [
+    {
+    "code"   : 3196,
+    "name"   : "oneway"
+    },
+    {
+    "code"   : 50,
+    "name"   : "lanes"
+    }
+    ]
+},
+{
+    "id"     : "улица",
+    "type"   : "Line",
+    "key"    : "190-100-L",
+    "layer"  : 17,
+    "width_mm"  : 0.4,
+    "pen"    : [247, 200, 121],
+    "brush"  : [255, 255, 255],
+    "max_mip": 30,
+    "coor_precision_coef" : 10,
+    "attributes":
+    [
+    {
+    "code"   : 3196,
+    "name"   : "oneway"
+    },
+    {
+    "code"   : 50,
+    "name"   : "lanes"
+    }
+    ]
+},
+{
+    "id"     : "улица2",
+    "type"   : "Line",
+    "key"    : "478-000-L",
+    "attrval" : "asphalt",
+    "layer"  : 17,
+    "width_mm"  : 0.4,
+    "pen"    : [247, 200, 121],
+    "brush"  : [255, 255, 255],
+    "max_mip": 30,
+    "coor_precision_coef" : 10,
+    "attributes":
+    [
+    {
+    "code"   : 3196,
+    "name"   : "oneway"
+    },
+    {
+    "code"   : 50,
+    "name"   : "lanes"
+    }
+    ]
+},
+{
+    "id"     : "улица3",
+    "type"   : "Line",
+    "key"    : "l_admin-8",
+    "attrval" : "asphalt",
+    "layer"  : 17,
+    "width_mm"  : 0.4,
+    "pen"    : [247, 200, 121],
+    "brush"  : [255, 255, 255],
+    "max_mip": 30,
+    "coor_precision_coef" : 10,
+    "attributes":
+    [
+    {
+    "code"   : 3196,
+    "name"   : "oneway"
+    },
+    {
+    "code"   : 50,
+    "name"   : "lanes"
+    }
+    ]
+},
+{
+    "id"     : "улица, мост",
+    "type"   : "Line",
+    "key"    : "190-100-L_b",
+    "layer"  : 17,
+    "width_mm"  : 0.4,
+    "pen"    : [247, 200, 121],
+    "brush"  : [255, 255, 255],
+    "max_mip": 30,
+    "coor_precision_coef" : 10,
+    "attributes":
+    [
+    {
+    "code"   : 3196,
+    "name"   : "oneway"
+    },
+    {
+    "code"   : 50,
+    "name"   : "lanes"
+    }
+    ]
+},
+{
+    "id"     : "проезды",
+    "type"   : "Line",
+    "key"    : "189-000-L",
+    "layer"  : 15,
+    "width_mm"  : 0.3,
+    "pen"  : [155, 155, 155],
+    "brush"    : [255, 255, 255],
+    "max_mip": 3,
+    "coor_precision_coef" : 10,
+    "attributes":
+    [
+    {
+    "code"   : 3196,
+    "name"   : "oneway"
+    },
+    {
+    "code"   : 50,
+    "name"   : "lanes"
+    }
+    ]
+},
+{
+    "id"     : "строящиеся проезды",
+    "type"   : "Line",
+    "key"    : "190-100-L_p",
+    "code"   : 45200002,
+    "layer"  : 15,
+    "width_mm"  : 0.5,
+    "pen"  : [155, 155, 155],
+    "brush"    : [255, 255, 255],
+    "style"  : "Dash",
+    "max_mip": 3,
+    "coor_precision_coef" : 10,
+    "attributes":
+    [
+    {
+    "code"   : 3196,
+    "name"   : "oneway"
+    },
+    {
+    "code"   : 50,
+    "name"   : "lanes"
+    }
+    ]
+},
+{
+    "id"     : "специальная дорожка",
+    "type"   : "Line",
+    "code"   : 53151000,
+    "layer"  : 15,
+    "width_mm"  : 0.2,
+    "pen"    : [150, 150, 150],
+    "brush"  : [255, 255, 255],
+    "max_mip": 10,
+    "coor_precision_coef" : 10,
+    "attributes":
+    [
+    {
+    "code"   : 3196,
+    "name"   : "oneway"
+    },
+    {
+    "code"   : 50,
+    "name"   : "lanes"
+    }
+    ]
+},
+{
+    "id"     : "улучшенная грунтовая дорога",
+    "type"   : "Line",
+    "key"    : "191-000-L",
+    "layer"  : 15,
+    "width_mm"  : 0.4,
+    "pen"    : [247, 200, 121],
+    "brush"  : [255, 255, 255],
+    "max_mip": 30,
+    "coor_precision_coef" : 10,
+    "attributes":
+    [
+    {
+    "code"   : 3196,
+    "name"   : "oneway"
+    },
+    {
+    "code"   : 50,
+    "name"   : "lanes"
+    }
+    ]
+},
+{
+    "id"     : "улучшенная грунтовая дорога строящаяся",
+    "type"   : "Line",
+    "key"    : "197-400-L",
+    "code"   : 61310100,
+    "layer"  : 15,
+    "width_mm"  : 0.4,
+    "pen"    : [247, 200, 121],
+    "brush"  : [255, 255, 255],
+    "style"  : "Dash",
+    "max_mip": 30,
+    "coor_precision_coef" : 10,
+    "attributes":
+    [
+    {
+    "code"   : 3196,
+    "name"   : "oneway"
+    },
+    {
+    "code"   : 50,
+    "name"   : "lanes"
+    }
+    ]
+},
+{
+    "id"     : "улучшенная грунтовая дорога, мост",
+    "type"   : "Line",
+    "key"    : "191-000-L_b",
+    "layer"  : 15,
+    "width_mm"  : 0.4,
+    "pen"    : [247, 200, 121],
+    "brush"  : [255, 255, 255],
+    "max_mip": 30,
+    "coor_precision_coef" : 10,
+    "attributes":
+    [
+    {
+    "code"   : 3196,
+    "name"   : "oneway"
+    },
+    {
+    "code"   : 50,
+    "name"   : "lanes"
+    }
+    ]
+},
+{
+    "id"     : "полевая, лесная дорога",
+    "type"   : "Line",
+    "key"    : "193-200-L",
+    "layer"  : 14,
+    "width_mm"  : 0.3,
+    "pen"    : [235, 191, 137],
+    "brush"  : [255, 255, 255],
+    "coor_precision_coef" : 10,
+    "max_mip": 30
+},
+{
+    "id"     : "полевая, лесная дорога, мост",
+    "type"   : "Line",
+    "key"    : "193-200-L_b",
+    "layer"  : 14,
+    "width_mm"  : 0.3,
+    "pen"    : [235, 191, 137],
+    "brush"  : [255, 255, 255],
+    "coor_precision_coef" : 10,
+    "max_mip": 30
+},
+{
+    "id"     : "тропа пешеходная",
+    "key"    : "195-000-L",
+    "type"   : "Line",
+    "style"  : "Dash",
+    "layer"  : 15,
+    "width_mm"  : 0.2,
+    "pen"    : [171, 116, 24],
+    "brush"  : [255, 255, 255],
+    "coor_precision_coef" : 10,
+    "max_mip": 3
+},
+{
+    "id"     : "тропа пешеходная, мост",
+    "key"    : "195-000-L_b",
+    "type"   : "Line",
+    "style"  : "Dash",
+    "layer"  : 13,
+    "width_mm"  : 0.2,
+    "pen"    : [171, 116, 24],
+    "brush"  : [255, 255, 255],
+    "coor_precision_coef" : 10,
+    "max_mip": 3
+},
+{
+    "id"     : "лестница",
+    "code"   : 62393000,
+    "key"    : "L0062393000",
+    "type"   : "Line",
+    "style"  : "Dash",
+    "layer"  : 20,
+    "width_mm" : 0.2,
+    "pen"    : [200, 200, 200],
+    "brush"  : [255, 255, 255],
+    "coor_precision_coef" : 10,
+    "max_mip": 3
+},
+{
+    "id"     : "fence",
+    "code"   : 82312000,
+    "key"    : "477-000-L",
+    "type"   : "Line",
+    "style"  : "Dots",
+    "layer"  : 20,
+    "width_mm" : 0.2,
+    "pen"    : [100, 100, 100],
+    "brush"  : [255, 255, 255],
+    "coor_precision_coef" : 10,
+    "max_mip": 3,
+    "name_code": 2
+},
+{
+    "id"     : "wall",
+    "code"   : 82211000,
+    "key"    : "472-000-L",
+    "type"   : "Line",
+    "style"  : "Dash",
+    "layer"  : 20,
+    "width_mm" : 0.1,
+    "pen"    : [100, 100, 100],
+    "brush"  : [255, 255, 255],
+    "coor_precision_coef" : 10,
+    "max_mip": 3
+},
+{
+    "id"     : "wall2",
+    "code"   : 32180000,
+    "key"    : "280-000-L",
+    "type"   : "Line",
+    "layer"  : 20,
+    "width_mm" : 0.1,
+    "pen"    : [100, 100, 100],
+    "brush"  : [255, 255, 255],
+    "coor_precision_coef" : 10,
+    "max_mip": 3
+},
+{
+    "id"     : "cutline",
+    "code"   : 71610300,
+    "key"    : "376-000-L",
+    "type"   : "Line",
+    "layer"  : 13,
+    "width_mm"  : 0.4,
+    "pen"  : [210, 230, 160],
+    "brush"  : [210, 230, 160],
+    "max_mip": 10
+},
+{
+    "id"     : "железная дорога ширококолейная, мост",
+    "type"   : "Line",
+    "code"   : 61111000,
+    "attrname" : "Уровень",
+    "attrval" : 1,
+    "layer"  : 23,
+    "width_mm"  : 0.5,
+    "style"  : "Dash",
+    "pen"    : [100, 100, 100],
+    "brush"  : [255, 255, 255],
+    "max_mip": 200
+},
+{
+    "id"     : "железная дорога ширококолейная",
+    "type"   : "Line",
+    "code"   : 61111000,
+    "layer"  : 21,
+    "width_mm"  : 0.3,
+    "style"  : "Dash",
+    "pen"    : [100, 100, 100],
+    "brush"  : [255, 255, 255],
+    "max_mip": 200
+},
+{
+    "id"     : "станционный путь вспомогательный",
+    "code"   : 61121200,
+    "type"   : "Line",
+    "layer"  : 22,
+    "width_mm"  : 0.1,
+    "style"  : "Dash",
+    "pen"    : [100, 100, 100],
+    "brush"  : [255, 255, 255],
+    "max_mip": 10
+},
+{
+    "id"     : "станционный путь главный",
+    "code"   : 61121100,
+    "type"   : "Line",
+    "layer"  : 22,
+    "width_mm"  : 0.2,
+    "style"  : "Dash",
+    "pen"    : [100, 100, 100],
+    "brush"  : [255, 255, 255],
+    "max_mip": 10
+},
+{
+    "id"     : "трамвайные линии",
+    "code"   : 61124000,
+    "type"   : "Line",
+    "layer"  : 22,
+    "width_mm"  : 0.2,
+    "pen"    : [100, 100, 100],
+    "brush"  : [255, 255, 255],
+    "max_mip": 10
+},
+{
+    "id"     : "power line",
+    "code"   : 51320000,
+    "type"   : "Line",
+    "layer"  : 15,
+    "width_mm"  : 0.2,
+    "pen"    : [168, 168, 168],
+    "max_mip": 3
+},
+{
+    "id"     : "tower",
+    "code"   : 51473001,
+    "key"    : "107-410-P",
+    "type"   : "Point",
+    "layer"  : 15,
+    "width_mm"  : 0.1,
+    "pen"    : [168, 168, 168],
+    "max_mip": 3
+},
+{
+    "id"     : "название района города",
+    "code"   : 41100002,
+    "type"   : "Point",
+    "layer"  : 19,
+    "width_mm"  : 1.0,
+    "pen"    : [0, 0, 0],
+    "brush"  : [255, 255, 255],
+    "tcolor" : [100, 100, 100],
+    "max_mip": 30
+},
+{
+    "id"     : "название населённого пункта прочего",
+    "type"   : "Point",
+    "code"   : 42100002,
+    "layer"  : 19,
+    "width_mm"  : 0.1,
+    "pen"    : [0, 0, 0],
+    "brush"  : [255, 255, 255],
+    "max_mip": 30
+},
+{
+    "id"     : "обрыв",
+    "type"   : "Line",
+    "code"   : 22630000,
+    "key"    : "332-000-L",
+    "layer"  : 20,
+    "width_mm"  : 0.2,
+    "pen"    : [168, 120, 80],
+    "style"  : "Hatch",
+    "max_mip": 5
+},
+{
+    "id"     : "embankment",
+    "type"   : "Line",
+    "code"   : 62351200,
+    "key"    : "166-500-L",
+    "layer"  : 20,
+    "width_mm"  : 0.2,
+    "pen"    : [168, 120, 80],
+    "style"  : "Hatch",
+    "max_mip": 5
+},
+{
+    "id"     : "карьер",
+    "type"   : "Polygon",
+    "code"   : 51111000,
+    "key"    : "087-100-S",
+    "layer"  : 20,
+    "width_mm"  : 0.2,
+    "pen"    : [221, 221, 221],
+    "brush"  : [221, 221, 221],
+    "style"  : "BDiag",
+    "max_mip": 30
+},
+{
+    "id"     : "свалка",
+    "type"   : "Polygon",
+    "code"   : 51710000,
+    "key"    : "143-000-S",
+    "layer"  : 20,
+    "width_mm"  : 0.2,
+    "pen"    : [221, 221, 221],
+    "brush"  : [221, 221, 221],
+    "style"  : "FDiag",
+    "max_mip": 30
+},
+{
+    "id"     : "parking",
+    "type"   : "Polygon",
+    "code"   : 62230000,
+    "key"    : "D-62230000-S",
+    "layer"  : 14,
+    "width_mm" : 2.0,
+    "pen"    : [100, 100, 100],
+    "brush"  : [200, 200, 200],
+    "image"  : "parking.png",
+    "max_mip": 3
+},
+{
+    "id"     : "дачные и садовые участки",
+    "type"   : "Polygon",
+    "code"   : 43400000,
+    "key"    : "D-43400000-S",
+    "layer"  : 14,
+    "brush"  : [120, 204, 120],
+    "max_mip": 30
+},
+{
+    "id"     : "остров",
+    "type"   : "Polygon",
+    "code"   : 34000000,
+    "layer"  : 10,
+    "pen"    : [150, 150, 150],
+    "brush"  : [250, 246, 230],
+    "tcolor" : [150, 150, 150],
+    "max_mip": 200
+},
+{
+    "id"     : "cafe",
+    "type"   : "Point",
+    "key"    : "p_cafe",
+    "image"  : "cafe.png",
+    "layer"  : 22,
+    "width_mm"  : 1.0,
+    "max_mip": 3
+},
+{
+    "id"     : "atm",
+    "type"   : "Point",
+    "key"    : "p_atm",
+    "image"  : "atm.png",
+    "layer"  : 22,
+    "width_mm"  : 1.0,
+    "max_mip": 0.5
+},
+{
+    "id"     : "shop",
+    "type"   : "Point",
+    "key"    : "p_shop",
+    "image"  : "shop.png",
+    "layer"  : 22,
+    "width_mm"  : 1.0,
+    "max_mip": 0.5
+},
+{
+    "id"     : "bus_stop",
+    "type"   : "Point",
+    "key"    : "209-000-P",
+    "image"  : "bus_stop.png",
+    "layer"  : 22,
+    "width_mm"  : 1.0,
+    "max_mip": 0.5
+},
+{
+    "id"     : "crossing",
+    "type"   : "Point",
+    "key"    : "p_crossing",
+    "image"  : "crossing.png",
+    "layer"  : 22,
+    "width_mm"  : 1.0,
+    "max_mip": 0.5
+},
+{
+    "id"     : "traffic_signals",
+    "type"   : "Point",
+    "code"   : 62143210,
+    "key"    : "181-000-P",
+    "image"  : "traffic_signals.jpg",
+    "layer"  : 22,
+    "width_mm"  : 1.0,
+    "max_mip": 0.5
+},
+{
+    "id"     : "bank",
+    "type"   : "Point",
+    "key"    : "p_bank",
+    "image"  : "bank.png",
+    "layer"  : 22,
+    "width_mm"  : 1.0,
+    "max_mip": 0.5
+},
+{
+    "id"     : "fast_food",
+    "type"   : "Point",
+    "key"    : "p_fast_food",
+    "image"  : "fast_food.png",
+    "layer"  : 22,
+    "width_mm"  : 1.0,
+    "max_mip": 0.5
+},
+{
+    "id"     : "pharmacy",
+    "type"   : "Point",
+    "key"    : "p_pharmacy",
+    "image"  : "pharmacy.png",
+    "layer"  : 22,
+    "width_mm"  : 1.0,
+    "max_mip": 1
+},
+{
+    "id"     : "doctors",
+    "type"   : "Point",
+    "key"    : "p_doctors",
+    "image"  : "doctors.png",
+    "layer"  : 22,
+    "width_mm"  : 1.0,
+    "max_mip": 1
+},
+{
+    "id"     : "police",
+    "type"   : "Point",
+    "key"    : "p_police",
+    "image"  : "police.png",
+    "layer"  : 22,
+    "width_mm"  : 1.0,
+    "max_mip": 1
+},
+{
+    "id"     : "pub",
+    "type"   : "Point",
+    "key"    : "p_pub",
+    "image"  : "pub.png",
+    "layer"  : 22,
+    "width_mm"  : 1.0,
+    "max_mip": 1
+},
+{
+    "id"     : "restaurant",
+    "type"   : "Point",
+    "key"    : "p_restaurant",
+    "image"  : "restaurant.png",
+    "layer"  : 22,
+    "width_mm"  : 1.0,
+    "max_mip": 1
+},
+{
+    "id"     : "hotel",
+    "type"   : "Point",
+    "key"    : "p_hotel",
+    "image"  : "hotel.png",
+    "layer"  : 22,
+    "width_mm"  : 1.0,
+    "max_mip": 1
+},
+{
+    "id"     : "cinema",
+    "type"   : "Point",
+    "key"    : "p_cinema",
+    "image"  : "cinema.png",
+    "layer"  : 22,
+    "width_mm"  : 1.0,
+    "max_mip": 3
+},
+{
+    "id"     : "theatre",
+    "type"   : "Point",
+    "key"    : "p_theatre",
+    "image"  : "theatre.png",
+    "layer"  : 22,
+    "width_mm"  : 1.0,
+    "max_mip": 3
+},
+{
+    "id"     : "university",
+    "type"   : "Point",
+    "key"    : "p_university",
+    "image"  : "university.png",
+    "layer"  : 22,
+    "width_mm"  : 1.0,
+    "max_mip": 3
+
+},
+{
+    "id"     : "kindergarten",
+    "type"   : "Point",
+    "key"    : "p_kindergarten",
+    "image"  : "kindergarten.png",
+    "layer"  : 22,
+    "width_mm"  : 1.0,
+    "max_mip": 3
+},
+{
+    "id"     : "bureau",
+    "type"   : "Point",
+    "key"    : "p_bureau",
+    "image"  : "bureau.png",
+    "layer"  : 22,
+    "width_mm"  : 1.0,
+    "max_mip": 1
+},
+{
+    "id"     : "post_office",
+    "type"   : "Point",
+    "key"    : "p_post_office",
+    "image"  : "post_office.png",
+    "layer"  : 22,
+    "width_mm"  : 1.0,
+    "max_mip": 3
+},
+{
+    "id"     : "monument",
+    "type"   : "Point",
+    "code"   : 53533100,
+    "key"    : "067-100-P",
+    "image"  : "monument.png",
+    "layer"  : 22,
+    "width_mm"  : 1.0,
+    "max_mip": 0.5
+},
+{
+    "id"     : "food_court",
+    "type"   : "Point",
+    "key"    : "p_food_court",
+    "image"  : "food_court.png",
+    "layer"  : 22,
+    "width_mm"  : 1.0,
+    "max_mip": 1
+},
+{
+    "id"     : "bicycle_parking",
+    "type"   : "Point",
+    "key"    : "p_bicycle_parking",
+    "image"  : "bicycle_parking.png",
+    "layer"  : 22,
+    "width_mm"  : 1.0,
+    "max_mip": 1
+},
+{
+    "id"     : "bicycle_rental",
+    "type"   : "Point",
+    "key"    : "p_bicycle_rental",
+    "image"  : "bicycle_rental.png",
+    "layer"  : 22,
+    "width_mm"  : 1.0,
+    "max_mip": 1
+},
+{
+    "id"     : "toilet",
+    "type"   : "Point",
+    "key"    : "p_toilets",
+    "image"  : "toilet.png",
+    "layer"  : 22,
+    "width_mm"  : 1.0,
+    "max_mip": 1
+},
+{
+    "id"     : "waste_disposal",
+    "type"   : "Point",
+    "key"    : "p_waste_disposal",
+    "image"  : "waste_disposal.png",
+    "layer"  : 22,
+    "width_mm"  : 1.0,
+    "max_mip": 1
+},
+{
+    "id"     : "dentist",
+    "type"   : "Point",
+    "key"    : "p_dentist",
+    "image"  : "dentist.png",
+    "layer"  : 22,
+    "width_mm"  : 1.0,
+    "max_mip": 1
+},
+{
+    "id"     : "subway_station",
+    "type"   : "Point",
+    "code"   : 62131000,
+    "key"   : "p_autostation",
+    "attrval": "-5",
+    "image"  : "subway_entrance.png",
+    "layer"  : 22,
+    "width_mm" : 1.0,
+    "max_mip": 100
+},
+{
+    "id"     : "camp_site",
+    "type"   : "Point",
+    "key"    : "p_tourism",
+    "attrval": "camp_site",
+    "image"  : "camp_site.png",
+    "layer"  : 22,
+    "width_mm"  : 1.0,
+    "max_mip": 30
+},
+{
+    "id"     : "picnic_site",
+    "type"   : "Point",
+    "key"    : "p_tourism",
+    "attrval": "picnic_site",
+    "image"  : "picnic_site.png",
+    "layer"  : 22,
+    "width_mm"  : 1.0,
+    "max_mip": 30
+},
+{
+    "id"     : "attraction",
+    "type"   : "Point",
+    "key"    : "p_tourism",
+    "attrval": "attraction",
+    "image"  : "attraction.png",
+    "layer"  : 22,
+    "width_mm"  : 1.0,
+    "max_mip": 3
+},
+{
+    "id"     : "information",
+    "type"   : "Point",
+    "key"    : "p_tourism",
+    "attrval": "information",
+    "image"  : "information.jpg",
+    "layer"  : 22,
+    "width_mm"  : 1.0,
+    "max_mip": 1
+},
+{
+    "id"     : "fountain",
+    "type"   : "Point",
+    "key"    : "307-000-P",
+    "attrval": "fountain",
+    "image"  : "fountain.jpg",
+    "layer"  : 22,
+    "width_mm"  : 1.0,
+    "max_mip": 1
+},
+{
+    "id"     : "artwork",
+    "type"   : "Point",
+    "code"   : 53650013,
+    "key"    : "p_artwork",
+    "image"  : "artwork.png",
+    "layer"  : 22,
+    "width_mm"  : 1.0,
+    "max_mip": 0.5
+},
+{
+    "id"     : "gallery",
+    "type"   : "Point",
+    "key"    : "p_tourism",
+    "attrval": "gallery",
+    "image"  : "gallery.png",
+    "layer"  : 22,
+    "width_mm"  : 1.0,
+    "max_mip": 0.5
+},
+{
+    "id"     : "cliff",
+    "type"   : "Point",
+    "key"    : "p_natural",
+    "attrval": "cliff",
+    "image"  : "cliff.png",
+    "layer"  : 22,
+    "width_mm"  : 1.0,
+    "max_mip": 3
+},
+{
+    "id"     : "firepit",
+    "type"   : "Point",
+    "key"    : "p_leasure",
+    "attrval": "firepit",
+    "image"  : "firepit.png",
+    "layer"  : 22,
+    "width_mm"  : 1.0,
+    "max_mip": 30
+},
+{
+    "id"     : "picnic_table",
+    "type"   : "Point",
+    "key"    : "p_leasure",
+    "attrval": "picnic_table",
+    "image"  : "picnic_table.png",
+    "layer"  : 22,
+    "width_mm"  : 1.0,
+    "max_mip": 30
+},
+{
+    "id"     : "viewpoint",
+    "type"   : "Point",
+    "key"    : "p_viewpoint",
+    "attrval": "viewpoint",
+    "image"  : "viewpoint.png",
+    "layer"  : 22,
+    "width_mm"  : 1.0,
+    "max_mip": 3
+},
+{
+    "id"     : "spring",
+    "type"   : "Point",
+    "key"    : "311-000-V",
+    "image"  : "spring.png",
+    "layer"  : 22,
+    "width_mm"  : 1.0,
+    "max_mip": 30
+},
+{
+    "id"     : "lighthouse",
+    "type"   : "Point",
+    "code"   : "32410000",
+    "key"    : "289-000-P",
+    "image"  : "lighthouse.png",
+    "layer"  : 22,
+    "width_mm"  : 1.0,
+    "max_mip": 3
+},
+{
+    "id"     : "pier",
+    "type"   : "Line",
+    "code"   : "32230000",
+    "key"    : "286-100-L",
+    "pen"    : [168, 168, 168],
+    "layer"  : 22,
+    "width_mm"  : 1,
+    "coor_precision_coef" : 10,
+    "max_mip": 3
+},
+{
+    "id"     : "peak",
+    "type"   : "Point",
+    "key"    : "330-000-P",
+    "code"   : 12000000,
+    "image"  : "peak.png",
+    "layer"  : 22,
+    "width_mm"  : 1,
+    "max_mip": 30
+}
+]

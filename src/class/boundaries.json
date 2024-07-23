@@ -1,0 +1,11 @@
+[
+{
+    "id"     : "boundary",
+    "type"   : "Line",
+    "code"   : 1000000001,
+    "layer"  : 7,
+    "width_mm"  : 0.8,
+    "pen"    : [252, 0, 84],
+    "reductible": false
+}
+]

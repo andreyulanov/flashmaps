@@ -1,0 +1,12 @@
+[
+{
+    "id"     : "lake",
+    "type"   : "Polygon",
+    "code"   : 1000000002,
+    "layer"  : 5,
+    "brush"  : [166, 220, 238],
+    "tcolor" : [37, 151, 194],
+    "max_mip": 5000,
+    "min_mip": 100
+}
+]

@@ -1,0 +1,23 @@
+[
+{
+    "id"     : "route",
+    "type"   : "Line",
+    "pen"    : [255, 255, 255],
+    "brush"  : [100, 255, 100],
+    "width_mm"  : 1
+},
+{
+    "id"     : "spring",
+    "type"   : "Point",
+    "width_mm"  : 5,
+    "image"  : "spring.png"
+},
+{
+    "id"     : "danger area",
+    "type"   : "Polygon",
+    "width_mm"  : 5,
+    "style"  : "Dash",
+    "pen"    : [150, 50, 50],
+    "brush"  : [255, 0, 0, 150]
+}
+]

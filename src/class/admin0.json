@@ -1,0 +1,25 @@
+[
+{
+  "reduction_precision_m" : 100
+},
+{
+    "id"     : "admin0",
+    "type"   : "Polygon",
+    "code"   : 1000000002,
+    "key"    : "S1000000002",
+    "layer"  : 1,
+    "coor_precision_coef" : 100,
+    "pen"    : [1, 1, 1],
+    "brush"  : [250, 246, 230],
+    "max_mip": 0.001,
+    "min_mip": 0.001,
+    "attributes":
+    [
+    {
+      "code"   : 660005,
+      "name"   : "iso_code",
+      "visible": false
+    }
+    ]
+}
+]
