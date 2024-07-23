@@ -49,7 +49,7 @@
     "layer"  : 23,
     "pen"    : [0, 0, 0],
     "brush"  : [255, 255, 255],
-    "width_mm"  : 1.5,
+    "width_mm"  : 2,
     "max_mip": 200,
     "min_mip": 50
 },
@@ -61,7 +61,7 @@
     "layer"  : 23,
     "pen"    : [0, 0, 0],
     "brush"  : [255, 255, 255],
-    "width_mm"  : 1.4,
+    "width_mm"  : 1.8,
     "max_mip": 200,
     "min_mip": 50
 },
@@ -73,7 +73,7 @@
     "layer"  : 22,
     "pen"    : [0, 0, 0],
     "brush"  : [255, 255, 255],
-    "width_mm"  : 1.3,
+    "width_mm"  : 1.4,
     "max_mip": 200,
     "min_mip": 50
 },
@@ -85,7 +85,7 @@
     "layer"  : 21,
     "pen"    : [0, 0, 0],
     "brush"  : [255, 255, 255],
-    "width_mm" : 1.2,
+    "width_mm" : 1.3,
     "max_mip": 200,
     "min_mip": 20
 },
@@ -97,7 +97,7 @@
     "layer"  : 21,
     "pen"    : [0, 0, 0],
     "brush"  : [255, 255, 255],
-    "width_mm" : 1,
+    "width_mm" : 1.2,
     "max_mip": 200
 },
 {
@@ -108,7 +108,7 @@
     "layer"  : 23,
     "pen"    : [0, 0, 0],
     "brush"  : [255, 255, 255],
-    "width_mm"  : 1,
+    "width_mm"  : 1.2,
     "max_mip": 0.3
 },
 {
@@ -415,7 +415,7 @@
     "key"    : "S0051220000",
     "layer"  : 15,
     "image"  : "gas_station.png",
-    "width_mm"  : 1.0,
+    "width_mm"  : 1.5,
     "pen"    : [116, 116, 116],
     "brush"  : [232, 224, 212],
     "attributes":
@@ -433,7 +433,7 @@
     "type"   : "Point",
     "code"   : 47100001,
     "layer"  : 22,
-    "width_mm"  : 1.0,
+    "width_mm"  : 1.5,
     "image"  : "entrance.png",
     "name_code": 3206,
     "max_mip": 0.25
@@ -445,7 +445,7 @@
     "key"    : "D-53600000-S",
     "attrval": "playground",
     "layer"  : 20,
-    "width_mm"  : 1.0,
+    "width_mm"  : 1.5,
     "pen"    : [100, 150, 100],
     "brush"  : [200, 255, 200],
     "image"  : "playground.png",
@@ -576,7 +576,7 @@
     "code"   : 43200000,
     "key"    : "S0043200000",
     "layer"  : 22,
-    "width_mm"  : 1.0,
+    "width_mm"  : 1.5,
     "pen"    : [0, 0, 0],
     "brush"  : [0, 0, 0],
     "max_mip": 30
@@ -634,6 +634,7 @@
     "width_mm"  : 0.8,
     "pen"    : [241, 155, 31],
     "brush"  : [255, 255, 255],
+    "tcolor" : [70, 70, 70],
     "max_mip": 200,
     "coor_precision_coef" : 10,
     "attributes":
@@ -656,6 +657,7 @@
     "width_mm"  : 0.8,
     "pen"    : [241, 155, 31],
     "brush"  : [255, 255, 255],
+    "tcolor" : [70, 70, 70],
     "max_mip": 200,
     "coor_precision_coef" : 10,
     "attributes":
@@ -678,6 +680,7 @@
     "width_mm"  : 0.6,
     "pen"    : [252, 188, 61],
     "brush"  : [255, 255, 255],
+    "tcolor" : [70, 70, 70],
     "max_mip": 200,
     "coor_precision_coef" : 10,
     "attributes":
@@ -700,6 +703,7 @@
     "width_mm"  : 0.6,
     "pen"    : [252, 188, 61],
     "brush"  : [255, 255, 255],
+    "tcolor" : [70, 70, 70],
     "max_mip": 200,
     "coor_precision_coef" : 10,
     "attributes":
@@ -722,6 +726,7 @@
     "width_mm"  : 0.5,
     "pen"    : [247, 200, 121],
     "brush"  : [255, 255, 255],
+    "tcolor" : [70, 70, 70],
     "max_mip": 30,
     "coor_precision_coef" : 10,
     "attributes":
@@ -744,6 +749,7 @@
     "width_mm"  : 0.5,
     "pen"    : [247, 200, 121],
     "brush"  : [255, 255, 255],
+    "tcolor" : [70, 70, 70],
     "max_mip": 30,
     "coor_precision_coef" : 10,
     "attributes":
@@ -766,6 +772,7 @@
     "width_mm"  : 0.4,
     "pen"    : [247, 200, 121],
     "brush"  : [255, 255, 255],
+    "tcolor" : [70, 70, 70],
     "max_mip": 30,
     "coor_precision_coef" : 10,
     "attributes":
@@ -789,6 +796,7 @@
     "width_mm"  : 0.4,
     "pen"    : [247, 200, 121],
     "brush"  : [255, 255, 255],
+    "tcolor" : [70, 70, 70],
     "max_mip": 30,
     "coor_precision_coef" : 10,
     "attributes":
@@ -812,6 +820,7 @@
     "width_mm"  : 0.4,
     "pen"    : [247, 200, 121],
     "brush"  : [255, 255, 255],
+    "tcolor" : [70, 70, 70],
     "max_mip": 30,
     "coor_precision_coef" : 10,
     "attributes":
@@ -834,6 +843,7 @@
     "width_mm"  : 0.4,
     "pen"    : [247, 200, 121],
     "brush"  : [255, 255, 255],
+    "tcolor" : [70, 70, 70],
     "max_mip": 30,
     "coor_precision_coef" : 10,
     "attributes":
@@ -856,6 +866,7 @@
     "width_mm"  : 0.3,
     "pen"  : [155, 155, 155],
     "brush"    : [255, 255, 255],
+    "tcolor" : [70, 70, 70],
     "max_mip": 3,
     "coor_precision_coef" : 10,
     "attributes":
@@ -879,6 +890,7 @@
     "width_mm"  : 0.5,
     "pen"  : [155, 155, 155],
     "brush"    : [255, 255, 255],
+    "tcolor" : [70, 70, 70],
     "style"  : "Dash",
     "max_mip": 3,
     "coor_precision_coef" : 10,
@@ -902,6 +914,7 @@
     "width_mm"  : 0.2,
     "pen"    : [150, 150, 150],
     "brush"  : [255, 255, 255],
+    "tcolor" : [70, 70, 70],
     "max_mip": 10,
     "coor_precision_coef" : 10,
     "attributes":
@@ -924,6 +937,7 @@
     "width_mm"  : 0.4,
     "pen"    : [247, 200, 121],
     "brush"  : [255, 255, 255],
+    "tcolor" : [70, 70, 70],
     "max_mip": 30,
     "coor_precision_coef" : 10,
     "attributes":
@@ -947,6 +961,7 @@
     "width_mm"  : 0.4,
     "pen"    : [247, 200, 121],
     "brush"  : [255, 255, 255],
+    "tcolor" : [70, 70, 70],
     "style"  : "Dash",
     "max_mip": 30,
     "coor_precision_coef" : 10,
@@ -970,6 +985,7 @@
     "width_mm"  : 0.4,
     "pen"    : [247, 200, 121],
     "brush"  : [255, 255, 255],
+    "tcolor" : [70, 70, 70],
     "max_mip": 30,
     "coor_precision_coef" : 10,
     "attributes":
@@ -992,6 +1008,7 @@
     "width_mm"  : 0.3,
     "pen"    : [235, 191, 137],
     "brush"  : [255, 255, 255],
+    "tcolor" : [70, 70, 70],
     "coor_precision_coef" : 10,
     "max_mip": 30
 },
@@ -1003,6 +1020,7 @@
     "width_mm"  : 0.3,
     "pen"    : [235, 191, 137],
     "brush"  : [255, 255, 255],
+    "tcolor" : [70, 70, 70],
     "coor_precision_coef" : 10,
     "max_mip": 30
 },
@@ -1015,6 +1033,7 @@
     "width_mm"  : 0.2,
     "pen"    : [171, 116, 24],
     "brush"  : [255, 255, 255],
+    "tcolor" : [70, 70, 70],
     "coor_precision_coef" : 10,
     "max_mip": 3
 },
@@ -1027,6 +1046,7 @@
     "width_mm"  : 0.2,
     "pen"    : [171, 116, 24],
     "brush"  : [255, 255, 255],
+    "tcolor" : [70, 70, 70],
     "coor_precision_coef" : 10,
     "max_mip": 3
 },
@@ -1173,10 +1193,10 @@
     "code"   : 41100002,
     "type"   : "Point",
     "layer"  : 19,
-    "width_mm"  : 1.0,
+    "width_mm"  : 1.5,
     "pen"    : [0, 0, 0],
     "brush"  : [255, 255, 255],
-    "tcolor" : [100, 100, 100],
+    "tcolor" : [70, 70, 70],
     "max_mip": 30
 },
 {
@@ -1184,7 +1204,7 @@
     "type"   : "Point",
     "code"   : 42100002,
     "layer"  : 19,
-    "width_mm"  : 0.1,
+    "width_mm"  : 1.5,
     "pen"    : [0, 0, 0],
     "brush"  : [255, 255, 255],
     "max_mip": 30
@@ -1272,7 +1292,7 @@
     "key"    : "p_cafe",
     "image"  : "cafe.png",
     "layer"  : 22,
-    "width_mm"  : 1.0,
+    "width_mm"  : 1.5,
     "max_mip": 3
 },
 {
@@ -1281,7 +1301,7 @@
     "key"    : "p_atm",
     "image"  : "atm.png",
     "layer"  : 22,
-    "width_mm"  : 1.0,
+    "width_mm"  : 1.5,
     "max_mip": 0.5
 },
 {
@@ -1290,7 +1310,7 @@
     "key"    : "p_shop",
     "image"  : "shop.png",
     "layer"  : 22,
-    "width_mm"  : 1.0,
+    "width_mm"  : 1.5,
     "max_mip": 0.5
 },
 {
@@ -1299,7 +1319,7 @@
     "key"    : "209-000-P",
     "image"  : "bus_stop.png",
     "layer"  : 22,
-    "width_mm"  : 1.0,
+    "width_mm"  : 1.5,
     "max_mip": 0.5
 },
 {
@@ -1308,7 +1328,7 @@
     "key"    : "p_crossing",
     "image"  : "crossing.png",
     "layer"  : 22,
-    "width_mm"  : 1.0,
+    "width_mm"  : 1.5,
     "max_mip": 0.5
 },
 {
@@ -1318,7 +1338,7 @@
     "key"    : "181-000-P",
     "image"  : "traffic_signals.jpg",
     "layer"  : 22,
-    "width_mm"  : 1.0,
+    "width_mm"  : 1.5,
     "max_mip": 0.5
 },
 {
@@ -1327,7 +1347,7 @@
     "key"    : "p_bank",
     "image"  : "bank.png",
     "layer"  : 22,
-    "width_mm"  : 1.0,
+    "width_mm"  : 1.5,
     "max_mip": 0.5
 },
 {
@@ -1336,7 +1356,7 @@
     "key"    : "p_fast_food",
     "image"  : "fast_food.png",
     "layer"  : 22,
-    "width_mm"  : 1.0,
+    "width_mm"  : 1.5,
     "max_mip": 0.5
 },
 {
@@ -1345,7 +1365,7 @@
     "key"    : "p_pharmacy",
     "image"  : "pharmacy.png",
     "layer"  : 22,
-    "width_mm"  : 1.0,
+    "width_mm"  : 1.5,
     "max_mip": 1
 },
 {
@@ -1354,7 +1374,7 @@
     "key"    : "p_doctors",
     "image"  : "doctors.png",
     "layer"  : 22,
-    "width_mm"  : 1.0,
+    "width_mm"  : 1.5,
     "max_mip": 1
 },
 {
@@ -1363,7 +1383,7 @@
     "key"    : "p_police",
     "image"  : "police.png",
     "layer"  : 22,
-    "width_mm"  : 1.0,
+    "width_mm"  : 1.5,
     "max_mip": 1
 },
 {
@@ -1372,7 +1392,7 @@
     "key"    : "p_pub",
     "image"  : "pub.png",
     "layer"  : 22,
-    "width_mm"  : 1.0,
+    "width_mm"  : 1.5,
     "max_mip": 1
 },
 {
@@ -1381,7 +1401,7 @@
     "key"    : "p_restaurant",
     "image"  : "restaurant.png",
     "layer"  : 22,
-    "width_mm"  : 1.0,
+    "width_mm"  : 1.5,
     "max_mip": 1
 },
 {
@@ -1390,7 +1410,7 @@
     "key"    : "p_hotel",
     "image"  : "hotel.png",
     "layer"  : 22,
-    "width_mm"  : 1.0,
+    "width_mm"  : 1.5,
     "max_mip": 1
 },
 {
@@ -1399,7 +1419,7 @@
     "key"    : "p_cinema",
     "image"  : "cinema.png",
     "layer"  : 22,
-    "width_mm"  : 1.0,
+    "width_mm"  : 1.5,
     "max_mip": 3
 },
 {
@@ -1408,7 +1428,7 @@
     "key"    : "p_theatre",
     "image"  : "theatre.png",
     "layer"  : 22,
-    "width_mm"  : 1.0,
+    "width_mm"  : 1.5,
     "max_mip": 3
 },
 {
@@ -1417,7 +1437,7 @@
     "key"    : "p_university",
     "image"  : "university.png",
     "layer"  : 22,
-    "width_mm"  : 1.0,
+    "width_mm"  : 1.5,
     "max_mip": 3
 
 },
@@ -1427,7 +1447,7 @@
     "key"    : "p_kindergarten",
     "image"  : "kindergarten.png",
     "layer"  : 22,
-    "width_mm"  : 1.0,
+    "width_mm"  : 1.5,
     "max_mip": 3
 },
 {
@@ -1436,7 +1456,7 @@
     "key"    : "p_bureau",
     "image"  : "bureau.png",
     "layer"  : 22,
-    "width_mm"  : 1.0,
+    "width_mm"  : 1.5,
     "max_mip": 1
 },
 {
@@ -1445,7 +1465,7 @@
     "key"    : "p_post_office",
     "image"  : "post_office.png",
     "layer"  : 22,
-    "width_mm"  : 1.0,
+    "width_mm"  : 1.5,
     "max_mip": 3
 },
 {
@@ -1455,7 +1475,7 @@
     "key"    : "067-100-P",
     "image"  : "monument.png",
     "layer"  : 22,
-    "width_mm"  : 1.0,
+    "width_mm"  : 1.5,
     "max_mip": 0.5
 },
 {
@@ -1464,7 +1484,7 @@
     "key"    : "p_food_court",
     "image"  : "food_court.png",
     "layer"  : 22,
-    "width_mm"  : 1.0,
+    "width_mm"  : 1.5,
     "max_mip": 1
 },
 {
@@ -1473,7 +1493,7 @@
     "key"    : "p_bicycle_parking",
     "image"  : "bicycle_parking.png",
     "layer"  : 22,
-    "width_mm"  : 1.0,
+    "width_mm"  : 1.5,
     "max_mip": 1
 },
 {
@@ -1482,7 +1502,7 @@
     "key"    : "p_bicycle_rental",
     "image"  : "bicycle_rental.png",
     "layer"  : 22,
-    "width_mm"  : 1.0,
+    "width_mm"  : 1.5,
     "max_mip": 1
 },
 {
@@ -1491,7 +1511,7 @@
     "key"    : "p_toilets",
     "image"  : "toilet.png",
     "layer"  : 22,
-    "width_mm"  : 1.0,
+    "width_mm"  : 1.5,
     "max_mip": 1
 },
 {
@@ -1500,7 +1520,7 @@
     "key"    : "p_waste_disposal",
     "image"  : "waste_disposal.png",
     "layer"  : 22,
-    "width_mm"  : 1.0,
+    "width_mm"  : 1.5,
     "max_mip": 1
 },
 {
@@ -1509,7 +1529,7 @@
     "key"    : "p_dentist",
     "image"  : "dentist.png",
     "layer"  : 22,
-    "width_mm"  : 1.0,
+    "width_mm"  : 1.5,
     "max_mip": 1
 },
 {
@@ -1520,7 +1540,7 @@
     "attrval": "-5",
     "image"  : "subway_entrance.png",
     "layer"  : 22,
-    "width_mm" : 1.0,
+    "width_mm" : 1.5,
     "max_mip": 100
 },
 {
@@ -1530,7 +1550,7 @@
     "attrval": "camp_site",
     "image"  : "camp_site.png",
     "layer"  : 22,
-    "width_mm"  : 1.0,
+    "width_mm"  : 1.5,
     "max_mip": 30
 },
 {
@@ -1540,7 +1560,7 @@
     "attrval": "picnic_site",
     "image"  : "picnic_site.png",
     "layer"  : 22,
-    "width_mm"  : 1.0,
+    "width_mm"  : 1.5,
     "max_mip": 30
 },
 {
@@ -1550,7 +1570,7 @@
     "attrval": "attraction",
     "image"  : "attraction.png",
     "layer"  : 22,
-    "width_mm"  : 1.0,
+    "width_mm"  : 1.5,
     "max_mip": 3
 },
 {
@@ -1560,7 +1580,7 @@
     "attrval": "information",
     "image"  : "information.jpg",
     "layer"  : 22,
-    "width_mm"  : 1.0,
+    "width_mm"  : 1.5,
     "max_mip": 1
 },
 {
@@ -1570,7 +1590,7 @@
     "attrval": "fountain",
     "image"  : "fountain.jpg",
     "layer"  : 22,
-    "width_mm"  : 1.0,
+    "width_mm"  : 1.5,
     "max_mip": 1
 },
 {
@@ -1580,7 +1600,7 @@
     "key"    : "p_artwork",
     "image"  : "artwork.png",
     "layer"  : 22,
-    "width_mm"  : 1.0,
+    "width_mm"  : 1.5,
     "max_mip": 0.5
 },
 {
@@ -1590,7 +1610,7 @@
     "attrval": "gallery",
     "image"  : "gallery.png",
     "layer"  : 22,
-    "width_mm"  : 1.0,
+    "width_mm"  : 1.5,
     "max_mip": 0.5
 },
 {
@@ -1600,7 +1620,7 @@
     "attrval": "cliff",
     "image"  : "cliff.png",
     "layer"  : 22,
-    "width_mm"  : 1.0,
+    "width_mm"  : 1.5,
     "max_mip": 3
 },
 {
@@ -1610,7 +1630,7 @@
     "attrval": "firepit",
     "image"  : "firepit.png",
     "layer"  : 22,
-    "width_mm"  : 1.0,
+    "width_mm"  : 1.5,
     "max_mip": 30
 },
 {
@@ -1620,7 +1640,7 @@
     "attrval": "picnic_table",
     "image"  : "picnic_table.png",
     "layer"  : 22,
-    "width_mm"  : 1.0,
+    "width_mm"  : 1.5,
     "max_mip": 30
 },
 {
@@ -1630,7 +1650,7 @@
     "attrval": "viewpoint",
     "image"  : "viewpoint.png",
     "layer"  : 22,
-    "width_mm"  : 1.0,
+    "width_mm"  : 1.5,
     "max_mip": 3
 },
 {
@@ -1639,7 +1659,7 @@
     "key"    : "311-000-V",
     "image"  : "spring.png",
     "layer"  : 22,
-    "width_mm"  : 1.0,
+    "width_mm"  : 1.5,
     "max_mip": 30
 },
 {
@@ -1649,7 +1669,7 @@
     "key"    : "289-000-P",
     "image"  : "lighthouse.png",
     "layer"  : 22,
-    "width_mm"  : 1.0,
+    "width_mm"  : 1.5,
     "max_mip": 3
 },
 {
@@ -1670,7 +1690,7 @@
     "code"   : 12000000,
     "image"  : "peak.png",
     "layer"  : 22,
-    "width_mm"  : 1,
+    "width_mm"  : 1.5,
     "max_mip": 30
 }
 ]
