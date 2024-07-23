@@ -717,7 +717,7 @@ void FlashRender::paintLineNames(QPainter* p)
 {
   text_rect_array.clear();
   auto f = p->font();
-  auto w = round(1.5 / s.pixel_size_mm);
+  auto w = round(1.3 / s.pixel_size_mm);
   f.setPixelSize(w);
   p->setFont(f);
 

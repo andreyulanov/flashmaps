@@ -634,7 +634,7 @@
     "width_mm"  : 0.8,
     "pen"    : [241, 155, 31],
     "brush"  : [255, 255, 255],
-    "tcolor" : [70, 70, 70],
+    "tcolor" : [0, 0, 0],
     "max_mip": 200,
     "coor_precision_coef" : 10,
     "attributes":
@@ -657,7 +657,7 @@
     "width_mm"  : 0.8,
     "pen"    : [241, 155, 31],
     "brush"  : [255, 255, 255],
-    "tcolor" : [70, 70, 70],
+    "tcolor" : [0, 0, 0],
     "max_mip": 200,
     "coor_precision_coef" : 10,
     "attributes":
@@ -680,7 +680,7 @@
     "width_mm"  : 0.6,
     "pen"    : [252, 188, 61],
     "brush"  : [255, 255, 255],
-    "tcolor" : [70, 70, 70],
+    "tcolor" : [0, 0, 0],
     "max_mip": 200,
     "coor_precision_coef" : 10,
     "attributes":
@@ -703,7 +703,7 @@
     "width_mm"  : 0.6,
     "pen"    : [252, 188, 61],
     "brush"  : [255, 255, 255],
-    "tcolor" : [70, 70, 70],
+    "tcolor" : [0, 0, 0],
     "max_mip": 200,
     "coor_precision_coef" : 10,
     "attributes":
@@ -726,7 +726,7 @@
     "width_mm"  : 0.5,
     "pen"    : [247, 200, 121],
     "brush"  : [255, 255, 255],
-    "tcolor" : [70, 70, 70],
+    "tcolor" : [0, 0, 0],
     "max_mip": 30,
     "coor_precision_coef" : 10,
     "attributes":
@@ -749,7 +749,7 @@
     "width_mm"  : 0.5,
     "pen"    : [247, 200, 121],
     "brush"  : [255, 255, 255],
-    "tcolor" : [70, 70, 70],
+    "tcolor" : [0, 0, 0],
     "max_mip": 30,
     "coor_precision_coef" : 10,
     "attributes":
@@ -772,7 +772,7 @@
     "width_mm"  : 0.4,
     "pen"    : [247, 200, 121],
     "brush"  : [255, 255, 255],
-    "tcolor" : [70, 70, 70],
+    "tcolor" : [0, 0, 0],
     "max_mip": 30,
     "coor_precision_coef" : 10,
     "attributes":
@@ -796,7 +796,7 @@
     "width_mm"  : 0.4,
     "pen"    : [247, 200, 121],
     "brush"  : [255, 255, 255],
-    "tcolor" : [70, 70, 70],
+    "tcolor" : [0, 0, 0],
     "max_mip": 30,
     "coor_precision_coef" : 10,
     "attributes":
@@ -820,7 +820,7 @@
     "width_mm"  : 0.4,
     "pen"    : [247, 200, 121],
     "brush"  : [255, 255, 255],
-    "tcolor" : [70, 70, 70],
+    "tcolor" : [0, 0, 0],
     "max_mip": 30,
     "coor_precision_coef" : 10,
     "attributes":
@@ -843,7 +843,7 @@
     "width_mm"  : 0.4,
     "pen"    : [247, 200, 121],
     "brush"  : [255, 255, 255],
-    "tcolor" : [70, 70, 70],
+    "tcolor" : [0, 0, 0],
     "max_mip": 30,
     "coor_precision_coef" : 10,
     "attributes":
@@ -866,7 +866,7 @@
     "width_mm"  : 0.3,
     "pen"  : [155, 155, 155],
     "brush"    : [255, 255, 255],
-    "tcolor" : [70, 70, 70],
+    "tcolor" : [0, 0, 0],
     "max_mip": 3,
     "coor_precision_coef" : 10,
     "attributes":
@@ -890,7 +890,7 @@
     "width_mm"  : 0.5,
     "pen"  : [155, 155, 155],
     "brush"    : [255, 255, 255],
-    "tcolor" : [70, 70, 70],
+    "tcolor" : [0, 0, 0],
     "style"  : "Dash",
     "max_mip": 3,
     "coor_precision_coef" : 10,
@@ -914,7 +914,7 @@
     "width_mm"  : 0.2,
     "pen"    : [150, 150, 150],
     "brush"  : [255, 255, 255],
-    "tcolor" : [70, 70, 70],
+    "tcolor" : [0, 0, 0],
     "max_mip": 10,
     "coor_precision_coef" : 10,
     "attributes":
@@ -937,7 +937,7 @@
     "width_mm"  : 0.4,
     "pen"    : [247, 200, 121],
     "brush"  : [255, 255, 255],
-    "tcolor" : [70, 70, 70],
+    "tcolor" : [0, 0, 0],
     "max_mip": 30,
     "coor_precision_coef" : 10,
     "attributes":
@@ -961,7 +961,7 @@
     "width_mm"  : 0.4,
     "pen"    : [247, 200, 121],
     "brush"  : [255, 255, 255],
-    "tcolor" : [70, 70, 70],
+    "tcolor" : [0, 0, 0],
     "style"  : "Dash",
     "max_mip": 30,
     "coor_precision_coef" : 10,
@@ -985,7 +985,7 @@
     "width_mm"  : 0.4,
     "pen"    : [247, 200, 121],
     "brush"  : [255, 255, 255],
-    "tcolor" : [70, 70, 70],
+    "tcolor" : [0, 0, 0],
     "max_mip": 30,
     "coor_precision_coef" : 10,
     "attributes":
@@ -1008,7 +1008,7 @@
     "width_mm"  : 0.3,
     "pen"    : [235, 191, 137],
     "brush"  : [255, 255, 255],
-    "tcolor" : [70, 70, 70],
+    "tcolor" : [0, 0, 0],
     "coor_precision_coef" : 10,
     "max_mip": 30
 },
@@ -1020,7 +1020,7 @@
     "width_mm"  : 0.3,
     "pen"    : [235, 191, 137],
     "brush"  : [255, 255, 255],
-    "tcolor" : [70, 70, 70],
+    "tcolor" : [0, 0, 0],
     "coor_precision_coef" : 10,
     "max_mip": 30
 },
@@ -1033,7 +1033,7 @@
     "width_mm"  : 0.2,
     "pen"    : [171, 116, 24],
     "brush"  : [255, 255, 255],
-    "tcolor" : [70, 70, 70],
+    "tcolor" : [0, 0, 0],
     "coor_precision_coef" : 10,
     "max_mip": 3
 },
@@ -1046,7 +1046,7 @@
     "width_mm"  : 0.2,
     "pen"    : [171, 116, 24],
     "brush"  : [255, 255, 255],
-    "tcolor" : [70, 70, 70],
+    "tcolor" : [0, 0, 0],
     "coor_precision_coef" : 10,
     "max_mip": 3
 },
@@ -1196,7 +1196,7 @@
     "width_mm"  : 1.5,
     "pen"    : [0, 0, 0],
     "brush"  : [255, 255, 255],
-    "tcolor" : [70, 70, 70],
+    "tcolor" : [0, 0, 0],
     "max_mip": 30
 },
 {
