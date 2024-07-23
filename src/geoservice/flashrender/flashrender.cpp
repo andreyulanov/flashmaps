@@ -666,6 +666,8 @@ void FlashRender::paintPointNames(QPainter* p)
        render_idx++)
     for (auto item: point_names[render_idx])
     {
+      if (!item.cl)
+        continue;
       auto pos = item.rect.topLeft();
       auto w   = item.cl->getWidthPix();
       if (w > 0)
@@ -677,21 +679,23 @@ void FlashRender::paintPointNames(QPainter* p)
         p->setFont(f);
         for (auto str: item.str_list)
         {
-          p->translate(
-              QPoint(item.cl->image.width() * 0.8, -w * 0.3));
+          p->translate(QPoint(item.cl->image.width(), 0));
           paintPointName(p, str, item.cl->tcolor);
         }
         p->restore();
       }
-      if (item.cl)
+      if (item.cl->image.isNull())
+      {
+        p->setPen(item.cl->pen);
+        p->setBrush(item.cl->brush);
+        p->drawEllipse(pos, int(w * 0.25), int(w * 0.25));
+      }
+      else
       {
         auto pos2 = QPoint{pos.x() - item.cl->image.width() / 2,
                            pos.y() - item.cl->image.height() / 2};
         p->drawImage(pos2, item.cl->image);
       }
-      else
-        p->drawEllipse(pos, int(1.0 / s.pixel_size_mm),
-                       int(1.0 / s.pixel_size_mm));
     }
 }
 
