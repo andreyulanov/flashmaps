@@ -177,7 +177,7 @@ void FlashRender::paintPointName(QPainter* p, const QString& text,
                                  const QColor& tcolor)
 {
   QRect rect;
-  int   w = 20.0 / s.pixel_size_mm;
+  int   w = s.max_name_width_mm / s.pixel_size_mm;
   rect.setSize({w, w});
 
   p->setPen(Qt::white);
@@ -281,9 +281,13 @@ void FlashRender::paintPointObject(QPainter*             p,
 
   auto coor_m = frame.top_left.toMeters();
 
-  auto clip_safe_rect_m = render_frame_m.adjusted(
-      -s.max_object_name_length_pix * mip, -50 * mip,
-      s.max_object_name_length_pix * mip, 50 * mip);
+  int max_object_name_length_pix =
+      s.max_name_width_mm / s.pixel_size_mm;
+  auto clip_safe_rect_m =
+      render_frame_m.adjusted(-max_object_name_length_pix * mip,
+                              -max_object_name_length_pix * mip,
+                              max_object_name_length_pix * mip,
+                              max_object_name_length_pix * mip);
 
   if (!clip_safe_rect_m.contains(coor_m))
     return;
@@ -291,23 +295,23 @@ void FlashRender::paintPointObject(QPainter*             p,
   auto cl = &map.classes[obj.class_idx];
   p->setPen(QPen(cl->pen, 2));
   p->setBrush(cl->brush);
-  auto        kpos       = obj.polygons.first().first();
-  QPoint      pos        = deg2pix(kpos);
-  int         max_length = 0;
-  QStringList str_list;
+  auto    kpos = obj.polygons.first().first();
+  QPoint  pos  = deg2pix(kpos);
+  QString str;
   if (!obj.name.isEmpty())
-  {
-    str_list += obj.name;
-    max_length = obj.name.count();
-  }
+    str += obj.name;
 
-  auto rect = QRect{pos.x(), pos.y(), max_length * cl->getWidthPix(),
-                    str_list.count() * cl->getWidthPix()};
+  int w = s.max_name_width_mm / s.pixel_size_mm;
+  if (obj.name.isEmpty())
+    w = 1;
+
+  auto icon_rect = QRect{pos.x(), pos.y(), w * cl->getWidthPix(),
+                         cl->getWidthPix()};
 
   bool intersects = false;
   for (auto item: point_names[render_idx])
   {
-    if (rect.intersects(item.rect))
+    if (icon_rect.intersects(item.rect))
     {
       intersects = true;
       break;
@@ -316,7 +320,7 @@ void FlashRender::paintPointObject(QPainter*             p,
   if (intersects)
     return;
 
-  point_names[render_idx].append({rect, str_list, cl});
+  point_names[render_idx].append({icon_rect, str, cl});
 }
 
 QPolygon FlashRender::poly2pix(const FlashGeoPolygon& polygon)
@@ -352,9 +356,13 @@ void FlashRender::paintPolygonObject(QPainter*             p,
 
   auto cl = &map.classes[obj.class_idx];
 
-  auto clip_safe_rect_m = render_frame_m.adjusted(
-      -s.max_object_name_length_pix * mip, -50 * mip,
-      s.max_object_name_length_pix * mip, 50 * mip);
+  int max_object_name_length_pix =
+      s.max_name_width_mm / s.pixel_size_mm;
+  auto clip_safe_rect_m =
+      render_frame_m.adjusted(-max_object_name_length_pix * mip,
+                              -max_object_name_length_pix * mip,
+                              max_object_name_length_pix * mip,
+                              max_object_name_length_pix * mip);
 
   if (!obj_frame_m.intersects(clip_safe_rect_m))
     return;
@@ -406,7 +414,7 @@ void FlashRender::paintPolygonObject(QPainter*             p,
       actual_rect.setSize({w, w});
       actual_rect.translate({-w / 2, -w / 2});
 
-      addDrawTextEntry(draw_text_array[render_idx],
+      addDrawTextEntry(polygon_names[render_idx],
                        {obj.name, cl, obj_frame_pix, actual_rect,
                         Qt::AlignCenter});
     }
@@ -439,9 +447,13 @@ void FlashRender::paintLineObject(QPainter*             painter,
 
   QRectF obj_frame_m = {top_left_m, bottom_right_m};
 
-  auto clip_safe_rect_m = render_frame_m.adjusted(
-      -s.max_object_name_length_pix * mip, -50 * mip,
-      s.max_object_name_length_pix * mip, 50 * mip);
+  int max_object_name_length_pix =
+      s.max_name_width_mm / s.pixel_size_mm;
+  auto clip_safe_rect_m =
+      render_frame_m.adjusted(-max_object_name_length_pix * mip,
+                              -max_object_name_length_pix * mip,
+                              max_object_name_length_pix * mip,
+                              max_object_name_length_pix * mip);
 
   if (!obj_frame_m.intersects(clip_safe_rect_m))
     return;
@@ -546,7 +558,7 @@ void FlashRender::paintLineObject(QPainter*             painter,
           {
             nh.fix(&map, &obj, pl.at(nh.start_idx),
                    pl.at(nh.end_idx));
-            name_holder_array[render_idx].append(nh);
+            line_names[render_idx].append(nh);
           }
           nh           = NameHolder();
           nh.start_idx = point_idx;
@@ -668,8 +680,10 @@ void FlashRender::paintPointNames(QPainter* p)
     {
       if (!item.cl)
         continue;
+
       auto pos = item.rect.topLeft();
       auto w   = item.cl->getWidthPix();
+
       if (w > 0)
       {
         p->save();
@@ -677,11 +691,11 @@ void FlashRender::paintPointNames(QPainter* p)
         auto f = p->font();
         f.setPixelSize(w);
         p->setFont(f);
-        for (auto str: item.str_list)
-        {
-          p->translate(QPoint(item.cl->image.width(), 0));
-          paintPointName(p, str, item.cl->tcolor);
-        }
+        if (item.cl->image.isNull())
+          p->translate(QPoint(w * 0.5, 0));
+        else
+          p->translate(QPoint(item.cl->image.width() * 0.5, 0));
+        paintPointName(p, item.str, item.cl->tcolor);
         p->restore();
       }
       if (item.cl->image.isNull())
@@ -703,13 +717,13 @@ void FlashRender::paintLineNames(QPainter* p)
 {
   text_rect_array.clear();
   auto f = p->font();
-  auto w = round(1.0 / s.pixel_size_mm);
+  auto w = round(1.5 / s.pixel_size_mm);
   f.setPixelSize(w);
   p->setFont(f);
 
   for (int render_idx = 0; render_idx < FlashRenderMap::render_count;
        render_idx++)
-    for (auto nh: name_holder_array[render_idx])
+    for (auto nh: line_names[render_idx])
     {
       p->save();
       QRect text_rect;
@@ -740,7 +754,7 @@ void FlashRender::paintPolygonNames(QPainter* p)
 {
   for (int render_idx = 0; render_idx < FlashRenderMap::render_count;
        render_idx++)
-    for (auto& dte: draw_text_array[render_idx])
+    for (auto& dte: polygon_names[render_idx])
     {
       QFontMetrics fm(p->font());
       auto         actual_rect = fm.boundingRect(
@@ -886,8 +900,8 @@ void FlashRender::run()
   for (int i = 0; i < FlashRenderMap::render_count; i++)
   {
     point_names[i].clear();
-    draw_text_array[i].clear();
-    name_holder_array[i].clear();
+    polygon_names[i].clear();
+    line_names[i].clear();
   }
   size_m         = {pixmap.width() * mip, pixmap.height() * mip};
   render_frame_m = {top_left_m, size_m};

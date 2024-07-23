@@ -14,12 +14,12 @@ public:
   struct Settings
   {
     int     big_tile_multiplier          = 4;
-    int     max_object_name_length_pix   = 200;
     double  max_object_size_with_name_mm = 20.0;
     double  pixel_size_mm                = 0.1;
     QColor  ocean_color                  = QColor(150, 210, 240);
     QColor  land_color                   = QColor(250, 246, 230);
     double  max_loaded_maps_count        = 3;
+    double  max_name_width_mm            = 20.0;
     QString map_dir;
     QString world_map_name = "world.flashmap";
   };
@@ -57,10 +57,10 @@ private:
              const QPoint& start, const QPoint& end);
   };
 
-  struct PointName
+  struct PointNameRect
   {
     QRect             rect;
-    QStringList       str_list;
+    QString           str;
     const FlashClass* cl;
   };
 
@@ -78,13 +78,12 @@ private:
   KRenderMapCollection maps;
   QFont                font;
 
-  QVector<PointName> point_names[FlashRenderMap::render_count];
-  QVector<DrawTextEntry>
-                      draw_text_array[FlashRenderMap::render_count];
-  QVector<NameHolder> name_holder_array[FlashRenderMap::render_count];
-  QVector<QRect>      text_rect_array;
-  QSizeF              size_m;
-  QRectF              render_frame_m;
+  QVector<PointNameRect> point_names[FlashRenderMap::render_count];
+  QVector<DrawTextEntry> polygon_names[FlashRenderMap::render_count];
+  QVector<NameHolder>    line_names[FlashRenderMap::render_count];
+  QVector<QRect>         text_rect_array;
+  QSizeF                 size_m;
+  QRectF                 render_frame_m;
 
   static void paintOutlinedText(QPainter* p, const QString& text,
                                 const QColor& tcolor);
