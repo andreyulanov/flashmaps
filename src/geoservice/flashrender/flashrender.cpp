@@ -715,6 +715,7 @@ void FlashRender::paintPointNames(QPainter* p)
 
 void FlashRender::paintLineNames(QPainter* p)
 {
+  QRect screen_rect = {0, 0, pixmap.width(), pixmap.height()};
   text_rect_array.clear();
   auto f = p->font();
   auto w = round(1.3 / s.pixel_size_mm);
@@ -737,6 +738,12 @@ void FlashRender::paintLineNames(QPainter* p)
       tr.translate(-text_rect.width() / 2, 0);
 
       QRect mapped_rect = tr.mapRect(text_rect);
+      if (!screen_rect.contains(mapped_rect))
+      {
+        p->restore();
+        continue;
+      }
+
       if (isCluttering(mapped_rect))
       {
         p->restore();
@@ -903,7 +910,7 @@ void FlashRender::run()
     polygon_names[i].clear();
     line_names[i].clear();
   }
-  size_m         = {pixmap.width() * mip, pixmap.height() * mip};
+  QSizeF size_m  = {pixmap.width() * mip, pixmap.height() * mip};
   render_frame_m = {top_left_m, size_m};
 
   checkLoad();

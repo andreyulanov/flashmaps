@@ -76,13 +76,11 @@ private:
   QVector<RenderResult> big_tiles;
 
   KRenderMapCollection maps;
-  QFont                font;
 
   QVector<PointNameRect> point_names[FlashRenderMap::render_count];
   QVector<DrawTextEntry> polygon_names[FlashRenderMap::render_count];
   QVector<NameHolder>    line_names[FlashRenderMap::render_count];
   QVector<QRect>         text_rect_array;
-  QSizeF                 size_m;
   QRectF                 render_frame_m;
 
   static void paintOutlinedText(QPainter* p, const QString& text,
