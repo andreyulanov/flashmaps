@@ -180,6 +180,9 @@ void FlashRender::paintPointName(QPainter* p, const QString& text,
   int   w = s.max_name_width_mm / s.pixel_size_mm;
   rect.setSize({w, w});
 
+  if (!isCluttering(rect))
+    text_rect_array.append(rect);
+
   p->setPen(Qt::white);
   auto shifts = {-2, 0, 2};
   int  flags  = Qt::AlignLeft | Qt::AlignTop | Qt::TextWordWrap |
@@ -301,17 +304,16 @@ void FlashRender::paintPointObject(QPainter*             p,
   if (!obj.name.isEmpty())
     str += obj.name;
 
-  int w = s.max_name_width_mm / s.pixel_size_mm;
+  int w = obj.name.count() * p->font().pixelSize();
   if (obj.name.isEmpty())
-    w = 1;
+    w = cl->getWidthPix();
 
-  auto icon_rect = QRect{pos.x(), pos.y(), w * cl->getWidthPix(),
-                         cl->getWidthPix()};
+  auto name_rect = QRect{pos.x(), pos.y(), w, cl->getWidthPix()};
 
   bool intersects = false;
   for (auto item: point_names[render_idx])
   {
-    if (icon_rect.intersects(item.rect))
+    if (name_rect.intersects(item.rect))
     {
       intersects = true;
       break;
@@ -320,7 +322,7 @@ void FlashRender::paintPointObject(QPainter*             p,
   if (intersects)
     return;
 
-  point_names[render_idx].append({icon_rect, str, cl});
+  point_names[render_idx].append({name_rect, str, cl});
 }
 
 QPolygon FlashRender::poly2pix(const FlashGeoPolygon& polygon)
