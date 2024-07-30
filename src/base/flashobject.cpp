@@ -1,6 +1,7 @@
 #include <math.h>
 #include <QUuid>
 #include <QDebug>
+#include <QCryptographicHash>
 #include "flashobject.h"
 #include "flashserialize.h"
 
@@ -58,6 +59,25 @@ void FlashMapObject::load(QVector<FlashClass>& class_list, int& pos,
     polygons[0].load(ba, pos, cl->coor_precision_coef);
     frame = polygons[0].getFrame();
   }
+}
+
+QByteArray FlashMapObject::getHash()
+{
+  QCryptographicHash hash(QCryptographicHash::Keccak_256);
+  QByteArray         ba;
+  ba += name.toUtf8();
+  QMapIterator<QString, QByteArray> it(attributes);
+  while (it.hasNext())
+  {
+    it.next();
+    ba += it.key().toUtf8();
+    ba += it.value();
+  }
+  for (auto polygon: polygons)
+    for (auto point: polygon)
+      ba.append((char*)&point, sizeof(point));
+  hash.addData(ba);
+  return hash.result().toHex();
 }
 
 FlashGeoCoor FlashMapObject::getCenter()

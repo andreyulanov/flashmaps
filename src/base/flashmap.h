@@ -29,18 +29,18 @@ struct FlashMap
 
   QVector<FlashClass>      classes;
   FlashGeoRect             frame;
-  QVector<QPolygonF>   borders_m;
+  QVector<QPolygonF>       borders_m;
   QVector<FlashGeoPolygon> borders;
   FlashTile                main;
   QVector<FlashTile>       tiles;
 
-  void                 save(QString path) const;
-  void                 loadMain(QString path, bool load_objects,
-                                double pixel_size_mm);
-  void                 loadTile(QString path, int tile_idx);
-  void                 loadAll(QString path, double pixel_size_mm);
-  void                 clear();
-  qint64               count();
-  void                 addObject(FlashFreeObject free_obj);
+  void   save(QString path) const;
+  void   loadMain(QString path, bool load_objects,
+                  double pixel_size_mm);
+  void   loadTile(QString path, int tile_idx);
+  void   loadAll(QString path, double pixel_size_mm);
+  void   clear();
+  qint64 count();
+  void   addObject(FlashFreeObject free_obj);
   QVector<FlashFreeObject> getObjects();
 };
