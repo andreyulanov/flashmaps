@@ -1,20 +1,20 @@
 #include "qgeomapreplyflashmaps.h"
 #include <QDebug>
 
-QGeoMapReplyFlashmaps::QGeoMapReplyFlashmaps(FlashRender* render,
-                                             const QGeoTileSpec& spec,
+QGeoMapReplyFlashmaps::QGeoMapReplyFlashmaps(const QGeoTileSpec& spec,
                                              QObject* parent):
-    QGeoTiledMapReply(spec, parent),
-    m_render(render)
+    QGeoTiledMapReply(spec, parent)
 {
-  FlashRender::TileCoor t           = {tileSpec().x(), tileSpec().y(),
-                                   tileSpec().zoom()};
-  auto              tile_pixmap = m_render->getTile(t);
+  FlashRender::TileCoor t = {tileSpec().x(), tileSpec().y(),
+                             tileSpec().zoom()};
+  auto tile_pixmap        = FlashRender::instance().getTile(t);
   if (tile_pixmap.isEmpty())
   {
-    connect(m_render, &FlashRender::finished, this,
-            &QGeoMapReplyFlashmaps::onFinishedRender);
-    m_render->requestTile({spec.x(), spec.y(), spec.zoom()});
+    connect(&FlashRender::instance(), &FlashRender::finished, this,
+            &QGeoMapReplyFlashmaps::onFinishedRender,
+            Qt::UniqueConnection);
+    FlashRender::instance().requestTile(
+        {spec.x(), spec.y(), spec.zoom()});
   }
   else
   {
@@ -25,12 +25,13 @@ QGeoMapReplyFlashmaps::QGeoMapReplyFlashmaps(FlashRender* render,
 
 void QGeoMapReplyFlashmaps::onFinishedRender()
 {
-  auto              spec        = tileSpec();
-  FlashRender::TileCoor t           = {spec.x(), spec.y(), spec.zoom()};
-  auto              tile_pixmap = m_render->getTile(t);
+  auto                  spec = tileSpec();
+  FlashRender::TileCoor t    = {spec.x(), spec.y(), spec.zoom()};
+  auto tile_pixmap           = FlashRender::instance().getTile(t);
   if (tile_pixmap.isEmpty())
   {
-    m_render->requestTile({spec.x(), spec.y(), spec.zoom()});
+    FlashRender::instance().requestTile(
+        {spec.x(), spec.y(), spec.zoom()});
     setFinished(false);
   }
   else

@@ -131,10 +131,13 @@ private:
   QPoint   deg2pix(FlashGeoCoor) const;
   TileCoor getBigTileCoor(TileCoor);
   QString  getTileName(TileCoor);
+  FlashRender();
+  virtual ~FlashRender();
 
 public:
-  FlashRender(Settings);
-  virtual ~FlashRender();
-  void       requestTile(TileCoor);
-  QByteArray getTile(TileCoor);
+  static FlashRender& instance();
+  void                clear();
+  void                setSettings(Settings);
+  void                requestTile(TileCoor);
+  QByteArray          getTile(TileCoor);
 };

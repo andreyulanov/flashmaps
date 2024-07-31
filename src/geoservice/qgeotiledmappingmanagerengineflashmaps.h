@@ -19,10 +19,8 @@ public:
   virtual QGeoMap* createMap();
   QString          getCacheDirectory();
   QString          getMapDirectory();
-  FlashRender*     getRender();
 
 private:
-  QString                     m_cacheDirectory;
-  QString                     m_mapDirectory;
-  QScopedPointer<FlashRender> m_render;
+  QString m_cacheDirectory;
+  QString m_mapDirectory;
 };

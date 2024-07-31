@@ -7,6 +7,8 @@
 #include <QStandardPaths>
 #include <QGuiApplication>
 #include <QScreen>
+#include <QQmlEngine>
+#include <QQmlContext>
 
 #include <QDebug>
 #include <QDir>
@@ -25,6 +27,8 @@ QGeoTiledMappingManagerEngineFlashmaps::
 
   setCameraCapabilities(capabilities);
   setTileSize(QSize(256, 256));
+
+  m_prefetchStyle = QGeoTiledMap::PrefetchTwoNeighbourLayers;
 
   QList<QGeoMapType> types;
   types << QGeoMapType(QGeoMapType::StreetMap, "Flash Street Map",
@@ -70,7 +74,7 @@ QGeoTiledMappingManagerEngineFlashmaps::
   if (!is_device)
     s.pixel_size_mm *= 0.5;
 
-  m_render.reset(new FlashRender(s));
+  FlashRender::instance().setSettings(s);
 }
 
 QString QGeoTiledMappingManagerEngineFlashmaps::getCacheDirectory()
@@ -81,11 +85,6 @@ QString QGeoTiledMappingManagerEngineFlashmaps::getCacheDirectory()
 QString QGeoTiledMappingManagerEngineFlashmaps::getMapDirectory()
 {
   return m_mapDirectory;
-}
-
-FlashRender* QGeoTiledMappingManagerEngineFlashmaps::getRender()
-{
-  return m_render.data();
 }
 
 QGeoMap* QGeoTiledMappingManagerEngineFlashmaps::createMap()

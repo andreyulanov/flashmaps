@@ -16,6 +16,5 @@ QGeoTileFetcherFlashmaps::QGeoTileFetcherFlashmaps(
 QGeoTiledMapReply*
 QGeoTileFetcherFlashmaps::getTileImage(const QGeoTileSpec& spec)
 {
-  return new QGeoMapReplyFlashmaps(m_engineFlashmaps->getRender(),
-                                   spec);
+  return new QGeoMapReplyFlashmaps(spec);
 }

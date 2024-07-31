@@ -62,6 +62,7 @@
 
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include "../flashrender/flashrender.h"
 
 int main(int argc, char* argv[])
 {
@@ -69,10 +70,10 @@ int main(int argc, char* argv[])
       "/home/user/flashmaps/build-main-Desktop-Debug/"
       "geoservice/plugins");
 
+  qDebug() << "initializing app.......";
   QGuiApplication app(argc, argv);
 
   QQmlApplicationEngine engine;
   engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
-
   return app.exec();
 }

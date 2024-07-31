@@ -8,10 +8,8 @@ class QGeoMapReplyFlashmaps: public QGeoTiledMapReply
 {
   Q_OBJECT
 
-  FlashRender* m_render = nullptr;
-
 public:
-  QGeoMapReplyFlashmaps(FlashRender* render, const QGeoTileSpec& spec,
-                        QObject* parent = 0);
+  QGeoMapReplyFlashmaps(const QGeoTileSpec& spec,
+                        QObject*            parent = 0);
   void onFinishedRender();
 };

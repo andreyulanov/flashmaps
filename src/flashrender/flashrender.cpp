@@ -22,9 +22,20 @@ QPointF FlashRender::pix2meters(QPointF pix) const
   return {xm, ym};
 }
 
-FlashRender::FlashRender(Settings v)
+FlashRender& FlashRender::instance()
 {
-  s                 = v;
+  static FlashRender inst;
+  return inst;
+}
+
+FlashRender::FlashRender()
+{
+  connect(this, &QThread::finished, this, &FlashRender::onFinished);
+}
+
+void FlashRender::setSettings(Settings _s)
+{
+  s                 = _s;
   int big_tile_side = tile_side * s.big_tile_multiplier;
   pixmap            = QPixmap{big_tile_side, big_tile_side};
   QDir dir(s.map_dir);
@@ -42,12 +53,15 @@ FlashRender::FlashRender(Settings v)
     }
     insertMap(idx, fi.filePath(), load_now);
   }
-  connect(this, &QThread::finished, this, &FlashRender::onFinished);
 }
 
 FlashRender::~FlashRender()
 {
-  QThreadPool().globalInstance()->waitForDone();
+  clear();
+}
+
+void FlashRender::clear()
+{
   wait();
 }
 
