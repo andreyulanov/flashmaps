@@ -2,7 +2,7 @@
 
 #include "QtLocation/private/qgeotiledmappingmanagerengine_p.h"
 #include "QtLocation/private/qgeomaptype_p.h"
-#include "flashrender/flashrender.h"
+#include "flashrender.h"
 #include <QGeoServiceProvider>
 #include <QPointer>
 

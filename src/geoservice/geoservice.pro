@@ -7,8 +7,9 @@ PLUGIN_CLASS_NAME = QGeoServiceProviderFactoryFlashMaps
 load(qt_plugin)
 
 QMAKE_CXXFLAGS += -O0
-LIBS += -L$$PWD/flashrender
+LIBS += -L$$PWD/../flashrender
 INCLUDEPATH += $$PWD/../base
+INCLUDEPATH += $$PWD/../flashrender
 
 HEADERS += \
     ../base/flashbase.h \
@@ -19,8 +20,8 @@ HEADERS += \
     ../base/flashmap.h \
     ../base/flashobject.h \
     ../base/flashserialize.h \
-    flashrender/flashrender.h \
-    flashrender/flashrendermap.h \
+    ../flashrender/flashrender.h \
+    ../flashrender/flashrendermap.h \
     qgeomapreplyflashmaps.h \
     qgeoserviceproviderpluginflashmaps.h \
     qgeotiledmapflashmaps.h \
@@ -35,8 +36,8 @@ SOURCES += \
     ../base/flashlocker.cpp \
     ../base/flashmap.cpp \
     ../base/flashobject.cpp \
-    flashrender/flashrender.cpp \
-    flashrender/flashrendermap.cpp \
+    ../flashrender/flashrender.cpp \
+    ../flashrender/flashrendermap.cpp \
     qgeomapreplyflashmaps.cpp \
     qgeoserviceproviderpluginflashmaps.cpp \
     qgeotiledmapflashmaps.cpp \

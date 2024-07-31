@@ -2,7 +2,6 @@
 
 #include "qgeoserviceproviderpluginflashmaps.h"
 #include <QtLocation/private/qgeotilefetcher_p.h>
-#include "flashrender/flashrender.h"
 
 class QGeoTileSpec;
 class QGeoTiledMappingManagerEngine;
