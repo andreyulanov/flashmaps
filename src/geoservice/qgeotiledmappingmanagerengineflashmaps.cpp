@@ -5,6 +5,8 @@
 #include "QtLocation/private/qgeotilespec_p.h"
 #include "QtLocation/private/qgeofiletilecache_p.h"
 #include <QStandardPaths>
+#include <QGuiApplication>
+#include <QScreen>
 
 #include <QDebug>
 #include <QDir>
@@ -54,6 +56,21 @@ QGeoTiledMappingManagerEngineFlashmaps::
       new QGeoFileTileCache(m_cacheDirectory);
   setTileCache(tileCache);
   tileCache->clearAll();
+
+  FlashRender::Settings s;
+  s.map_dir              = getMapDirectory();
+  auto   screen          = QGuiApplication::screens().first();
+  QSize  screen_size_pix = screen->availableSize();
+  QSizeF screen_size_mm  = screen->physicalSize();
+
+  s.pixel_size_mm = screen_size_mm.width() / screen_size_pix.width();
+
+  QSysInfo si;
+  auto     is_device = si.productType().toLower().contains("android");
+  if (!is_device)
+    s.pixel_size_mm *= 0.5;
+
+  m_render.reset(new FlashRender(s));
 }
 
 QString QGeoTiledMappingManagerEngineFlashmaps::getCacheDirectory()
@@ -64,6 +81,11 @@ QString QGeoTiledMappingManagerEngineFlashmaps::getCacheDirectory()
 QString QGeoTiledMappingManagerEngineFlashmaps::getMapDirectory()
 {
   return m_mapDirectory;
+}
+
+FlashRender* QGeoTiledMappingManagerEngineFlashmaps::getRender()
+{
+  return m_render.data();
 }
 
 QGeoMap* QGeoTiledMappingManagerEngineFlashmaps::createMap()

@@ -2,7 +2,9 @@
 
 #include "QtLocation/private/qgeotiledmappingmanagerengine_p.h"
 #include "QtLocation/private/qgeomaptype_p.h"
+#include "flashrender/flashrender.h"
 #include <QGeoServiceProvider>
+#include <QPointer>
 
 class QGeoTiledMappingManagerEngineFlashmaps:
     public QGeoTiledMappingManagerEngine
@@ -17,8 +19,10 @@ public:
   virtual QGeoMap* createMap();
   QString          getCacheDirectory();
   QString          getMapDirectory();
+  FlashRender*     getRender();
 
 private:
-  QString m_cacheDirectory;
-  QString m_mapDirectory;
+  QString                     m_cacheDirectory;
+  QString                     m_mapDirectory;
+  QScopedPointer<FlashRender> m_render;
 };

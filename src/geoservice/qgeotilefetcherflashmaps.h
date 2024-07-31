@@ -16,7 +16,6 @@ public:
   QGeoTileFetcherFlashmaps(
       const QVariantMap&,
       QGeoTiledMappingManagerEngineFlashmaps* engine);
-  ~QGeoTileFetcherFlashmaps();
 
   QGeoTiledMapReply* getTileImage(const QGeoTileSpec& spec);
 
@@ -24,5 +23,4 @@ private:
   Q_DISABLE_COPY(QGeoTileFetcherFlashmaps)
 
   QPointer<QGeoTiledMappingManagerEngineFlashmaps> m_engineFlashmaps;
-  FlashRender*                                     m_render = nullptr;
 };
