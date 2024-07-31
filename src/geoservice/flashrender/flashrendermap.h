@@ -31,7 +31,7 @@ public:
   bool intersects(QPolygonF polygon) const;
 };
 
-struct KRenderMapCollection: public QVector<FlashRenderMap*>
+struct FlashRenderMapModel: public QVector<FlashRenderMap*>
 {
-  virtual ~KRenderMapCollection();
+  virtual ~FlashRenderMapModel();
 };
