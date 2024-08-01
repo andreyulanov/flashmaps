@@ -9,6 +9,8 @@
 
 class FlashRender: public QThread
 {
+  Q_OBJECT
+
   static constexpr int tile_side = 256;
 
 public:
@@ -64,8 +66,6 @@ private:
     QString           str;
     const FlashClass* cl;
   };
-
-  Q_OBJECT
 
   Settings s;
   TileCoor tile_coor;
@@ -136,17 +136,8 @@ private:
 public:
   FlashRender();
   virtual ~FlashRender();
-  void       setSettings(Settings);
-  void       requestTile(TileCoor);
-  QByteArray getTile(TileCoor);
-};
-
-class FlashApplication: public QGuiApplication
-{
-  FlashRender m_render;
-
-public:
-  FlashApplication(int& argc, char** argv);
-  FlashRender*             render();
-  static FlashApplication* app();
+  void                setSettings(Settings);
+  void                requestTile(TileCoor);
+  QByteArray          getTile(TileCoor);
+  static FlashRender* instance();
 };

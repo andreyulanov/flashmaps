@@ -71,9 +71,8 @@ int main(int argc, char* argv[])
       "/home/user/flashmaps/build-main-Desktop-Debug/"
       "geoservice/plugins");
 
-  qDebug() << "initializing app.......";
-  FlashApplication app(argc, argv);
-
+  QGuiApplication       app(argc, argv);
+  FlashRender           render;
   QQmlApplicationEngine engine;
   engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
   return app.exec();

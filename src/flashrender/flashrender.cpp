@@ -24,7 +24,8 @@ QPointF FlashRender::pix2meters(QPointF pix) const
 
 FlashRender::FlashRender()
 {
-  qDebug() << Q_FUNC_INFO;
+  setParent(qApp);
+  setObjectName("render");
   connect(this, &QThread::finished, this, &FlashRender::onFinished);
 }
 
@@ -52,7 +53,6 @@ void FlashRender::setSettings(Settings _s)
 
 FlashRender::~FlashRender()
 {
-  qDebug() << Q_FUNC_INFO;
   wait();
 }
 
@@ -1034,17 +1034,8 @@ void FlashRender::render()
   QThread::start();
 }
 
-FlashApplication::FlashApplication(int& argc, char** argv):
-    QGuiApplication(argc, argv)
+FlashRender* FlashRender::instance()
 {
-}
-
-FlashRender* FlashApplication::render()
-{
-  return &m_render;
-}
-
-FlashApplication* FlashApplication::app()
-{
-  return dynamic_cast<FlashApplication*>(qApp);
+  return static_cast<FlashRender*>(
+      qApp->findChild<QObject*>("render"));
 }
