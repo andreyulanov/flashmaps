@@ -22,14 +22,9 @@ QPointF FlashRender::pix2meters(QPointF pix) const
   return {xm, ym};
 }
 
-FlashRender& FlashRender::instance()
-{
-  static FlashRender inst;
-  return inst;
-}
-
 FlashRender::FlashRender()
 {
+  qDebug() << Q_FUNC_INFO;
   connect(this, &QThread::finished, this, &FlashRender::onFinished);
 }
 
@@ -57,11 +52,7 @@ void FlashRender::setSettings(Settings _s)
 
 FlashRender::~FlashRender()
 {
-  clear();
-}
-
-void FlashRender::clear()
-{
+  qDebug() << Q_FUNC_INFO;
   wait();
 }
 
@@ -1041,4 +1032,19 @@ void FlashRender::render()
   if (QThreadPool::globalInstance()->activeThreadCount() == 0)
     checkUnload();
   QThread::start();
+}
+
+FlashApplication::FlashApplication(int& argc, char** argv):
+    QGuiApplication(argc, argv)
+{
+}
+
+FlashRender* FlashApplication::render()
+{
+  return &m_render;
+}
+
+FlashApplication* FlashApplication::app()
+{
+  return dynamic_cast<FlashApplication*>(qApp);
 }

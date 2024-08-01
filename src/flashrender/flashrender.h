@@ -5,6 +5,7 @@
 #include <QThread>
 #include <QSet>
 #include <QMutex>
+#include <QGuiApplication>
 
 class FlashRender: public QThread
 {
@@ -131,13 +132,21 @@ private:
   QPoint   deg2pix(FlashGeoCoor) const;
   TileCoor getBigTileCoor(TileCoor);
   QString  getTileName(TileCoor);
-  FlashRender();
-  virtual ~FlashRender();
 
 public:
-  static FlashRender& instance();
-  void                clear();
-  void                setSettings(Settings);
-  void                requestTile(TileCoor);
-  QByteArray          getTile(TileCoor);
+  FlashRender();
+  virtual ~FlashRender();
+  void       setSettings(Settings);
+  void       requestTile(TileCoor);
+  QByteArray getTile(TileCoor);
+};
+
+class FlashApplication: public QGuiApplication
+{
+  FlashRender m_render;
+
+public:
+  FlashApplication(int& argc, char** argv);
+  FlashRender*             render();
+  static FlashApplication* app();
 };

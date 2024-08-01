@@ -74,7 +74,7 @@ QGeoTiledMappingManagerEngineFlashmaps::
   if (!is_device)
     s.pixel_size_mm *= 0.5;
 
-  FlashRender::instance().setSettings(s);
+  FlashApplication::app()->render()->setSettings(s);
 }
 
 QString QGeoTiledMappingManagerEngineFlashmaps::getCacheDirectory()

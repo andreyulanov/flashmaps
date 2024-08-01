@@ -62,6 +62,7 @@
 
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include <QThreadPool>
 #include "../flashrender/flashrender.h"
 
 int main(int argc, char* argv[])
@@ -71,7 +72,7 @@ int main(int argc, char* argv[])
       "geoservice/plugins");
 
   qDebug() << "initializing app.......";
-  QGuiApplication app(argc, argv);
+  FlashApplication app(argc, argv);
 
   QQmlApplicationEngine engine;
   engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
