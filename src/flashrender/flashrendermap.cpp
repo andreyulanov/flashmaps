@@ -85,7 +85,7 @@ void FlashRenderMap::addCollectionToIndex(FlashTile& collection)
   }
 }
 
-FlashRenderMapModel::~FlashRenderMapModel()
+FlashRenderMapList::~FlashRenderMapList()
 {
   qDeleteAll(*this);
 }

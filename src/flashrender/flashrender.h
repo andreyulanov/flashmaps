@@ -76,7 +76,7 @@ private:
   QVector<RenderResult> big_tile;
   QVector<RenderResult> big_tiles;
 
-  FlashRenderMapModel maps;
+  FlashRenderMapList maps;
 
   QVector<PointNameRect> point_names[FlashRenderMap::render_count];
   QVector<DrawTextEntry> polygon_names[FlashRenderMap::render_count];
