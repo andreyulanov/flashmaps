@@ -11,7 +11,8 @@ class FlashRender: public QThread
 {
   Q_OBJECT
 
-  static constexpr int tile_side = 256;
+  static constexpr int  tile_side    = 256;
+  static constexpr char class_name[] = "FlashRender";
 
 public:
   class Map: public FlashMap
