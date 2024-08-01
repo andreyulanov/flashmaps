@@ -7,6 +7,95 @@
 
 using namespace flashmath;
 
+FlashRender::Map::Map(const QString& _path)
+{
+  path = _path;
+}
+
+bool FlashRender::Map::intersects(QPolygonF polygon_m) const
+{
+  if (borders_m.isEmpty())
+    return polygon_m.intersects(frame.toRectM());
+  for (auto border_m: borders_m)
+    if (border_m.intersects(polygon_m))
+      return true;
+  return false;
+}
+
+void FlashRender::Map::clear()
+{
+  FlashLocker big_locker(&main_lock, FlashLocker::Write);
+  if (!big_locker.hasLocked())
+    return;
+  FlashLocker small_locker(&tile_lock, FlashLocker::Write);
+  if (!small_locker.hasLocked())
+    return;
+  FlashMap::clear();
+  for (int i = 0; i < max_layer_count; i++)
+    render_data[i].clear();
+  render_object_count = 0;
+  render_start_list.clear();
+}
+
+void FlashRender::Map::loadMain(bool   load_objects,
+                                double pixel_size_mm)
+{
+  FlashMap::loadMain(path, load_objects, pixel_size_mm);
+  if (load_objects)
+  {
+    QWriteLocker big_locker(&main_lock);
+    addCollectionToIndex(main);
+    main.status = FlashTile::Loaded;
+  }
+}
+
+void FlashRender::Map::loadTile(int tile_idx)
+{
+  FlashMap::loadTile(path, tile_idx);
+  QWriteLocker small_locker(&tile_lock);
+  addCollectionToIndex(tiles[tile_idx]);
+  tiles[tile_idx].status = FlashTile::Loaded;
+}
+
+void FlashRender::Map::addCollectionToIndex(FlashTile& collection)
+{
+  for (auto& obj: collection)
+  {
+    auto cl = classes[obj.class_idx];
+    render_data[cl.layer].append(&obj);
+  }
+
+  int total_object_count = 0;
+  for (auto layer: render_data)
+    total_object_count += layer.count();
+
+  render_object_count = total_object_count / render_count;
+
+  int curr_obj_count = 0;
+  render_start_list.clear();
+  render_start_list += {0, 0};
+  for (int layer_idx = -1; auto layer: render_data)
+  {
+    layer_idx++;
+    for (int object_idx = -1; auto obj: layer)
+    {
+      object_idx++;
+      Q_UNUSED(obj)
+      curr_obj_count++;
+      if (curr_obj_count >= render_object_count)
+      {
+        render_start_list += {layer_idx, object_idx};
+        curr_obj_count = 0;
+      }
+    }
+  }
+}
+
+FlashRender::MapList::~MapList()
+{
+  qDeleteAll(*this);
+}
+
 QPoint FlashRender::meters2pix(QPointF coor_m) const
 {
   auto rectm = getDrawRectM();
@@ -81,7 +170,7 @@ void FlashRender::insertMap(int idx, QString path, bool load_now)
 {
   QThreadPool().globalInstance()->waitForDone();
   wait();
-  auto map = new FlashRenderMap(path);
+  auto map = new FlashRender::Map(path);
   map->loadMain(load_now, s.pixel_size_mm);
   maps.insert(idx, map);
 }
@@ -113,8 +202,8 @@ void FlashRender::checkUnload()
   }
 }
 
-bool FlashRender::needToLoadMap(const FlashRenderMap* map,
-                                const QRectF&         draw_rect_m)
+bool FlashRender::needToLoadMap(const Map*    map,
+                                const QRectF& draw_rect_m)
 {
   if (map->main_mip > 0 && mip > map->main_mip)
     return false;
@@ -280,8 +369,7 @@ QPoint FlashRender::deg2pix(FlashGeoCoor kp) const
           int((m.y() - top_left_m.y()) / mip)};
 }
 
-void FlashRender::paintPointObject(QPainter*             p,
-                                   const FlashRenderMap& map,
+void FlashRender::paintPointObject(QPainter* p, const Map& map,
                                    const FlashMapObject& obj,
                                    int                   render_idx)
 {
@@ -349,8 +437,7 @@ QPolygon FlashRender::poly2pix(const FlashGeoPolygon& polygon)
   return pl;
 }
 
-void FlashRender::paintPolygonObject(QPainter*             p,
-                                     const FlashRenderMap& map,
+void FlashRender::paintPolygonObject(QPainter* p, const Map& map,
                                      const FlashMapObject& obj,
                                      int                   render_idx)
 {
@@ -442,8 +529,7 @@ void FlashRender::paintPolygonObject(QPainter*             p,
   }
 }
 
-void FlashRender::paintLineObject(QPainter*             painter,
-                                  const FlashRenderMap& map,
+void FlashRender::paintLineObject(QPainter* painter, const Map& map,
                                   const FlashMapObject& obj,
                                   int render_idx, int line_iter)
 {
@@ -658,7 +744,7 @@ bool FlashRender::checkMipRange(const FlashMap*       map,
          (cl->max_mip == 0 || mip <= cl->max_mip);
 }
 
-void FlashRender::paintObject(QPainter* p, const FlashRenderMap* map,
+void FlashRender::paintObject(QPainter* p, const Map* map,
                               const FlashMapObject& obj,
                               int render_idx, int line_iter)
 {
@@ -681,8 +767,8 @@ void FlashRender::paintObject(QPainter* p, const FlashRenderMap* map,
 
 void FlashRender::paintPointNames(QPainter* p)
 {
-  for (int render_idx = 0; render_idx < FlashRenderMap::render_count;
-       render_idx++)
+  for (int render_idx = 0;
+       render_idx < FlashRender::Map::render_count; render_idx++)
     for (auto item: point_names[render_idx])
     {
       if (!item.cl)
@@ -729,8 +815,8 @@ void FlashRender::paintLineNames(QPainter* p)
   f.setPixelSize(w);
   p->setFont(f);
 
-  for (int render_idx = 0; render_idx < FlashRenderMap::render_count;
-       render_idx++)
+  for (int render_idx = 0;
+       render_idx < FlashRender::Map::render_count; render_idx++)
     for (auto nh: line_names[render_idx])
     {
       p->save();
@@ -766,8 +852,8 @@ void FlashRender::paintLineNames(QPainter* p)
 
 void FlashRender::paintPolygonNames(QPainter* p)
 {
-  for (int render_idx = 0; render_idx < FlashRenderMap::render_count;
-       render_idx++)
+  for (int render_idx = 0;
+       render_idx < FlashRender::Map::render_count; render_idx++)
     for (auto& dte: polygon_names[render_idx])
     {
       QFontMetrics fm(p->font());
@@ -800,9 +886,8 @@ void FlashRender::paintPolygonNames(QPainter* p)
     }
 }
 
-void FlashRender::render(QPainter*                p,
-                         QVector<FlashRenderMap*> render_maps,
-                         int                      render_idx)
+void FlashRender::render(QPainter* p, QVector<Map*> render_maps,
+                         int render_idx)
 {
   for (auto map: render_maps)
   {
@@ -818,7 +903,7 @@ void FlashRender::render(QPainter*                p,
   }
 }
 
-void FlashRender::renderMap(QPainter* p, const FlashRenderMap* map,
+void FlashRender::renderMap(QPainter* p, const Map* map,
                             int render_idx, int line_iter)
 {
   if (!map || render_idx > map->render_start_list.count() - 1)
@@ -829,7 +914,7 @@ void FlashRender::renderMap(QPainter* p, const FlashRenderMap* map,
 
   p->setRenderHint(QPainter::Antialiasing);
   for (int layer_idx = start.layer_idx;
-       layer_idx < FlashRenderMap::max_layer_count; layer_idx++)
+       layer_idx < FlashRender::Map::max_layer_count; layer_idx++)
   {
     int start_obj_idx = 0;
     if (layer_idx == start.layer_idx)
@@ -911,7 +996,7 @@ void FlashRender::run()
   top_left_m = {(big_tile_coor.x - tile_count / 2) * tile_side * mip,
                 (big_tile_coor.y - tile_count / 2) * tile_side * mip};
 
-  for (int i = 0; i < FlashRenderMap::render_count; i++)
+  for (int i = 0; i < FlashRender::Map::render_count; i++)
   {
     point_names[i].clear();
     polygon_names[i].clear();
@@ -951,7 +1036,7 @@ void FlashRender::run()
       intersecting_maps.append(map_idx);
   }
 
-  QVector<FlashRenderMap*> render_maps;
+  QVector<FlashRender::Map*> render_maps;
   for (int map_idx = -1; auto& map: maps)
   {
     map_idx++;
@@ -982,8 +1067,8 @@ void FlashRender::run()
   }
 
   QList<RenderEntry*> render_list;
-  for (int render_idx = 1; render_idx < FlashRenderMap::render_count;
-       render_idx++)
+  for (int render_idx = 1;
+       render_idx < FlashRender::Map::render_count; render_idx++)
   {
     auto render = new RenderEntry(render_idx, pixmap.size(), &f);
     *render->fut =

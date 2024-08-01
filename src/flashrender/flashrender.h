@@ -14,6 +14,40 @@ class FlashRender: public QThread
   static constexpr int tile_side = 256;
 
 public:
+  class Map: public FlashMap
+  {
+    struct RenderAddress
+    {
+      int layer_idx;
+      int obj_idx;
+    };
+
+  public:
+    static constexpr int max_layer_count = 24;
+    static constexpr int render_count    = 4;
+
+    QVector<FlashMapObject*> render_data[max_layer_count];
+    QReadWriteLock           main_lock;
+    QReadWriteLock           tile_lock;
+    QList<RenderAddress>     render_start_list;
+    int                      render_object_count;
+    QString                  path;
+
+    void addCollectionToIndex(FlashTile& collection);
+
+  public:
+    Map(const QString& path);
+    void clear();
+    void loadMain(bool load_objects, double pixel_size_mm);
+    void loadTile(int tile_idx);
+    bool intersects(QPolygonF polygon) const;
+  };
+
+  struct MapList: public QVector<Map*>
+  {
+    virtual ~MapList();
+  };
+
   struct Settings
   {
     int     big_tile_multiplier          = 4;
@@ -76,11 +110,11 @@ private:
   QVector<RenderResult> big_tile;
   QVector<RenderResult> big_tiles;
 
-  FlashRenderMapList maps;
+  MapList maps;
 
-  QVector<PointNameRect> point_names[FlashRenderMap::render_count];
-  QVector<DrawTextEntry> polygon_names[FlashRenderMap::render_count];
-  QVector<NameHolder>    line_names[FlashRenderMap::render_count];
+  QVector<PointNameRect> point_names[Map::render_count];
+  QVector<DrawTextEntry> polygon_names[Map::render_count];
+  QVector<NameHolder>    line_names[Map::render_count];
   QVector<QRect>         text_rect_array;
   QRectF                 render_frame_m;
 
@@ -92,14 +126,13 @@ private:
   void onFinished();
 
   void insertMap(int idx, QString path, bool load_now);
-  void renderMap(QPainter* p, const FlashRenderMap* map,
-                 int render_idx, int line_iter);
-  void render(QPainter* p, QVector<FlashRenderMap*> render_maps,
-              int render_idx);
+  void renderMap(QPainter* p, const Map* map, int render_idx,
+                 int line_iter);
+  void render(QPainter* p, QVector<Map*> render_maps, int render_idx);
 
   bool checkMipRange(const FlashMap* map, const FlashMapObject* obj);
 
-  void paintObject(QPainter* p, const FlashRenderMap* map,
+  void paintObject(QPainter* p, const Map* map,
                    const FlashMapObject& obj, int render_idx,
                    int line_iter);
   void paintPointNames(QPainter* p);
@@ -114,20 +147,19 @@ private:
   QPolygon poly2pix(const FlashGeoPolygon& polygon);
   void     paintPointName(QPainter* p, const QString& text,
                           const QColor& tcolor);
-  void     paintPointObject(QPainter* p, const FlashRenderMap& map,
+  void     paintPointObject(QPainter* p, const Map& map,
                             const FlashMapObject& obj, int render_idx);
-  void     paintPolygonObject(QPainter* p, const FlashRenderMap& map,
+  void     paintPolygonObject(QPainter* p, const Map& map,
                               const FlashMapObject& obj, int render_idx);
-  void   paintLineObject(QPainter* painter, const FlashRenderMap& map,
-                         const FlashMapObject& obj, int render_idx,
-                         int line_iter);
-  QRectF getDrawRectM() const;
-  bool   needToLoadMap(const FlashRenderMap* map,
-                       const QRectF&         draw_rect);
-  void   checkLoad();
-  void   checkUnload();
-  void   render();
-  QPoint meters2pix(QPointF m) const;
+  void     paintLineObject(QPainter* painter, const Map& map,
+                           const FlashMapObject& obj, int render_idx,
+                           int line_iter);
+  QRectF   getDrawRectM() const;
+  bool     needToLoadMap(const Map* map, const QRectF& draw_rect);
+  void     checkLoad();
+  void     checkUnload();
+  void     render();
+  QPoint   meters2pix(QPointF m) const;
   QPointF  pix2meters(QPointF pix) const;
   QPoint   deg2pix(FlashGeoCoor) const;
   TileCoor getBigTileCoor(TileCoor);
