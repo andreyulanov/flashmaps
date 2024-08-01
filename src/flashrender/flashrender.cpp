@@ -25,7 +25,7 @@ QPointF FlashRender::pix2meters(QPointF pix) const
 FlashRender::FlashRender()
 {
   setParent(qApp);
-  setObjectName("render");
+  setObjectName("FlashRender");
   connect(this, &QThread::finished, this, &FlashRender::onFinished);
 }
 
@@ -1037,5 +1037,5 @@ void FlashRender::render()
 FlashRender* FlashRender::instance()
 {
   return static_cast<FlashRender*>(
-      qApp->findChild<QObject*>("render"));
+      qApp->findChild<QObject*>("FlashRender"));
 }
