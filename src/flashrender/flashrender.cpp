@@ -37,27 +37,28 @@ void FlashRender::Map::clear()
   render_start_list.clear();
 }
 
-void FlashRender::Map::loadMain(bool   load_objects,
-                                double pixel_size_mm)
+void FlashRender::Map::loadMainVectorTile(bool   load_objects,
+                                          double pixel_size_mm)
 {
-  FlashMap::loadMain(path, load_objects, pixel_size_mm);
+  FlashMap::loadMainVectorTile(path, load_objects, pixel_size_mm);
   if (load_objects)
   {
     QWriteLocker big_locker(&main_lock);
     addCollectionToIndex(main);
-    main.status = FlashTile::Loaded;
+    main.status = FlashVectorTile::Loaded;
   }
 }
 
-void FlashRender::Map::loadTile(int tile_idx)
+void FlashRender::Map::loadVectorTile(int tile_idx)
 {
-  FlashMap::loadTile(path, tile_idx);
+  FlashMap::loadVectorTile(path, tile_idx);
   QWriteLocker small_locker(&tile_lock);
   addCollectionToIndex(tiles[tile_idx]);
-  tiles[tile_idx].status = FlashTile::Loaded;
+  tiles[tile_idx].status = FlashVectorTile::Loaded;
 }
 
-void FlashRender::Map::addCollectionToIndex(FlashTile& collection)
+void FlashRender::Map::addCollectionToIndex(
+    FlashVectorTile& collection)
 {
   for (auto& obj: collection)
   {
@@ -147,13 +148,35 @@ QByteArray FlashRender::getTile(TileCoor t)
   return QByteArray();
 }
 
-void FlashRender::insertMap(int idx, QString path, bool load_now)
+void FlashRender::loadBackgroundMap(int idx, QString path,
+                                    bool load_now)
 {
   QThreadPool().globalInstance()->waitForDone();
   wait();
   auto map = new FlashRender::Map(path);
-  map->loadMain(load_now, s.pixel_size_mm);
+  map->loadMainVectorTile(load_now, s.pixel_size_mm);
   maps.insert(idx, map);
+}
+
+void FlashRender::loadEditableMap(int map_idx, QString path)
+{
+  QThreadPool().globalInstance()->waitForDone();
+  wait();
+  auto map = new FlashRender::Map(path);
+  map->loadAll(path, s.pixel_size_mm);
+
+  auto all_tiles = map->getVectorTiles();
+
+  for (auto tile: all_tiles)
+    for (uint obj_idx = -1; auto obj: tile)
+    {
+      obj_idx++;
+      qint64 hash;
+      memcpy(&hash, obj.getHash64().data(), sizeof(hash));
+      hash_table.insert(hash,
+                        {static_cast<ushort>(map_idx), 0, obj_idx});
+    }
+  maps.insert(map_idx, map);
 }
 
 QRectF FlashRender::getDrawRectM() const
@@ -173,7 +196,7 @@ void FlashRender::checkUnload()
     i++;
     if (i == 0)
       continue;
-    if (map->main.status == FlashTile::Loaded)
+    if (map->main.status == FlashVectorTile::Loaded)
     {
       if (!needToLoadMap(map, draw_rect_m))
         if (loaded_count > s.max_loaded_maps_count)
@@ -219,9 +242,9 @@ void FlashRender::checkLoad()
     if (!needToLoadMap(map, draw_rect_m))
       continue;
 
-    if (map->main.status == FlashTile::Null)
-      map->loadMain(true, s.pixel_size_mm);
-    if (map->main.status == FlashTile::Loaded)
+    if (map->main.status == FlashVectorTile::Null)
+      map->loadMainVectorTile(true, s.pixel_size_mm);
+    if (map->main.status == FlashVectorTile::Loaded)
     {
       if (needToLoadMap(map, draw_rect_m))
       {
@@ -237,10 +260,10 @@ void FlashRender::checkLoad()
           double tile_top =
               map_rect_m.y() + tile_idx_y * tile_size_m.height();
           QRectF tile_rect_m = {{tile_left, tile_top}, tile_size_m};
-          if (tile.status == FlashTile::Null &&
+          if (tile.status == FlashVectorTile::Null &&
               tile_rect_m.intersects(draw_rect_m) &&
               mip < map->tile_mip)
-            map->loadTile(tile_idx);
+            map->loadVectorTile(tile_idx);
           tile_idx++;
         }
       }

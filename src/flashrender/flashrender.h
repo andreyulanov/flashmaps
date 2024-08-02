@@ -34,13 +34,13 @@ public:
     int                      render_object_count;
     QString                  path;
 
-    void addCollectionToIndex(FlashTile& collection);
+    void addCollectionToIndex(FlashVectorTile& collection);
 
   public:
     Map(const QString& path);
     void clear();
-    void loadMain(bool load_objects, double pixel_size_mm);
-    void loadTile(int tile_idx);
+    void loadMainVectorTile(bool load_objects, double pixel_size_mm);
+    void loadVectorTile(int tile_idx);
     bool intersects(QPolygonF polygon) const;
   };
 
@@ -100,6 +100,13 @@ private:
     const FlashClass* cl;
   };
 
+  struct HashEntry
+  {
+    ushort map_idx;
+    ushort tile_idx;
+    uint   obj_idx;
+  };
+
   Settings s;
   TileCoor tile_coor;
 
@@ -109,7 +116,8 @@ private:
   QVector<RenderResult> big_tile;
   QVector<RenderResult> big_tiles;
 
-  MapList maps;
+  MapList                 maps;
+  QMap<qint64, HashEntry> hash_table;
 
   QVector<PointNameRect> point_names[Map::render_count];
   QVector<DrawTextEntry> polygon_names[Map::render_count];
@@ -166,8 +174,9 @@ private:
 public:
   FlashRender(Settings);
   virtual ~FlashRender();
-  void                insertMap(int idx, QString path, bool load_now);
-  void                requestTile(TileCoor);
+  void loadBackgroundMap(int idx, QString path, bool load_now);
+  void loadEditableMap(int idx, QString path);
+  void requestTile(TileCoor);
   QByteArray          getTile(TileCoor);
   static FlashRender* instance();
 };

@@ -61,9 +61,9 @@ void FlashMapObject::load(QVector<FlashClass>& class_list, int& pos,
   }
 }
 
-QByteArray FlashMapObject::getHash()
+QByteArray FlashMapObject::getHash64() const
 {
-  QCryptographicHash hash(QCryptographicHash::Keccak_256);
+  QCryptographicHash hash(QCryptographicHash::Md4);
   QByteArray         ba;
   ba += name.toUtf8();
   QMapIterator<QString, QByteArray> it(attributes);
@@ -77,10 +77,12 @@ QByteArray FlashMapObject::getHash()
     for (auto point: polygon)
       ba.append((char*)&point, sizeof(point));
   hash.addData(ba);
-  return hash.result().toHex();
+  auto res = hash.result();
+  res.truncate(8);
+  return res;
 }
 
-FlashGeoCoor FlashMapObject::getCenter()
+FlashGeoCoor FlashMapObject::getCenter() const
 {
   if (polygons.isEmpty())
     return FlashGeoCoor();

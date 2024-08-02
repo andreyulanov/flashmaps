@@ -16,8 +16,8 @@ public:
                     QByteArray&                ba) const;
   void         load(QVector<FlashClass>& class_list, int& pos,
                     const QByteArray& ba);
-  FlashGeoCoor getCenter();
-  QByteArray   getHash();
+  FlashGeoCoor getCenter() const;
+  QByteArray   getHash64() const;
 };
 
 struct FlashFreeObject: public FlashMapObject

@@ -9,15 +9,15 @@
 
 void FlashMap::clear()
 {
-  if (main.status != FlashTile::Loaded)
+  if (main.status != FlashVectorTile::Loaded)
     return;
-  if (main.status == FlashTile::Loading)
+  if (main.status == FlashVectorTile::Loading)
     return;
 
   main.clear();
   tiles.clear();
   classes.clear();
-  main.status = FlashTile::Null;
+  main.status = FlashVectorTile::Null;
 }
 
 qint64 FlashMap::count()
@@ -95,10 +95,10 @@ void FlashMap::save(QString path) const
   write(&f, small_idx_start_pos);
 }
 
-void FlashMap::loadMain(QString path, bool load_objects,
+void FlashMap::loadMainVectorTile(QString path, bool load_objects,
                         double pixel_size_mm)
 {
-  if (main.status == FlashTile::Loading)
+  if (main.status == FlashVectorTile::Loading)
     return;
   QElapsedTimer t;
   t.start();
@@ -111,7 +111,7 @@ void FlashMap::loadMain(QString path, bool load_objects,
     return;
   }
 
-  if (main.status != FlashTile::Null)
+  if (main.status != FlashVectorTile::Null)
     return;
 
   QString format_id;
@@ -150,7 +150,7 @@ void FlashMap::loadMain(QString path, bool load_objects,
     return;
 
   qDebug() << "loading main from" << path;
-  main.status = FlashTile::Loading;
+  main.status = FlashVectorTile::Loading;
   int class_count;
   read(&f, class_count);
   qDebug() << "class_count" << class_count;
@@ -184,16 +184,16 @@ void FlashMap::loadMain(QString path, bool load_objects,
 
 void FlashMap::loadAll(QString path, double pixel_size_mm)
 {
-  loadMain(path, true, pixel_size_mm);
+  loadMainVectorTile(path, true, pixel_size_mm);
   for (int i = 0; i < tiles.count(); i++)
-    loadTile(path, i);
+    loadVectorTile(path, i);
 }
 
-void FlashMap::loadTile(QString path, int tile_idx)
+void FlashMap::loadVectorTile(QString path, int tile_idx)
 {
-  if (main.status != FlashTile::Loaded)
+  if (main.status != FlashVectorTile::Loaded)
     return;
-  if (tiles[tile_idx].status == FlashTile::Loading)
+  if (tiles[tile_idx].status == FlashVectorTile::Loading)
     return;
 
   qDebug() << "loading tile" << tile_idx << "from" << path;
@@ -240,13 +240,13 @@ void FlashMap::loadTile(QString path, int tile_idx)
   f.read(ba.data(), ba_count);
   ba = qUncompress(ba);
 
-  tiles[tile_idx].status = FlashTile::Loading;
+  tiles[tile_idx].status = FlashVectorTile::Loading;
   int pos                = 0;
   for (auto& obj: tiles[tile_idx])
     obj.load(classes, pos, ba);
 }
 
-void FlashMap::addObject(FlashFreeObject free_obj)
+void FlashMap::addFreeObject(FlashFreeObject free_obj)
 {
   if (frame.isNull())
     frame = free_obj.polygons.first().getFrame();
@@ -287,7 +287,7 @@ void FlashMap::addObject(FlashFreeObject free_obj)
   }
 }
 
-QVector<FlashFreeObject> FlashMap::getObjects()
+QVector<FlashFreeObject> FlashMap::getFreeObjects()
 {
   QVector<FlashFreeObject> free_objects;
   for (auto src_obj: main)
@@ -297,4 +297,11 @@ QVector<FlashFreeObject> FlashMap::getObjects()
     free_objects.append(free_obj);
   }
   return free_objects;
+}
+
+QVector<FlashVectorTile> FlashMap::getVectorTiles()
+{
+  auto all_tiles = tiles;
+  all_tiles.insert(0, main);
+  return all_tiles;
 }

@@ -9,7 +9,7 @@
 #include <QVariant>
 #include "flashobject.h"
 
-struct FlashTile: public QVector<FlashMapObject>
+struct FlashVectorTile: public QVector<FlashMapObject>
 {
   enum Status
   {
@@ -31,16 +31,17 @@ struct FlashMap
   FlashGeoRect             frame;
   QVector<QPolygonF>       borders_m;
   QVector<FlashGeoPolygon> borders;
-  FlashTile                main;
-  QVector<FlashTile>       tiles;
+  FlashVectorTile                main;
+  QVector<FlashVectorTile>       tiles;
 
   void   save(QString path) const;
-  void   loadMain(QString path, bool load_objects,
+  void   loadMainVectorTile(QString path, bool load_objects,
                   double pixel_size_mm);
-  void   loadTile(QString path, int tile_idx);
+  void   loadVectorTile(QString path, int tile_idx);
   void   loadAll(QString path, double pixel_size_mm);
   void   clear();
   qint64 count();
-  void   addObject(FlashFreeObject free_obj);
-  QVector<FlashFreeObject> getObjects();
+  void   addFreeObject(FlashFreeObject free_obj);
+  QVector<FlashFreeObject> getFreeObjects();
+  QVector<FlashVectorTile>       getVectorTiles();
 };

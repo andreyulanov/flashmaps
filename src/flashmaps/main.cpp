@@ -106,7 +106,8 @@ int main(int argc, char* argv[])
   QDir dir(map_dir);
   dir.setNameFilters({"*.flashmap"});
   auto fi_list = dir.entryInfoList();
-  for (int count = -1; auto fi: fi_list)
+  int  count   = -1;
+  for (auto fi: fi_list)
   {
     count++;
     int  idx      = count;
@@ -116,9 +117,10 @@ int main(int argc, char* argv[])
       idx      = 0;
       load_now = true;
     }
-    render.insertMap(idx, fi.filePath(), load_now);
+    render.loadBackgroundMap(idx, fi.filePath(), load_now);
   }
 
+  render.loadEditableMap(count, "user1-user2.flashmap");
   QQmlApplicationEngine engine;
   engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
   return app.exec();
