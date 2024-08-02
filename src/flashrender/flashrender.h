@@ -51,15 +51,13 @@ public:
 
   struct Settings
   {
-    int     big_tile_multiplier          = 4;
-    double  max_object_size_with_name_mm = 20.0;
-    double  pixel_size_mm                = 0.1;
-    QColor  ocean_color                  = QColor(150, 210, 240);
-    QColor  land_color                   = QColor(250, 246, 230);
-    double  max_loaded_maps_count        = 3;
-    double  max_name_width_mm            = 20.0;
-    QString map_dir;
-    QString world_map_name = "world.flashmap";
+    int    big_tile_multiplier          = 4;
+    double max_object_size_with_name_mm = 20.0;
+    double pixel_size_mm                = 0.1;
+    QColor ocean_color                  = QColor(150, 210, 240);
+    QColor land_color                   = QColor(250, 246, 230);
+    double max_loaded_maps_count        = 3;
+    double max_name_width_mm            = 20.0;
   };
   struct TileCoor
   {
@@ -126,7 +124,6 @@ private:
   void start() = delete;
   void onFinished();
 
-  void insertMap(int idx, QString path, bool load_now);
   void renderMap(QPainter* p, const Map* map, int render_idx,
                  int line_iter);
   void render(QPainter* p, QVector<Map*> render_maps, int render_idx);
@@ -167,9 +164,9 @@ private:
   QString  getTileName(TileCoor);
 
 public:
-  FlashRender();
+  FlashRender(Settings);
   virtual ~FlashRender();
-  void                setSettings(Settings);
+  void                insertMap(int idx, QString path, bool load_now);
   void                requestTile(TileCoor);
   QByteArray          getTile(TileCoor);
   static FlashRender* instance();

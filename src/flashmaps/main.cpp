@@ -63,6 +63,9 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QThreadPool>
+#include <QStandardPaths>
+#include <QDir>
+#include <QScreen>
 #include "../flashrender/flashrender.h"
 
 int main(int argc, char* argv[])
@@ -71,8 +74,51 @@ int main(int argc, char* argv[])
       "/home/user/flashmaps/build-main-Desktop-Debug/"
       "geoservice/plugins");
 
-  QGuiApplication       app(argc, argv);
-  FlashRender           render;
+  QGuiApplication app(argc, argv);
+
+  QStringList dir_list = QStandardPaths::standardLocations(
+      QStandardPaths::AppDataLocation);
+  QString map_dir;
+  for (auto dir: dir_list)
+  {
+    auto md = dir + "/maps";
+    if (QDir(md).exists())
+    {
+      map_dir = md;
+      break;
+    }
+  }
+
+  FlashRender::Settings s;
+  auto                  screen = QGuiApplication::screens().first();
+  QSize                 screen_size_pix = screen->availableSize();
+  QSizeF                screen_size_mm  = screen->physicalSize();
+
+  s.pixel_size_mm = screen_size_mm.width() / screen_size_pix.width();
+
+  QSysInfo si;
+  auto     is_device = si.productType().toLower().contains("android");
+  if (!is_device)
+    s.pixel_size_mm *= 0.5;
+
+  FlashRender render(s);
+
+  QDir dir(map_dir);
+  dir.setNameFilters({"*.flashmap"});
+  auto fi_list = dir.entryInfoList();
+  for (int count = -1; auto fi: fi_list)
+  {
+    count++;
+    int  idx      = count;
+    bool load_now = false;
+    if (fi.fileName() == "world.flashmap")
+    {
+      idx      = 0;
+      load_now = true;
+    }
+    render.insertMap(idx, fi.filePath(), load_now);
+  }
+
   QQmlApplicationEngine engine;
   engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
   return app.exec();

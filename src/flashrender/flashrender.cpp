@@ -111,33 +111,14 @@ QPointF FlashRender::pix2meters(QPointF pix) const
   return {xm, ym};
 }
 
-FlashRender::FlashRender()
-{
-  setParent(qApp);
-  setObjectName(class_name);
-  connect(this, &QThread::finished, this, &FlashRender::onFinished);
-}
-
-void FlashRender::setSettings(Settings _s)
+FlashRender::FlashRender(Settings _s)
 {
   s                 = _s;
   int big_tile_side = tile_side * s.big_tile_multiplier;
   pixmap            = QPixmap{big_tile_side, big_tile_side};
-  QDir dir(s.map_dir);
-  dir.setNameFilters({"*.flashmap"});
-  auto fi_list = dir.entryInfoList();
-  for (int count = -1; auto fi: fi_list)
-  {
-    count++;
-    int  idx      = count;
-    bool load_now = false;
-    if (fi.fileName() == s.world_map_name)
-    {
-      idx      = 0;
-      load_now = true;
-    }
-    insertMap(idx, fi.filePath(), load_now);
-  }
+  setParent(qApp);
+  setObjectName(class_name);
+  connect(this, &QThread::finished, this, &FlashRender::onFinished);
 }
 
 FlashRender::~FlashRender()

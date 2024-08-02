@@ -4,7 +4,6 @@
 #include "qgeotilefetcherflashmaps.h"
 #include "QtLocation/private/qgeotilespec_p.h"
 #include "QtLocation/private/qgeofiletilecache_p.h"
-#include <QStandardPaths>
 #include <QGuiApplication>
 #include <QScreen>
 #include <QQmlEngine>
@@ -44,47 +43,15 @@ QGeoTiledMappingManagerEngineFlashmaps::
   m_cacheDirectory =
       QAbstractGeoTileCache::baseCacheDirectory() + "flashmaps";
 
-  QStringList dir_list = QStandardPaths::standardLocations(
-      QStandardPaths::AppDataLocation);
-  for (auto dir: dir_list)
-  {
-    auto mapdir = dir + "/maps";
-    if (QDir(mapdir).exists())
-    {
-      m_mapDirectory = mapdir;
-      break;
-    }
-  }
-
   QAbstractGeoTileCache* tileCache =
       new QGeoFileTileCache(m_cacheDirectory);
   setTileCache(tileCache);
   tileCache->clearAll();
-
-  FlashRender::Settings s;
-  s.map_dir              = getMapDirectory();
-  auto   screen          = QGuiApplication::screens().first();
-  QSize  screen_size_pix = screen->availableSize();
-  QSizeF screen_size_mm  = screen->physicalSize();
-
-  s.pixel_size_mm = screen_size_mm.width() / screen_size_pix.width();
-
-  QSysInfo si;
-  auto     is_device = si.productType().toLower().contains("android");
-  if (!is_device)
-    s.pixel_size_mm *= 0.5;
-
-  FlashRender::instance()->setSettings(s);
 }
 
 QString QGeoTiledMappingManagerEngineFlashmaps::getCacheDirectory()
 {
   return m_cacheDirectory;
-}
-
-QString QGeoTiledMappingManagerEngineFlashmaps::getMapDirectory()
-{
-  return m_mapDirectory;
 }
 
 QGeoMap* QGeoTiledMappingManagerEngineFlashmaps::createMap()
