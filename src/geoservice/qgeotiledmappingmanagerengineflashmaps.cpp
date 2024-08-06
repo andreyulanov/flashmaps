@@ -21,8 +21,8 @@ QGeoTiledMappingManagerEngineFlashmaps::
 {
   QGeoCameraCapabilities capabilities;
 
-  capabilities.setMinimumZoomLevel(0.0);
-  capabilities.setMaximumZoomLevel(21.0);
+  capabilities.setMinimumZoomLevel(2);
+  capabilities.setMaximumZoomLevel(22);
 
   setCameraCapabilities(capabilities);
   setTileSize(QSize(256, 256));
