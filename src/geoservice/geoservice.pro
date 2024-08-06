@@ -21,7 +21,6 @@ HEADERS += \
     ../base/flashobject.h \
     ../base/flashserialize.h \
     ../flashrender/flashrender.h \
-    ../flashrender/flashrendermap.h \
     qgeomapreplyflashmaps.h \
     qgeoserviceproviderpluginflashmaps.h \
     qgeotiledmapflashmaps.h \
@@ -37,7 +36,6 @@ SOURCES += \
     ../base/flashmap.cpp \
     ../base/flashobject.cpp \
     ../flashrender/flashrender.cpp \
-    ../flashrender/flashrendermap.cpp \
     qgeomapreplyflashmaps.cpp \
     qgeoserviceproviderpluginflashmaps.cpp \
     qgeotiledmapflashmaps.cpp \
