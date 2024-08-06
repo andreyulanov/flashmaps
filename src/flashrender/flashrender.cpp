@@ -129,8 +129,6 @@ FlashRender::~FlashRender()
 
 void FlashRender::requestTile(TileCoor t)
 {
-  if (t.z <= 3)
-    return;
   if (isRunning())
     return;
   tile_coor = t;
@@ -148,8 +146,7 @@ QByteArray FlashRender::getTile(TileCoor t)
   return QByteArray();
 }
 
-void FlashRender::loadBackgroundMap(int idx, QString path,
-                                    bool load_now)
+void FlashRender::loadMap(int idx, QString path, bool load_now)
 {
   QThreadPool().globalInstance()->waitForDone();
   wait();
@@ -235,8 +232,11 @@ bool FlashRender::needToLoadMap(const Map*    map,
 void FlashRender::checkLoad()
 {
   auto draw_rect_m = getDrawRectM();
-  for (auto& map: maps)
+  for (int i = -1; auto& map: maps)
   {
+    i++;
+    if (i == 0)
+      continue;
     auto map_rect_m = map->frame.toMeters();
 
     if (!needToLoadMap(map, draw_rect_m))

@@ -174,7 +174,7 @@ private:
 public:
   FlashRender(Settings);
   virtual ~FlashRender();
-  void loadBackgroundMap(int idx, QString path, bool load_now);
+  void loadMap(int idx, QString path, bool load_now);
   void loadEditableMap(int idx, QString path);
   void requestTile(TileCoor);
   QByteArray          getTile(TileCoor);
