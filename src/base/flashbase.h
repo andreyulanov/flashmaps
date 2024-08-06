@@ -25,9 +25,8 @@ class FlashGeoCoor
 {
   friend struct FlashGeoRect;
   friend struct FlashGeoPolygon;
-  int                     lat            = 0;
-  int                     lon            = 0;
-  static constexpr double wrap_longitude = -168.5;
+  int lat = 0;
+  int lon = 0;
 
 public:
   FlashGeoCoor();
@@ -38,9 +37,6 @@ public:
   double              longitude() const;
   double              latitude() const;
   bool                isValid();
-  FlashGeoCoor        inc(FlashGeoCoor step) const;
-  FlashGeoCoor        wrapped() const;
-  bool                needToWrap();
 };
 
 struct FlashGeoRect

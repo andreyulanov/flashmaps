@@ -90,27 +90,6 @@ bool FlashGeoCoor::isValid()
   return !(lat == 0 && lon == 0);
 }
 
-bool FlashGeoCoor::needToWrap()
-{
-  return longitude() < wrap_longitude;
-}
-
-FlashGeoCoor FlashGeoCoor::wrapped() const
-{
-  if (lon > wrap_longitude * 1E+7)
-    return {lat, lon};
-  else
-    return {lat, int(lon + 3600000000)};
-}
-
-FlashGeoCoor FlashGeoCoor::inc(FlashGeoCoor step) const
-{
-  FlashGeoCoor ret = *this;
-  ret.lat += step.lat;
-  ret.lon += step.lon;
-  return ret;
-}
-
 FlashGeoCoor::FlashGeoCoor()
 {
   lat = 0;
