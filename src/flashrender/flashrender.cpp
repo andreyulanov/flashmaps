@@ -12,12 +12,25 @@ FlashRender::Map::Map(const QString& _path)
   path = _path;
 }
 
+static bool intersectsWrapped(QPolygonF p1, QPolygonF p2)
+{
+  if (p1.intersects(p2))
+    return true;
+  auto wrapped_p1 = p1.translated({flashmath::earth_r * 2 * M_PI, 0});
+  auto wrapped_p2 = p2.translated({flashmath::earth_r * 2 * M_PI, 0});
+  if (wrapped_p1.intersects(p2))
+    return true;
+  if (wrapped_p2.intersects(p1))
+    return true;
+  return false;
+}
+
 bool FlashRender::Map::intersects(QPolygonF polygon_m) const
 {
   if (borders_m.isEmpty())
-    return polygon_m.intersects(frame.toRectM());
+    return intersectsWrapped(polygon_m, frame.toRectM());
   for (auto border_m: borders_m)
-    if (border_m.intersects(polygon_m))
+    if (intersectsWrapped(border_m, polygon_m))
       return true;
   return false;
 }
@@ -209,7 +222,7 @@ bool FlashRender::needToLoadMap(const Map*    map,
   if (map->main_mip > 0 && mip > map->main_mip)
     return false;
   auto map_rect_m       = map->frame.toMeters();
-  bool frame_intersects = draw_rect_m.intersects(map_rect_m);
+  bool frame_intersects = intersectsWrapped(draw_rect_m, map_rect_m);
   if (!frame_intersects)
     return false;
 
@@ -261,7 +274,7 @@ void FlashRender::checkLoad()
               map_rect_m.y() + tile_idx_y * tile_size_m.height();
           QRectF tile_rect_m = {{tile_left, tile_top}, tile_size_m};
           if (tile.status == FlashVectorTile::Null &&
-              tile_rect_m.intersects(draw_rect_m) &&
+              intersectsWrapped(tile_rect_m, draw_rect_m) &&
               mip < map->tile_mip)
             map->loadVectorTile(tile_idx);
           tile_idx++;
@@ -368,9 +381,22 @@ QString FlashRender::getTileName(TileCoor t)
 
 QPoint FlashRender::deg2pix(FlashGeoCoor kp) const
 {
-  auto m = kp.toMeters();
-  return {int((m.x() - top_left_m.x()) / mip),
-          int((m.y() - top_left_m.y()) / mip)};
+  auto   m = kp.toMeters();
+  QPoint p = {int((m.x() - top_left_m.x()) / mip),
+              int((m.y() - top_left_m.y()) / mip)};
+
+  int wrap_shift =
+      static_cast<int>(round(flashmath::earth_r * 2 * M_PI / mip));
+  if (mip < 2000)
+    if (abs(p.x()) > wrap_shift * 0.5)
+    {
+      if (p.x() < 0)
+        p += {wrap_shift, 0};
+      else
+        p -= {wrap_shift, 0};
+    }
+
+  return p;
 }
 
 void FlashRender::paintPointObject(QPainter* p, const Map& map,
@@ -462,7 +488,7 @@ void FlashRender::paintPolygonObject(QPainter* p, const Map& map,
                               max_object_name_length_pix * mip,
                               max_object_name_length_pix * mip);
 
-  if (!obj_frame_m.intersects(clip_safe_rect_m))
+  if (!intersectsWrapped(obj_frame_m, clip_safe_rect_m))
     return;
 
   double obj_span_m   = sqrt(pow(obj_frame_m.width(), 2) +
@@ -552,7 +578,7 @@ void FlashRender::paintLineObject(QPainter* painter, const Map& map,
                               max_object_name_length_pix * mip,
                               max_object_name_length_pix * mip);
 
-  if (!obj_frame_m.intersects(clip_safe_rect_m))
+  if (!intersectsWrapped(obj_frame_m, clip_safe_rect_m))
     return;
 
   auto cl = &map.classes[obj.class_idx];
@@ -595,8 +621,7 @@ void FlashRender::paintLineObject(QPainter* painter, const Map& map,
     QPoint     p0;
     double     a0 = 0;
 
-    auto pl = poly2pix(polygon);
-
+    auto pl           = poly2pix(polygon);
     auto size_m       = polygon.getFrame().getSizeMeters();
     auto size_pix     = (size_m.width() + size_m.height()) / mip;
     auto hatch_length = size_pix * 0.05;
@@ -890,8 +915,8 @@ void FlashRender::paintPolygonNames(QPainter* p)
     }
 }
 
-void FlashRender::render(QPainter* p, QVector<Map*> render_maps,
-                         int render_idx)
+void FlashRender::renderLayer(QPainter* p, QVector<Map*> render_maps,
+                              int render_idx)
 {
   for (auto map: render_maps)
   {
@@ -1057,7 +1082,7 @@ void FlashRender::run()
       continue;
 
     auto map_rect_m = map->frame.toMeters();
-    if (map_idx > 0 && !render_frame_m.intersects(map_rect_m))
+    if (map_idx > 0 && !intersectsWrapped(render_frame_m, map_rect_m))
       continue;
 
     FlashLocker small_locker(&map->tile_lock, FlashLocker::Read);
@@ -1076,12 +1101,12 @@ void FlashRender::run()
   {
     auto render = new RenderEntry(render_idx, pixmap.size(), &f);
     *render->fut =
-        QtConcurrent::run(this, &FlashRender::render, render->p,
+        QtConcurrent::run(this, &FlashRender::renderLayer, render->p,
                           render_maps, render_idx);
     render_list.append(render);
   }
 
-  render(&p0, render_maps, 0);
+  renderLayer(&p0, render_maps, 0);
 
   for (auto render: render_list)
     render->fut->waitForFinished();

@@ -134,7 +134,8 @@ private:
 
   void renderMap(QPainter* p, const Map* map, int render_idx,
                  int line_iter);
-  void render(QPainter* p, QVector<Map*> render_maps, int render_idx);
+  void renderLayer(QPainter* p, QVector<Map*> render_maps,
+                   int render_idx);
 
   bool checkMipRange(const FlashMap* map, const FlashMapObject* obj);
 
@@ -174,9 +175,9 @@ private:
 public:
   FlashRender(Settings);
   virtual ~FlashRender();
-  void loadMap(int idx, QString path, bool load_now);
-  void loadEditableMap(int idx, QString path);
-  void requestTile(TileCoor);
+  void                loadMap(int idx, QString path, bool load_now);
+  void                loadEditableMap(int idx, QString path);
+  void                requestTile(TileCoor);
   QByteArray          getTile(TileCoor);
   static FlashRender* instance();
 };
