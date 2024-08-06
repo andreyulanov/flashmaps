@@ -346,26 +346,6 @@ int main(int argc, char* argv[])
           }
         }
 
-        bool need_to_wrap = false;
-        if (map_name.contains("ru-chu"))
-          need_to_wrap = true;
-        if (!obj.attributes.isEmpty())
-        {
-          auto attr = obj.attributes.first().toLower();
-          if (attr == "ru-chu")
-            need_to_wrap = true;
-          if (attr.toLower() == "rus")
-            need_to_wrap = true;
-        }
-
-        if (need_to_wrap)
-        {
-          auto polygon_frame = polygon.getFrame();
-          if (polygon_frame.bottom_right.needToWrap())
-            for (auto& p: polygon)
-              p = p.wrapped();
-        }
-
         obj.polygons.append(polygon);
 
         if (obj.frame.isNull())
