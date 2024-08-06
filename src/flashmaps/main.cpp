@@ -117,10 +117,10 @@ int main(int argc, char* argv[])
       idx      = 0;
       load_now = true;
     }
-    render.loadBackgroundMap(idx, fi.filePath(), load_now);
+    render.loadMap(idx, fi.filePath(), load_now);
   }
 
-  render.loadEditableMap(count, "user1-user2.flashmap");
+  render.loadEditableMap(count + 1, map_dir + "/editable.flashmap");
   QQmlApplicationEngine engine;
   engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
   return app.exec();
