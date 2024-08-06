@@ -33,6 +33,7 @@ public:
     QList<RenderAddress>     render_start_list;
     int                      render_object_count;
     QString                  path;
+    bool                     need_to_wrap = false;
 
     void addCollectionToIndex(FlashVectorTile& collection);
 
@@ -41,7 +42,9 @@ public:
     void clear();
     void loadMainVectorTile(bool load_objects, double pixel_size_mm);
     void loadVectorTile(int tile_idx);
-    bool intersects(QPolygonF polygon) const;
+    bool intersects(const QPolygonF &polygon) const;
+    bool intersectsWrapped(const QPolygonF& p1,
+                           const QPolygonF& p2) const;
   };
 
   struct MapList: public QVector<Map*>
@@ -151,7 +154,8 @@ private:
   void addDrawTextEntry(QVector<DrawTextEntry>& draw_text_array,
                         DrawTextEntry           new_dte);
 
-  QPolygon poly2pix(const FlashGeoPolygon& polygon);
+  QPolygon poly2pix(const FlashGeoPolygon& polygon,
+                    bool                   need_to_wrap);
   void     paintPointName(QPainter* p, const QString& text,
                           const QColor& tcolor);
   void     paintPointObject(QPainter* p, const Map& map,
@@ -168,7 +172,7 @@ private:
   void     render();
   QPoint   meters2pix(QPointF m) const;
   QPointF  pix2meters(QPointF pix) const;
-  QPoint   deg2pix(FlashGeoCoor) const;
+  QPoint   deg2pix(FlashGeoCoor, bool need_to_wrap) const;
   TileCoor getBigTileCoor(TileCoor);
   QString  getTileName(TileCoor);
 

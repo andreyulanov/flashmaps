@@ -96,7 +96,7 @@ void FlashMap::save(QString path) const
 }
 
 void FlashMap::loadMainVectorTile(QString path, bool load_objects,
-                        double pixel_size_mm)
+                                  double pixel_size_mm)
 {
   if (main.status == FlashVectorTile::Loading)
     return;
