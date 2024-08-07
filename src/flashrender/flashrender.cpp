@@ -151,7 +151,7 @@ FlashRender::~FlashRender()
   wait();
 }
 
-void FlashRender::requestTile(TileCoor t)
+void FlashRender::requestTile(TileSpec t)
 {
   if (isRunning())
     return;
@@ -159,7 +159,7 @@ void FlashRender::requestTile(TileCoor t)
   render();
 }
 
-QByteArray FlashRender::getTile(TileCoor t)
+QByteArray FlashRender::getTile(TileSpec t)
 {
   auto tile_name = getTileName(t);
   for (auto big_tile: big_tiles)
@@ -375,16 +375,16 @@ void FlashRender::addDrawTextEntry(
     draw_text_array.append(new_dte);
 };
 
-FlashRender::TileCoor FlashRender::getBigTileCoor(TileCoor t)
+FlashRender::TileSpec FlashRender::getBigTileCoor(TileSpec t)
 {
-  TileCoor bt;
+  TileSpec bt;
   bt.x = int(t.x / s.big_tile_multiplier) * s.big_tile_multiplier;
   bt.y = int(t.y / s.big_tile_multiplier) * s.big_tile_multiplier;
   bt.z = t.z;
   return bt;
 }
 
-QString FlashRender::getTileName(TileCoor t)
+QString FlashRender::getTileName(TileSpec t)
 {
   return "z=" + QString("%1").arg(t.z) +
          ",y=" + QString("%1").arg(t.y) +
@@ -1140,7 +1140,7 @@ void FlashRender::run()
   for (int yi = 0; yi < s.big_tile_multiplier; yi++)
     for (int xi = 0; xi < s.big_tile_multiplier; xi++)
     {
-      TileCoor t;
+      TileSpec t;
       t.x     = big_tile_coor.x + xi;
       t.y     = big_tile_coor.y + yi;
       t.z     = big_tile_coor.z;

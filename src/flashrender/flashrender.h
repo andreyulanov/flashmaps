@@ -1,6 +1,6 @@
 #pragma once
 
-#include "flashrendermap.h"
+#include "flashmap.h"
 #include <QReadWriteLock>
 #include <QThread>
 #include <QSet>
@@ -42,7 +42,7 @@ public:
     void clear();
     void loadMainVectorTile(bool load_objects, double pixel_size_mm);
     void loadVectorTile(int tile_idx);
-    bool intersects(const QPolygonF &polygon) const;
+    bool intersects(const QPolygonF& polygon) const;
     bool intersectsWrapped(const QPolygonF& p1,
                            const QPolygonF& p2) const;
   };
@@ -62,7 +62,7 @@ public:
     double max_loaded_maps_count        = 3;
     double max_name_width_mm            = 20.0;
   };
-  struct TileCoor
+  struct TileSpec
   {
     int x, y, z;
   };
@@ -111,7 +111,7 @@ private:
   };
 
   Settings s;
-  TileCoor tile_coor;
+  TileSpec tile_coor;
 
   QPointF               top_left_m;
   double                mip;
@@ -173,15 +173,15 @@ private:
   QPoint   meters2pix(QPointF m) const;
   QPointF  pix2meters(QPointF pix) const;
   QPoint   deg2pix(FlashGeoCoor, bool need_to_wrap) const;
-  TileCoor getBigTileCoor(TileCoor);
-  QString  getTileName(TileCoor);
+  TileSpec getBigTileCoor(TileSpec);
+  QString  getTileName(TileSpec);
 
 public:
   FlashRender(Settings);
   virtual ~FlashRender();
   void                loadMap(int idx, QString path, bool load_now);
   void                loadEditableMap(int idx, QString path);
-  void                requestTile(TileCoor);
-  QByteArray          getTile(TileCoor);
+  void                requestTile(TileSpec);
+  QByteArray          getTile(TileSpec);
   static FlashRender* instance();
 };

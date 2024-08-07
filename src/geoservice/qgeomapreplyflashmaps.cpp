@@ -6,7 +6,7 @@ QGeoMapReplyFlashmaps::QGeoMapReplyFlashmaps(const QGeoTileSpec& spec,
                                              QObject* parent):
     QGeoTiledMapReply(spec, parent)
 {
-  FlashRender::TileCoor t = {tileSpec().x(), tileSpec().y(),
+  FlashRender::TileSpec t = {tileSpec().x(), tileSpec().y(),
                              tileSpec().zoom()};
 
   FlashRender* render      = FlashRender::instance();
@@ -28,7 +28,7 @@ QGeoMapReplyFlashmaps::QGeoMapReplyFlashmaps(const QGeoTileSpec& spec,
 void QGeoMapReplyFlashmaps::onFinishedRender()
 {
   auto                  spec   = tileSpec();
-  FlashRender::TileCoor t      = {spec.x(), spec.y(), spec.zoom()};
+  FlashRender::TileSpec t      = {spec.x(), spec.y(), spec.zoom()};
   FlashRender*          render = FlashRender::instance();
   auto                  tile_pixmap = render->getTile(t);
   if (tile_pixmap.isEmpty())
