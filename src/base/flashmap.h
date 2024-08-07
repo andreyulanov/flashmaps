@@ -24,6 +24,12 @@ struct FlashMap
 {
   static constexpr int border_coor_precision_coef = 10000;
 
+  struct ObjectSpec
+  {
+    int tile_idx;
+    int obj_idx;
+  };
+
   double main_mip = 0;
   double tile_mip = 0;
 
@@ -31,17 +37,17 @@ struct FlashMap
   FlashGeoRect             frame;
   QVector<QPolygonF>       borders_m;
   QVector<FlashGeoPolygon> borders;
-  FlashVectorTile                main;
-  QVector<FlashVectorTile>       tiles;
+  FlashVectorTile          main;
+  QVector<FlashVectorTile> tiles;
 
-  void   save(QString path) const;
-  void   loadMainVectorTile(QString path, bool load_objects,
-                  double pixel_size_mm);
-  void   loadVectorTile(QString path, int tile_idx);
-  void   loadAll(QString path, double pixel_size_mm);
-  void   clear();
-  qint64 count();
-  void   addFreeObject(FlashFreeObject free_obj);
-  QVector<FlashFreeObject> getFreeObjects();
-  QVector<FlashVectorTile>       getVectorTiles();
+  void       save(QString path) const;
+  void       loadMainVectorTile(QString path, bool load_objects,
+                                double pixel_size_mm);
+  void       loadVectorTile(QString path, int tile_idx);
+  void       loadAll(QString path, double pixel_size_mm);
+  void       clear();
+  qint64     count();
+  ObjectSpec addObject(FlashFreeObject free_obj);
+  QVector<FlashFreeObject> getObjects();
+  QVector<FlashVectorTile> getVectorTiles();
 };

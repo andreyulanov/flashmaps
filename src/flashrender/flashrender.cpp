@@ -170,34 +170,18 @@ QByteArray FlashRender::getTile(TileSpec t)
   return QByteArray();
 }
 
-void FlashRender::loadMap(int idx, QString path, bool load_now)
+void FlashRender::addMap(Map* map, int idx)
 {
   QThreadPool().globalInstance()->waitForDone();
   wait();
-  auto map = new FlashRender::Map(path);
-  map->loadMainVectorTile(load_now, s.pixel_size_mm);
+  if (idx < 0)
+    idx = maps.count();
   maps.insert(idx, map);
 }
 
-void FlashRender::loadEditableMap(int map_idx, QString path)
+int FlashRender::getMapCount()
 {
-  QThreadPool().globalInstance()->waitForDone();
-  wait();
-  auto map = new FlashRender::Map(path);
-  map->loadAll(path, s.pixel_size_mm);
-
-  auto all_tiles = map->getVectorTiles();
-
-  for (auto tile: all_tiles)
-    for (uint obj_idx = -1; auto obj: tile)
-    {
-      obj_idx++;
-      qint64 hash;
-      memcpy(&hash, obj.getHash64().data(), sizeof(hash));
-      hash_table.insert(hash,
-                        {static_cast<ushort>(map_idx), 0, obj_idx});
-    }
-  maps.insert(map_idx, map);
+  return maps.count();
 }
 
 QRectF FlashRender::getDrawRectM() const
@@ -1161,6 +1145,7 @@ void FlashRender::render()
     return;
   if (QThreadPool::globalInstance()->activeThreadCount() == 0)
     checkUnload();
+  startedRender(getDrawRectM(), mip);
   QThread::start();
 }
 

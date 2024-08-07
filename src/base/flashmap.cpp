@@ -246,7 +246,7 @@ void FlashMap::loadVectorTile(QString path, int tile_idx)
     obj.load(classes, pos, ba);
 }
 
-void FlashMap::addFreeObject(FlashFreeObject free_obj)
+FlashMap::ObjectSpec FlashMap::addObject(FlashFreeObject free_obj)
 {
   if (frame.isNull())
     frame = free_obj.polygons.first().getFrame();
@@ -271,8 +271,13 @@ void FlashMap::addFreeObject(FlashFreeObject free_obj)
     classes.append(free_obj.cl);
 
   int tile_side_num = sqrt(tiles.count());
+  int tile_idx      = -1;
+  int obj_idx       = -1;
   if (free_obj.cl.max_mip == 0 || free_obj.cl.max_mip > tile_mip)
+  {
     main.append(obj);
+    obj_idx = main.count() - 1;
+  }
   else
   {
     auto   obj_top_left_m = obj.frame.top_left.toMeters();
@@ -282,12 +287,14 @@ void FlashMap::addFreeObject(FlashFreeObject free_obj)
     int shift_y = obj_top_left_m.y() - map_top_left_m.y();
     int part_idx_y =
         1.0 * shift_y / map_size_m.height() * tile_side_num;
-    int tile_idx = part_idx_y * tile_side_num + part_idx_x;
+    tile_idx = part_idx_y * tile_side_num + part_idx_x;
     tiles[tile_idx].append(obj);
+    obj_idx = tiles[tile_idx].count() - 1;
   }
+  return {tile_idx + 1, obj_idx};
 }
 
-QVector<FlashFreeObject> FlashMap::getFreeObjects()
+QVector<FlashFreeObject> FlashMap::getObjects()
 {
   QVector<FlashFreeObject> free_objects;
   for (auto src_obj: main)

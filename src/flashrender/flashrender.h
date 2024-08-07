@@ -103,13 +103,6 @@ private:
     const FlashClass* cl;
   };
 
-  struct HashEntry
-  {
-    ushort map_idx;
-    ushort tile_idx;
-    uint   obj_idx;
-  };
-
   Settings s;
   TileSpec tile_coor;
 
@@ -119,8 +112,7 @@ private:
   QVector<RenderResult> big_tile;
   QVector<RenderResult> big_tiles;
 
-  MapList                 maps;
-  QMap<qint64, HashEntry> hash_table;
+  MapList maps;
 
   QVector<PointNameRect> point_names[Map::render_count];
   QVector<DrawTextEntry> polygon_names[Map::render_count];
@@ -176,11 +168,14 @@ private:
   TileSpec getBigTileCoor(TileSpec);
   QString  getTileName(TileSpec);
 
+signals:
+  void startedRender(QRectF, double);
+
 public:
   FlashRender(Settings);
   virtual ~FlashRender();
-  void                loadMap(int idx, QString path, bool load_now);
-  void                loadEditableMap(int idx, QString path);
+  void                addMap(Map* map, int idx = -1);
+  int                 getMapCount();
   void                requestTile(TileSpec);
   QByteArray          getTile(TileSpec);
   static FlashRender* instance();

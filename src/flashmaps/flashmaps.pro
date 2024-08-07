@@ -10,7 +10,9 @@ SOURCES += main.cpp \
  ../base/flashlocker.cpp \
  ../base/flashmap.cpp \
  ../base/flashobject.cpp \
- ../flashrender/flashrender.cpp
+ ../flashrender/flashrender.cpp \
+ chatmap.cpp \
+ downloadmanager.cpp
 
 RESOURCES += qml.qrc
 
@@ -43,4 +45,6 @@ HEADERS += \
  ../base/flashmap.h \
  ../base/flashobject.h \
  ../base/flashserialize.h \
- ../flashrender/flashrender.h
+ ../flashrender/flashrender.h \
+ chatmap.h \
+ downloadmanager.h

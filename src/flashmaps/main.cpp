@@ -67,6 +67,8 @@
 #include <QDir>
 #include <QScreen>
 #include "../flashrender/flashrender.h"
+#include "downloadmanager.h"
+#include "chatmap.h"
 
 int main(int argc, char* argv[])
 {
@@ -105,22 +107,38 @@ int main(int argc, char* argv[])
 
   QDir dir(map_dir);
   dir.setNameFilters({"*.flashmap"});
-  auto fi_list = dir.entryInfoList();
-  int  count   = -1;
+  auto      fi_list   = dir.entryInfoList();
+  FlashMap* world_map = nullptr;
   for (auto fi: fi_list)
   {
-    count++;
-    int  idx      = count;
+    int  idx      = -1;
     bool load_now = false;
+    auto map      = new FlashRender::Map(fi.filePath());
     if (fi.fileName() == "world.flashmap")
     {
-      idx      = 0;
-      load_now = true;
+      idx       = 0;
+      load_now  = true;
+      world_map = map;
     }
-    render.loadMap(idx, fi.filePath(), load_now);
+    map->loadMainVectorTile(load_now, s.pixel_size_mm);
+    render.addMap(map, idx);
   }
 
-  render.loadEditableMap(count + 1, map_dir + "/editable.flashmap");
+  auto chat_map = new ChatMap;
+  render.addMap(chat_map);
+
+  double          download_max_mip = 200;
+  DownloadManager download_man(map_dir, world_map, download_max_mip);
+  QObject::connect(&download_man, &DownloadManager::fetched,
+                   [&render, s](QString map_path)
+                   {
+                     auto map = new FlashRender::Map(map_path);
+                     map->loadMainVectorTile(false, s.pixel_size_mm);
+                     render.addMap(map, true);
+                   });
+  QObject::connect(&render, &FlashRender::startedRender,
+                   &download_man, &DownloadManager::requestRect);
+
   QQmlApplicationEngine engine;
   engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
   return app.exec();
