@@ -3,9 +3,6 @@
 #include "flashmap.h"
 #include <QReadWriteLock>
 #include <QThread>
-#include <QSet>
-#include <QMutex>
-#include <QGuiApplication>
 
 class FlashRender: public QThread
 {

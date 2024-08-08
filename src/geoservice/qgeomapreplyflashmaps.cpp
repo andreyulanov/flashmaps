@@ -1,6 +1,7 @@
 #include "qgeomapreplyflashmaps.h"
 #include "flashrender.h"
 #include <QDebug>
+#include <QGuiApplication>
 
 static FlashRender* getRender()
 {
