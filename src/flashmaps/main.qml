@@ -18,5 +18,11 @@ Window {
         plugin: mapPlugin
         center: QtPositioning.coordinate(59.9768, 30.3649)
         zoomLevel: 17
+        MapPolyline {
+            id: edit_line
+            path: edit_object_provider.path
+            line.width: 5
+            line.color: 'yellow'
+        }
     }
 }

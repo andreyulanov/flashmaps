@@ -12,7 +12,8 @@ SOURCES += main.cpp \
  ../base/flashobject.cpp \
  ../flashrender/flashrender.cpp \
  chatmap.cpp \
- downloadmanager.cpp
+ downloadmanager.cpp \
+ editobjectprovider.cpp
 
 RESOURCES += qml.qrc
 
@@ -47,4 +48,5 @@ HEADERS += \
  ../base/flashserialize.h \
  ../flashrender/flashrender.h \
  chatmap.h \
- downloadmanager.h
+ downloadmanager.h \
+ editobjectprovider.h

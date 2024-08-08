@@ -66,9 +66,11 @@
 #include <QStandardPaths>
 #include <QDir>
 #include <QScreen>
+#include <QQmlContext>
 #include "../flashrender/flashrender.h"
 #include "downloadmanager.h"
 #include "chatmap.h"
+#include "editobjectprovider.h"
 
 int main(int argc, char* argv[])
 {
@@ -126,7 +128,7 @@ int main(int argc, char* argv[])
     render.addMap(map, idx);
   }
 
-  auto chat_map = new ChatMap;
+  auto chat_map = new ChatRenderMap;
   render.addMap(chat_map);
 
   double          download_max_mip = 200;
@@ -141,7 +143,17 @@ int main(int argc, char* argv[])
   QObject::connect(&render, &FlashRender::startedRender,
                    &download_man, &DownloadManager::requestRect);
 
+  EditObjectProvider edit_object_provider;
+  QObject::connect(&edit_object_provider,
+                   &EditObjectProvider::finishEdit, chat_map,
+                   &ChatRenderMap::addObject);
+
+  FlashFreeObject edit_object;
+  edit_object_provider.startEdit(edit_object);
+
   QQmlApplicationEngine engine;
+  engine.rootContext()->setContextProperty("edit_object_provider",
+                                           &edit_object_provider);
   engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
   return app.exec();
 }

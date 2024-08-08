@@ -66,11 +66,6 @@ public:
 private:
   static constexpr int tile_side = 256;
 
-  struct MapList: public QVector<Map*>
-  {
-    virtual ~MapList();
-  };
-
   struct RenderResult
   {
     QString    name;
@@ -117,7 +112,7 @@ private:
   QVector<RenderResult> big_tile;
   QVector<RenderResult> big_tiles;
 
-  MapList maps;
+  QVector<Map*> maps;
 
   QVector<PointNameRect> point_names[Map::render_count];
   QVector<DrawTextEntry> polygon_names[Map::render_count];

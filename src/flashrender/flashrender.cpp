@@ -116,11 +116,6 @@ void FlashRender::Map::addCollectionToIndex(
   }
 }
 
-FlashRender::MapList::~MapList()
-{
-  qDeleteAll(*this);
-}
-
 QPoint FlashRender::meters2pix(QPointF coor_m) const
 {
   auto rectm = getDrawRectM();

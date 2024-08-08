@@ -299,8 +299,7 @@ QVector<FlashFreeObject> FlashMap::getObjects()
   QVector<FlashFreeObject> free_objects;
   for (auto src_obj: main)
   {
-    FlashFreeObject free_obj = src_obj;
-    free_obj.cl              = classes[src_obj.class_idx];
+    FlashFreeObject free_obj = {src_obj, classes[src_obj.class_idx]};
     free_objects.append(free_obj);
   }
   return free_objects;

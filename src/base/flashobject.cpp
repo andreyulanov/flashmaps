@@ -1,5 +1,4 @@
 #include <math.h>
-#include <QUuid>
 #include <QDebug>
 #include <QCryptographicHash>
 #include "flashobject.h"
@@ -82,21 +81,6 @@ QByteArray FlashMapObject::getHash64() const
   return res;
 }
 
-FlashGeoCoor FlashMapObject::getCenter() const
-{
-  if (polygons.isEmpty())
-    return FlashGeoCoor();
-  auto   polygon = polygons.first();
-  auto   frame   = polygon.getFrame();
-  auto   tl      = frame.top_left;
-  auto   br      = frame.bottom_right;
-  double lat     = (tl.latitude() + br.latitude()) * 0.5;
-  double lon     = (tl.longitude() + br.longitude()) * 0.5;
-  if (fabs(lon - tl.longitude()) > 90)
-    lon += 180;
-  return FlashGeoCoor().fromDegs(lat, lon);
-}
-
 void FlashMapObject::save(const QVector<FlashClass>& class_list,
                           QByteArray&                ba) const
 {
@@ -128,12 +112,14 @@ void FlashMapObject::save(const QVector<FlashClass>& class_list,
   }
 }
 
-FlashFreeObject::FlashFreeObject(FlashMapObject src_obj)
+FlashFreeObject::FlashFreeObject(FlashMapObject src_obj,
+                                 FlashClass     _cl)
 {
   name       = src_obj.name;
   attributes = src_obj.attributes;
   frame      = src_obj.frame;
   polygons   = src_obj.polygons;
+  cl         = _cl;
 }
 
 void FlashFreeObject::saveToFile(QFile* f) const
@@ -189,63 +175,4 @@ void FlashFreeObject::load(QString path, double pixel_size_mm)
     return;
   }
   loadFromFile(&f, pixel_size_mm);
-}
-
-int FlashFreeObject::getWidthPix(double pixel_size_mm) const
-{
-  return round(cl.width_mm / pixel_size_mm);
-}
-
-void FlashFreeObject::setGuid(QUuid guid)
-{
-  attributes.insert("guid", guid.toRfc4122());
-}
-
-void FlashFreeObject::setGuid(QByteArray guid_ba)
-{
-  attributes.insert("guid", guid_ba);
-}
-
-QUuid FlashFreeObject::getGuid() const
-{
-  return QUuid::fromRfc4122(attributes.value("guid"));
-}
-
-void FlashPack::save(QString path)
-{
-  QFile f(path);
-  if (!f.open(QIODevice::WriteOnly))
-  {
-    qDebug() << "ERROR: unable to write to" << path;
-    return;
-  }
-  for (auto obj: *this)
-    obj.saveToFile(&f);
-}
-
-void FlashPack::load(QString path, double pixel_size_mm)
-{
-  QFile f(path);
-  if (!f.open(QIODevice::ReadOnly))
-  {
-    qDebug() << "ERROR: unable to write to" << path;
-    return;
-  }
-  while (!f.atEnd())
-  {
-    FlashFreeObject obj;
-    obj.loadFromFile(&f, pixel_size_mm);
-    append(obj);
-  }
-}
-
-void FlashPack::addObject(QString path, FlashFreeObject obj)
-{
-  QFile f(path);
-  if (!f.open(QIODevice::Append))
-  {
-    qDebug() << "ERROR: unable to append to" << path;
-    return;
-  }
-  obj.saveToFile(&f);
 }

@@ -1,10 +1,10 @@
 #include "chatmap.h"
 
-ChatMap::ChatMap(): FlashRender::Map("")
+ChatRenderMap::ChatRenderMap(): FlashRender::Map("")
 {
 }
 
-void ChatMap::addObject(FlashFreeObject obj)
+void ChatRenderMap::addObject(FlashFreeObject obj)
 {
   auto   obj_spec = FlashRender::Map::addObject(obj);
   qint64 hash;

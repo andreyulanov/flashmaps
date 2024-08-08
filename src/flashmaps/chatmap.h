@@ -2,11 +2,13 @@
 
 #include "flashrender.h"
 
-class ChatMap: public FlashRender::Map
+class ChatRenderMap: public QObject, public FlashRender::Map
 {
+  Q_OBJECT
+
   QMap<qint64, ObjectSpec> hash_table;
 
 public:
-  ChatMap();
-  void addObject(FlashFreeObject obj);
+  ChatRenderMap();
+  void addObject(FlashFreeObject);
 };
