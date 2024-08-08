@@ -19,7 +19,7 @@ public:
     static constexpr int max_layer_count = 24;
     static constexpr int render_count    = 4;
 
-    QVector<FlashMapObject*> render_data[max_layer_count];
+    QVector<FlashObject*> render_data[max_layer_count];
     QReadWriteLock           main_lock;
     QReadWriteLock           tile_lock;
     QList<RenderAddress>     render_start_list;
@@ -90,9 +90,9 @@ private:
     int                   point_count = 0;
     double                angle_deg   = 0;
     QPoint                mid_point;
-    const FlashMapObject* obj = nullptr;
+    const FlashObject* obj = nullptr;
     QColor                tcolor;
-    void fix(const FlashMap* map, const FlashMapObject* obj,
+    void fix(const FlashMap* map, const FlashObject* obj,
              const QPoint& start, const QPoint& end);
   };
 
@@ -132,10 +132,10 @@ private:
   void renderLayer(QPainter* p, QVector<Map*> render_maps,
                    int render_idx);
 
-  bool checkMipRange(const FlashMap* map, const FlashMapObject* obj);
+  bool checkMipRange(const FlashMap* map, const FlashObject* obj);
 
   void paintObject(QPainter* p, const Map* map,
-                   const FlashMapObject& obj, int render_idx,
+                   const FlashObject& obj, int render_idx,
                    int line_iter);
   void paintPointNames(QPainter* p);
   void paintLineNames(QPainter* p);
@@ -151,11 +151,11 @@ private:
   void     paintPointName(QPainter* p, const QString& text,
                           const QColor& tcolor);
   void     paintPointObject(QPainter* p, const Map& map,
-                            const FlashMapObject& obj, int render_idx);
+                            const FlashObject& obj, int render_idx);
   void     paintPolygonObject(QPainter* p, const Map& map,
-                              const FlashMapObject& obj, int render_idx);
+                              const FlashObject& obj, int render_idx);
   void     paintLineObject(QPainter* painter, const Map& map,
-                           const FlashMapObject& obj, int render_idx,
+                           const FlashObject& obj, int render_idx,
                            int line_iter);
   QRectF   getDrawRectM() const;
   bool     needToLoadMap(const Map* map, const QRectF& draw_rect);

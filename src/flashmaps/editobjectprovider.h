@@ -15,11 +15,11 @@ class EditObjectProvider: public QObject
 public:
   explicit EditObjectProvider(QObject* parent = nullptr);
   QVariantList path();
-  void         startEdit(FlashFreeObject);
+  void         startEdit(FlashObject, FlashClass cl);
 
 signals:
   void pathUpdated();
-  void finishEdit(FlashFreeObject);
+  void finishEdit(FlashObject, FlashClass);
 
 private:
   QVariantList m_path;

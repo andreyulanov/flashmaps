@@ -148,8 +148,23 @@ int main(int argc, char* argv[])
                    &EditObjectProvider::finishEdit, chat_map,
                    &ChatRenderMap::addObject);
 
-  FlashFreeObject edit_object;
-  edit_object_provider.startEdit(edit_object);
+  FlashObject edit_object;
+  FlashClass  cl;
+  cl.id       = "усовершенствованное шоссе";
+  cl.type     = FlashClass::Line;
+  cl.style    = FlashClass::Solid;
+  cl.layer    = 19;
+  cl.width_mm = 0.6;
+  cl.pen      = QColor(252, 188, 61);
+  cl.brush    = QColor(255, 255, 255);
+  cl.tcolor   = QColor(0, 0, 0);
+  cl.max_mip  = 200;
+  FlashGeoPolygon test_poly;
+  test_poly.append(FlashGeoCoor::fromDegs(59.9768, 30.3649));
+  test_poly.append(FlashGeoCoor::fromDegs(59.99, 30.37));
+  edit_object.polygons.append(test_poly);
+
+  edit_object_provider.startEdit(edit_object, cl);
 
   QQmlApplicationEngine engine;
   engine.rootContext()->setContextProperty("edit_object_provider",

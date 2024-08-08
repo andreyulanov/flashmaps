@@ -4,7 +4,7 @@
 #include "flashobject.h"
 #include "flashserialize.h"
 
-void FlashMapObject::load(QVector<FlashClass>& class_list, int& pos,
+void FlashObject::load(QVector<FlashClass>& class_list, int& pos,
                           const QByteArray& ba)
 {
   using namespace FlashSerialize;
@@ -60,7 +60,7 @@ void FlashMapObject::load(QVector<FlashClass>& class_list, int& pos,
   }
 }
 
-QByteArray FlashMapObject::getHash64() const
+QByteArray FlashObject::getHash64() const
 {
   QCryptographicHash hash(QCryptographicHash::Md4);
   QByteArray         ba;
@@ -81,7 +81,7 @@ QByteArray FlashMapObject::getHash64() const
   return res;
 }
 
-void FlashMapObject::save(const QVector<FlashClass>& class_list,
+void FlashObject::save(const QVector<FlashClass>& class_list,
                           QByteArray&                ba) const
 {
   using namespace FlashSerialize;
@@ -110,69 +110,4 @@ void FlashMapObject::save(const QVector<FlashClass>& class_list,
     for (auto& polygon: polygons)
       polygon.save(ba, cl->coor_precision_coef);
   }
-}
-
-FlashFreeObject::FlashFreeObject(FlashMapObject src_obj,
-                                 FlashClass     _cl)
-{
-  name       = src_obj.name;
-  attributes = src_obj.attributes;
-  frame      = src_obj.frame;
-  polygons   = src_obj.polygons;
-  cl         = _cl;
-}
-
-void FlashFreeObject::saveToFile(QFile* f) const
-{
-  using namespace FlashSerialize;
-
-  cl.save(f);
-  write(f, polygons.count());
-  for (auto polygon: polygons)
-  {
-    write(f, polygon.count());
-    for (auto point: polygon)
-      write(f, point);
-  }
-  write(f, attributes);
-}
-
-void FlashFreeObject::loadFromFile(QFile* f, double pixel_size_mm)
-{
-  using namespace FlashSerialize;
-
-  cl.load(f, pixel_size_mm);
-  int n;
-  read(f, n);
-  polygons.resize(n);
-  for (auto& polygon: polygons)
-  {
-    read(f, n);
-    polygon.resize(n);
-    for (auto& point: polygon)
-      read(f, point);
-  }
-  read(f, attributes);
-}
-
-void FlashFreeObject::save(QString path) const
-{
-  QFile f(path);
-  if (!f.open(QIODevice::WriteOnly))
-  {
-    qDebug() << "ERROR: unable to write to" << path;
-    return;
-  }
-  saveToFile(&f);
-}
-
-void FlashFreeObject::load(QString path, double pixel_size_mm)
-{
-  QFile f(path);
-  if (!f.open(QIODevice::ReadOnly))
-  {
-    qDebug() << "ERROR: unable to write to" << path;
-    return;
-  }
-  loadFromFile(&f, pixel_size_mm);
 }

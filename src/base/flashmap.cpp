@@ -246,34 +246,32 @@ void FlashMap::loadVectorTile(QString path, int tile_idx)
     obj.load(classes, pos, ba);
 }
 
-FlashMap::ObjectSpec FlashMap::addObject(FlashFreeObject free_obj)
+FlashMap::ObjectSpec FlashMap::addObject(FlashObject obj,
+                                         FlashClass     new_cl)
 {
   if (frame.isNull())
-    frame = free_obj.polygons.first().getFrame();
+    frame = obj.polygons.first().getFrame();
   else
-    frame =
-        free_obj.frame.united(free_obj.polygons.first().getFrame());
+    frame = obj.frame.united(obj.polygons.first().getFrame());
 
   auto map_size_m     = frame.getSizeMeters();
   auto map_top_left_m = frame.top_left.toMeters();
-
-  FlashMapObject obj = free_obj;
 
   obj.class_idx = -1;
   for (auto cl: classes)
   {
     obj.class_idx++;
-    if (cl.id == free_obj.cl.id)
+    if (cl.id == new_cl.id)
       break;
   }
 
   if (obj.class_idx == classes.count() - 1)
-    classes.append(free_obj.cl);
+    classes.append(new_cl);
 
   int tile_side_num = sqrt(tiles.count());
   int tile_idx      = -1;
   int obj_idx       = -1;
-  if (free_obj.cl.max_mip == 0 || free_obj.cl.max_mip > tile_mip)
+  if (new_cl.max_mip == 0 || new_cl.max_mip > tile_mip)
   {
     main.append(obj);
     obj_idx = main.count() - 1;
@@ -292,17 +290,6 @@ FlashMap::ObjectSpec FlashMap::addObject(FlashFreeObject free_obj)
     obj_idx = tiles[tile_idx].count() - 1;
   }
   return {tile_idx + 1, obj_idx};
-}
-
-QVector<FlashFreeObject> FlashMap::getObjects()
-{
-  QVector<FlashFreeObject> free_objects;
-  for (auto src_obj: main)
-  {
-    FlashFreeObject free_obj = {src_obj, classes[src_obj.class_idx]};
-    free_objects.append(free_obj);
-  }
-  return free_objects;
 }
 
 QVector<FlashVectorTile> FlashMap::getVectorTiles()

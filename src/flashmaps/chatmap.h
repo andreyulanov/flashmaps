@@ -10,5 +10,5 @@ class ChatRenderMap: public QObject, public FlashRender::Map
 
 public:
   ChatRenderMap();
-  void addObject(FlashFreeObject);
+  void addObject(FlashObject, FlashClass cl);
 };

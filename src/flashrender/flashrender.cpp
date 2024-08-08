@@ -389,7 +389,7 @@ QPoint FlashRender::deg2pix(FlashGeoCoor kp, bool need_to_wrap) const
 }
 
 void FlashRender::paintPointObject(QPainter* p, const Map& map,
-                                   const FlashMapObject& obj,
+                                   const FlashObject& obj,
                                    int                   render_idx)
 {
   auto frame = obj.frame;
@@ -458,7 +458,7 @@ QPolygon FlashRender::poly2pix(const FlashGeoPolygon& polygon,
 }
 
 void FlashRender::paintPolygonObject(QPainter* p, const Map& map,
-                                     const FlashMapObject& obj,
+                                     const FlashObject& obj,
                                      int                   render_idx)
 {
   auto  frame = obj.frame;
@@ -552,7 +552,7 @@ void FlashRender::paintPolygonObject(QPainter* p, const Map& map,
 }
 
 void FlashRender::paintLineObject(QPainter* painter, const Map& map,
-                                  const FlashMapObject& obj,
+                                  const FlashObject& obj,
                                   int render_idx, int line_iter)
 {
   auto frame = obj.frame;
@@ -731,7 +731,7 @@ void FlashRender::paintLineObject(QPainter* painter, const Map& map,
 }
 
 void FlashRender::NameHolder::fix(const FlashMap*       map,
-                                  const FlashMapObject* _obj,
+                                  const FlashObject* _obj,
                                   const QPoint&         start,
                                   const QPoint&         end)
 {
@@ -758,7 +758,7 @@ bool FlashRender::isCluttering(const QRect& rect)
 }
 
 bool FlashRender::checkMipRange(const FlashMap*       map,
-                                const FlashMapObject* obj)
+                                const FlashObject* obj)
 {
   auto cl = &map->classes[obj->class_idx];
   return (cl->min_mip == 0 || mip >= cl->min_mip) &&
@@ -766,7 +766,7 @@ bool FlashRender::checkMipRange(const FlashMap*       map,
 }
 
 void FlashRender::paintObject(QPainter* p, const Map* map,
-                              const FlashMapObject& obj,
+                              const FlashObject& obj,
                               int render_idx, int line_iter)
 {
   auto cl = &map->classes[obj.class_idx];

@@ -9,7 +9,7 @@
 #include <QVariant>
 #include "flashobject.h"
 
-struct FlashVectorTile: public QVector<FlashMapObject>
+struct FlashVectorTile: public QVector<FlashObject>
 {
   enum Status
   {
@@ -47,7 +47,6 @@ struct FlashMap
   void       loadAll(QString path, double pixel_size_mm);
   void       clear();
   qint64     count();
-  ObjectSpec addObject(FlashFreeObject free_obj);
-  QVector<FlashFreeObject> getObjects();
+  ObjectSpec addObject(FlashObject obj, FlashClass cl);
   QVector<FlashVectorTile> getVectorTiles();
 };

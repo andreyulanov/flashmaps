@@ -20,7 +20,7 @@ bool isVectorMap(QString path)
       .contains(ext);
 }
 
-auto joinPolys(FlashMapObject& obj)
+auto joinPolys(FlashObject& obj)
 {
   double join_tolerance_m = 1.0;
   auto   polygons         = obj.polygons;
@@ -49,7 +49,7 @@ auto joinPolys(FlashMapObject& obj)
   return false;
 }
 
-void setObjects(FlashMap* map, QVector<FlashMapObject> src_obj_list,
+void setObjects(FlashMap* map, QVector<FlashObject> src_obj_list,
                 int max_objects_per_tile)
 {
   int tile_side_num =
@@ -60,7 +60,7 @@ void setObjects(FlashMap* map, QVector<FlashMapObject> src_obj_list,
   auto map_top_left_m = map->frame.top_left.toMeters();
   for (auto& src_obj: src_obj_list)
   {
-    FlashMapObject obj(src_obj);
+    FlashObject obj(src_obj);
     auto           cl = map->classes[obj.class_idx];
     if (cl.max_mip == 0 || cl.max_mip > map->tile_mip)
       map->main.append(obj);
@@ -189,7 +189,7 @@ int main(int argc, char* argv[])
     map.classes  = class_list;
     map.main_mip = class_man.getMainMip();
     map.tile_mip = class_man.getTileMip();
-    QVector<FlashMapObject> obj_list;
+    QVector<FlashObject> obj_list;
     DFRAME                  df;
     mapGetTotalBorder(hMap, &df, PP_GEO);
     auto top_left =
@@ -291,7 +291,7 @@ int main(int argc, char* argv[])
 
       name = name.remove("\"");
 
-      FlashMapObject obj;
+      FlashObject obj;
       obj.name = name;
 
       obj.class_idx = class_idx;
