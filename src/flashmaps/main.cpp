@@ -104,6 +104,8 @@ int main(int argc, char* argv[])
     s.pixel_size_mm *= 0.5;
 
   FlashRender render(s);
+  render.setParent(qApp);
+  render.setObjectName("FlashRender");
 
   QDir dir(map_dir);
   dir.setNameFilters({"*.flashmap"});

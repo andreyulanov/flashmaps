@@ -141,8 +141,6 @@ FlashRender::FlashRender(Settings _s)
   s                 = _s;
   int big_tile_side = tile_side * s.big_tile_multiplier;
   pixmap            = QPixmap{big_tile_side, big_tile_side};
-  setParent(qApp);
-  setObjectName(class_name);
   connect(this, &QThread::finished, this, &FlashRender::onFinished);
 }
 
@@ -1147,10 +1145,4 @@ void FlashRender::render()
     checkUnload();
   startedRender(getDrawRectM(), mip);
   QThread::start();
-}
-
-FlashRender* FlashRender::instance()
-{
-  return static_cast<FlashRender*>(
-      qApp->findChild<QObject*>(class_name));
 }

@@ -9,11 +9,6 @@
 
 class FlashRender: public QThread
 {
-  Q_OBJECT
-
-  static constexpr int  tile_side    = 256;
-  static constexpr char class_name[] = "FlashRender";
-
 public:
   class Map: public FlashMap
   {
@@ -47,11 +42,6 @@ public:
                            const QPolygonF& p2) const;
   };
 
-  struct MapList: public QVector<Map*>
-  {
-    virtual ~MapList();
-  };
-
   struct Settings
   {
     int    big_tile_multiplier          = 4;
@@ -66,6 +56,24 @@ public:
   {
     int x, y, z;
   };
+
+  FlashRender(Settings);
+  virtual ~FlashRender();
+  void       addMap(Map* map, int idx = -1);
+  int        getMapCount();
+  void       requestTile(TileSpec);
+  QByteArray getTile(TileSpec);
+
+  Q_OBJECT
+
+private:
+  static constexpr int tile_side = 256;
+
+  struct MapList: public QVector<Map*>
+  {
+    virtual ~MapList();
+  };
+
   struct RenderResult
   {
     QString    name;
@@ -170,13 +178,4 @@ private:
 
 signals:
   void startedRender(QRectF, double);
-
-public:
-  FlashRender(Settings);
-  virtual ~FlashRender();
-  void                addMap(Map* map, int idx = -1);
-  int                 getMapCount();
-  void                requestTile(TileSpec);
-  QByteArray          getTile(TileSpec);
-  static FlashRender* instance();
 };
