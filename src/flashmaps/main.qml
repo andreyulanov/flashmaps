@@ -22,7 +22,7 @@ Window {
             id: edit_line
             path: edit_object_provider.path
             line.width: 5
-            line.color: 'yellow'
+            line.color: edit_object_provider.color
         }
     }
 }
