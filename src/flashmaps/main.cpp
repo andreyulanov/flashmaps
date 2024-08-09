@@ -120,7 +120,7 @@ int main(int argc, char* argv[])
     render.loadBackgroundMap(idx, fi.filePath(), load_now);
   }
 
-  render.loadEditableMap(count, "user1-user2.flashmap");
+  //render.loadEditableMap(count, "user1-user2.flashmap");
   QQmlApplicationEngine engine;
   engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
   return app.exec();
