@@ -1,6 +1,9 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
+        <file>AddButton.qml</file>
+        <file>NewObject.qml</file>
+        <file>NewClass.qml</file>
+        <file>TextFieldColor.qml</file>
     </qresource>
 </RCC>
-
