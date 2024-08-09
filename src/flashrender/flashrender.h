@@ -17,15 +17,15 @@ public:
 
   public:
     static constexpr int max_layer_count = 24;
-    static constexpr int render_count    = 4;
+    static constexpr int render_count    = 12;
 
     QVector<FlashObject*> render_data[max_layer_count];
-    QReadWriteLock           main_lock;
-    QReadWriteLock           tile_lock;
-    QList<RenderAddress>     render_start_list;
-    int                      render_object_count;
-    QString                  path;
-    bool                     need_to_wrap = false;
+    QReadWriteLock        main_lock;
+    QReadWriteLock        tile_lock;
+    QList<RenderAddress>  render_start_list;
+    int                   render_object_count;
+    QString               path;
+    bool                  need_to_wrap = false;
 
     void addCollectionToIndex(FlashVectorTile& collection);
 
@@ -84,14 +84,14 @@ private:
 
   struct NameHolder
   {
-    int                   length_pix  = 0;
-    int                   start_idx   = 0;
-    int                   end_idx     = 0;
-    int                   point_count = 0;
-    double                angle_deg   = 0;
-    QPoint                mid_point;
+    int                length_pix  = 0;
+    int                start_idx   = 0;
+    int                end_idx     = 0;
+    int                point_count = 0;
+    double             angle_deg   = 0;
+    QPoint             mid_point;
     const FlashObject* obj = nullptr;
-    QColor                tcolor;
+    QColor             tcolor;
     void fix(const FlashMap* map, const FlashObject* obj,
              const QPoint& start, const QPoint& end);
   };

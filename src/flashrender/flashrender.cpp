@@ -239,6 +239,8 @@ void FlashRender::checkLoad()
     i++;
     if (i == 0)
       continue;
+    if (map->path.isEmpty())
+      continue;
     auto map_rect_m = map->frame.toMeters();
 
     if (!needToLoadMap(map, draw_rect_m))
@@ -390,7 +392,7 @@ QPoint FlashRender::deg2pix(FlashGeoCoor kp, bool need_to_wrap) const
 
 void FlashRender::paintPointObject(QPainter* p, const Map& map,
                                    const FlashObject& obj,
-                                   int                   render_idx)
+                                   int                render_idx)
 {
   auto frame = obj.frame;
 
@@ -459,7 +461,7 @@ QPolygon FlashRender::poly2pix(const FlashGeoPolygon& polygon,
 
 void FlashRender::paintPolygonObject(QPainter* p, const Map& map,
                                      const FlashObject& obj,
-                                     int                   render_idx)
+                                     int                render_idx)
 {
   auto  frame = obj.frame;
   QRect obj_frame_pix;
@@ -730,10 +732,10 @@ void FlashRender::paintLineObject(QPainter* painter, const Map& map,
   }
 }
 
-void FlashRender::NameHolder::fix(const FlashMap*       map,
+void FlashRender::NameHolder::fix(const FlashMap*    map,
                                   const FlashObject* _obj,
-                                  const QPoint&         start,
-                                  const QPoint&         end)
+                                  const QPoint&      start,
+                                  const QPoint&      end)
 {
   obj       = _obj;
   mid_point = {(start.x() + end.x()) / 2, (start.y() + end.y()) / 2};
@@ -757,7 +759,7 @@ bool FlashRender::isCluttering(const QRect& rect)
   return clutter_flag;
 }
 
-bool FlashRender::checkMipRange(const FlashMap*       map,
+bool FlashRender::checkMipRange(const FlashMap*    map,
                                 const FlashObject* obj)
 {
   auto cl = &map->classes[obj->class_idx];
@@ -766,8 +768,8 @@ bool FlashRender::checkMipRange(const FlashMap*       map,
 }
 
 void FlashRender::paintObject(QPainter* p, const Map* map,
-                              const FlashObject& obj,
-                              int render_idx, int line_iter)
+                              const FlashObject& obj, int render_idx,
+                              int line_iter)
 {
   auto cl = &map->classes[obj.class_idx];
   switch (cl->type)

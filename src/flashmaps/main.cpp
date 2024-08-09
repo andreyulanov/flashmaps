@@ -69,7 +69,7 @@
 #include <QQmlContext>
 #include "../flashrender/flashrender.h"
 #include "downloadmanager.h"
-#include "chatmap.h"
+#include "editablerendermap.h"
 #include "editobjectprovider.h"
 
 int main(int argc, char* argv[])
@@ -128,7 +128,7 @@ int main(int argc, char* argv[])
     render.addMap(map, idx);
   }
 
-  auto chat_map = new ChatRenderMap;
+  auto chat_map = new EditableRenderMap;
   render.addMap(chat_map);
 
   double          download_max_mip = 200;
@@ -146,7 +146,7 @@ int main(int argc, char* argv[])
   EditObjectProvider edit_object_provider;
   QObject::connect(&edit_object_provider,
                    &EditObjectProvider::finishEdit, chat_map,
-                   &ChatRenderMap::addObject);
+                   &EditableRenderMap::finishEdit);
 
   FlashObject edit_object;
   FlashClass  cl;
@@ -163,6 +163,7 @@ int main(int argc, char* argv[])
   test_poly.append(FlashGeoCoor::fromDegs(59.9768, 30.3649));
   test_poly.append(FlashGeoCoor::fromDegs(59.99, 30.37));
   edit_object.polygons.append(test_poly);
+  chat_map->addObject(edit_object, cl);
 
   edit_object_provider.startEdit(edit_object, cl);
 
