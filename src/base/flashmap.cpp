@@ -246,8 +246,13 @@ void FlashMap::loadVectorTile(QString path, int tile_idx)
     obj.load(classes, pos, ba);
 }
 
+void FlashMap::modifyObject(ObjectSpec obj_spec, FlashObject obj,
+                            FlashClass cl)
+{
+}
+
 FlashMap::ObjectSpec FlashMap::addObject(FlashObject obj,
-                                         FlashClass     new_cl)
+                                         FlashClass  new_cl)
 {
   if (frame.isNull())
     frame = obj.polygons.first().getFrame();

@@ -26,8 +26,8 @@ struct FlashMap
 
   struct ObjectSpec
   {
-    int tile_idx;
-    int obj_idx;
+    int tile_idx = -1;
+    int obj_idx  = -1;
   };
 
   double main_mip = 0;
@@ -48,5 +48,7 @@ struct FlashMap
   void       clear();
   qint64     count();
   ObjectSpec addObject(FlashObject obj, FlashClass cl);
+  void       modifyObject(ObjectSpec obj_spec, FlashObject obj,
+                          FlashClass cl);
   QVector<FlashVectorTile> getVectorTiles();
 };
